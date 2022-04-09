@@ -18,12 +18,10 @@
   },
   "homepage": "https://github.com/milychimbo/RespedApp#readme",
   "devDependencies": {
-    "body-parser": "^1.20.0",
-    "dotenv": "^16.0.0",
-    "nodemon": "^2.0.15",
-    "express": "^4.17.3"
+    "express": "^4.17.3",
+    "nodemon": "^2.0.15"
   },
   "dependencies": {
-    
+    "mysql": "^2.18.1"
   }
 }
