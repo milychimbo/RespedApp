@@ -5,7 +5,7 @@ const {getAllUsers, getOneUser, updateUser, createUser, deleteUser} = require('.
 
 async function obtenerUsuarios(req = request,res = response){
     const users = await getAllUsers();
-    res.json(users[0])
+    res.json(users)
 }
 
 async function obtenerUsuarioId(req = request,res = response){
