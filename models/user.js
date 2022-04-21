@@ -47,13 +47,17 @@ const User = connection.define('usuario', {
 async function getAllUsers() {
   try {
     return await User.findAll();
-  } catch {}
+  } catch(err){
+    return err;
+  }
 }
 
 async function getOneUser(idUsuario) {
   try {
     return await User.findByPk(idUsuario)
-  } catch {}
+  } catch(err){
+    return err;
+  }
 }
 
 async function createUser(user) {
@@ -66,7 +70,9 @@ async function createUser(user) {
       password: user.password,
       tipoUsuario: user.tipoUsuario
     });
-  } catch {}
+  } catch(err){
+    return err;
+  }
 }
 
 async function updateUser(user) {
@@ -83,7 +89,9 @@ async function updateUser(user) {
         idUsuario: user.idUsuario
       }
     })
-  } catch {}
+  } catch(err){
+    return err;
+  }
 }
 
 async function deleteUser(idUsuario) {
@@ -93,7 +101,9 @@ async function deleteUser(idUsuario) {
         idUsuario: idUsuario
       }
     })
-  } catch {}
+  } catch(err){
+    return err;
+  }
 }
 
 module.exports = {
