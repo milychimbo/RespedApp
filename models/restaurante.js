@@ -27,7 +27,9 @@ const Restaurant = connection.define('restaurante', {
 async function getOneRestaurant(idRestaurante) {
   try {
     return await Restaurant.findByPk(idRestaurante)
-  } catch {}
+  } catch(err){
+    return err;
+  }
 }
 
 async function updateRestaurante(restaurant) {
@@ -39,7 +41,9 @@ async function updateRestaurante(restaurant) {
         idRestaurante: restaurant.idRestaurante
       }
     })
-  } catch {}
+  } catch(err){
+    return err;
+  }
 }
 
 module.exports = {
