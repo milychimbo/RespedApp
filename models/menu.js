@@ -29,7 +29,9 @@ async function getMenu() {
         return await Menu.findAll({
             raw: true
            });
-    } catch {}
+    }  catch(err){
+        return err;
+    }
 }
 
 
@@ -42,7 +44,9 @@ async function updateMenu(menu) {
                 idMenu: menu.idMenu
             }
         })
-    } catch {}
+    }  catch(err){
+        return err;
+    }
 }
 
 module.exports = {

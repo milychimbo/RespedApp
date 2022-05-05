@@ -48,13 +48,30 @@ async function getAllProductos() {
         return await Producto.findAll({
             raw: true
            });
-    } catch {}
+    }  catch(err){
+        return err;
+    }
 }
 
-async function getOneProduct(idProducto) {
+async function getOneProducto(idProducto) {
     try {
         return await Producto.findByPk(idProducto)
-    } catch {}
+    }  catch(err){
+        return err;
+    }
+}
+
+async function getCategoriaProductos(idCategoria) {
+    try {
+        return await Producto.findAll({
+            where:{
+                idCategoria: idCategoria
+            },
+            raw: true
+        })
+    }  catch(err){
+        return err;
+    }
 }
 
 async function createProducto(producto) {
@@ -67,7 +84,9 @@ async function createProducto(producto) {
             image: producto.image,
             idCategoria: producto.idCategoria
         });
-    } catch {}
+    }  catch(err){
+        return err;
+    }
 }
 
 async function updateProducto(producto) {
@@ -84,7 +103,9 @@ async function updateProducto(producto) {
                 idProducto: producto.idProducto,
             }
         })
-    } catch {}
+    }  catch(err){
+        return err;
+    }
 }
 
 async function deleteProducto(idProducto) {
@@ -94,12 +115,15 @@ async function deleteProducto(idProducto) {
                 idProducto: idProducto
             }
         })
-    } catch {}
+    }  catch(err){
+        return err;
+    }
 }
 
 module.exports = {
     getAllProductos,
     getOneProducto,
+    getCategoriaProductos,
     createProducto,
     updateProducto,
     deleteProducto

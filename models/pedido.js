@@ -48,13 +48,17 @@ async function getAllPedidos() {
         return await Pedido.findAll({
             raw: true
            });
-    } catch {}
+    }  catch(err){
+        return err;
+    }
 }
 
 async function getOnePedido(idPedido) {
     try {
         return await Pedido.findByPk(idPedido)
-    } catch {}
+    }  catch(err){
+        return err;
+    }
 }
 
 async function createPedido(pedido) {
@@ -67,7 +71,9 @@ async function createPedido(pedido) {
             note: pedido.note,
             state: pedido.state
         });
-    } catch {}
+    }  catch(err){
+        return err;
+    }
 }
 
 async function updatePedido(pedido) {
@@ -84,7 +90,9 @@ async function updatePedido(pedido) {
                 idPedido: producto.idPedido,
             }
         })
-    } catch {}
+    }  catch(err){
+        return err;
+    }
 }
 
 async function deletePedido(idPedido) {
@@ -94,7 +102,9 @@ async function deletePedido(idPedido) {
                 idPedido: idPedido
             }
         })
-    } catch {}
+    }  catch(err){
+        return err;
+    }
 }
 
 module.exports = {

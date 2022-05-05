@@ -35,13 +35,17 @@ async function getAllDirecciones() {
         return await Direccion.findAll({
             raw: true
            });
-    } catch {}
+    }  catch(err){
+        return err;
+    }
 }
 
 async function getOneDireccion(idDireccion) {
     try {
         return await Direccion.findByPk(idDireccion)
-    } catch {}
+    }  catch(err){
+        return err;
+    }
 }
 
 async function createDireccion(direccion) {
@@ -51,7 +55,9 @@ async function createDireccion(direccion) {
             street2: direccion.street2,
             reference: direccion.reference
         });
-    } catch {}
+    }  catch(err){
+        return err;
+    }
 }
 
 async function updateDireccion(direccion) {
@@ -65,7 +71,9 @@ async function updateDireccion(direccion) {
                 idDireccion: direccion.idDireccion
             }
         })
-    } catch {}
+    }  catch(err){
+        return err;
+    }
 }
 
 async function deleteDireccion(idDireccion) {
@@ -75,7 +83,9 @@ async function deleteDireccion(idDireccion) {
                 idDireccion: idDireccion
             }
         })
-    } catch {}
+    }  catch(err){
+        return err;
+    }
 }
 
 module.exports = {

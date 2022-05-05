@@ -30,21 +30,27 @@ async function getAllCategorias() {
         return await Categoria.findAll({
             raw: true
            });
-    } catch {}
+    } catch(err){
+        return err;
+      }
 }
 
 async function getOneCategoria(idCategoria) {
     try {
         return await Categoria.findByPk(idCategoria)
-    } catch {}
+    } catch(err){
+        return err;
+      }
 }
 
 async function createCategoria(categoria) {
     try {
-        return await Reserva.create({
+        return await Categoria.create({
             name: categoria.name
         });
-    } catch {}
+    } catch(err){
+        return err;
+      }
 }
 
 async function updateCategoria(categoria) {
@@ -56,7 +62,9 @@ async function updateCategoria(categoria) {
                 idCategoria: categoria.idCategoria
             }
         })
-    } catch {}
+    } catch(err){
+        return err;
+      }
 }
 
 async function deleteCategoria(idCategoria) {
@@ -66,7 +74,9 @@ async function deleteCategoria(idCategoria) {
                 idCategoria: idCategoria
             }
         })
-    } catch {}
+    } catch(err){
+        return err;
+      }
 }
 
 module.exports = {

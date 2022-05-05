@@ -9,7 +9,6 @@ async function obtenerUsuarios(req = request,res = response){
     const users = await getAllUsers();
     console.log(users)
     if(users.length>0)
-    req.
     res.json(responseJson(200, "success", users))
     else
     res.json(responseJson(204, "no existe"))
