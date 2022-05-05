@@ -4,11 +4,11 @@ const {getAllReservas, getOneReserva, createReserva, updateReserva,deleteReserva
 
 
 async function obtenerReservas(req = request,res = response){
-    const reserva = await getAllReservas();
-    res.json(users)
+    const reservas = await getAllReservas();
+    res.json(reservas)
 }
 
-async function obtenerUsuarioId(req = request,res = response){
+async function obtenerReservaID(req = request,res = response){
     const user = await getOneReserva(req.params.id);
     res.json(user)
 }

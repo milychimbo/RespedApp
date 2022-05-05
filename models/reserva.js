@@ -42,13 +42,16 @@ const Reserva = connection.define('reserva', {
 async function getAllReservas() {
     try {
         return await Reserva.findAll();
-    } catch {}
+    } catch(err){
+        return err;
+    }
 }
 
 async function getOneReserva(idReserva) {
     try {
         return await Reserva.findByPk(idReserva)
-    } catch {}
+    } catch(err){
+        return err;}
 }
 
 async function createReserva(reserva) {
@@ -60,7 +63,8 @@ async function createReserva(reserva) {
             idPedido: reserva.idPedido,
             note: reserva.note
         });
-    } catch {}
+    } catch(err){
+        return err;}
 }
 
 async function updateReserva(reserva) {
@@ -76,7 +80,8 @@ async function updateReserva(reserva) {
                 idReserva: reserva.idReserva
             }
         })
-    } catch {}
+    } catch(err){
+        return err;}
 }
 
 async function deleteReserva(idReserva) {
@@ -86,7 +91,8 @@ async function deleteReserva(idReserva) {
                 idReserva: idReserva
             }
         })
-    } catch {}
+    } catch(err){
+        return err;}
 }
 
 module.exports = {

@@ -20,7 +20,7 @@ app.get('/api', (req, res) => {
 
 app.use('/api/user', require('./routes/api/user'));
 app.use('/api/restaurante', require('./routes/api/restaurante'));
-
+app.use('/api/menu', require('./routes/api/menu'));
 
 app.listen(port, () => {
     console.log(`Application is listening at port ${port}`);
