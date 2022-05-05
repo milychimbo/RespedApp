@@ -6,7 +6,6 @@ const {getAllReservas, getOneReserva, createReserva, updateReserva,deleteReserva
 
 async function obtenerReservas(req = request,res = response){
     const reservas = await getAllReservas();
-    console.log(reservas)
     if(reservas.length>0)
     res.json(responseJson(200, "success", reservas))
     else
