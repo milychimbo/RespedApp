@@ -1,6 +1,7 @@
 const {request,response} = require('express');
 const {getAllUsers, getOneUser, updateUser, createUser, deleteUser} = require('../models/user');
 const { responseJson } = require('../helpers/handleGenericFunction');
+const { encrypt } = require('../helpers/handleBCrypt');
 
 
 
@@ -21,8 +22,9 @@ async function obtenerUsuarioId(req = request,res = response){
 }
 
 async function crearUsuario(req = request,res = response){
-   const user = await createUser(req.body);
-   console.log(Object.keys(user)[0]);
+    console.log(typeof req.body.password)
+    req.body.password = await encrypt(req.body.password);
+    const user = await createUser(req.body);
     if(Object.keys(user)[0]=="dataValues")
     res.json(responseJson(200, "success"))
     else
