@@ -32,7 +32,9 @@ const Direccion = connection.define('direccion', {
 
 async function getAllDirecciones() {
     try {
-        return await Direccion.findAll();
+        return await Direccion.findAll({
+            raw: true
+           });
     } catch {}
 }
 

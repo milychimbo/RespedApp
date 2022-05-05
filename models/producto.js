@@ -45,7 +45,9 @@ const Producto = connection.define('producto', {
 
 async function getAllProductos() {
     try {
-        return await Producto.findAll();
+        return await Producto.findAll({
+            raw: true
+           });
     } catch {}
 }
 

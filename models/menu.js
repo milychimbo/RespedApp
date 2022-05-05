@@ -26,7 +26,9 @@ const Menu = connection.define('menu', {
 
 async function getMenu() {
     try {
-        return await Menu.findAll();
+        return await Menu.findAll({
+            raw: true
+           });
     } catch {}
 }
 

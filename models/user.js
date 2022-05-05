@@ -46,7 +46,9 @@ const User = connection.define('usuario', {
 
 async function getAllUsers() {
   try {
-    return await User.findAll();
+    return await User.findAll({
+      raw: true
+     });
   } catch(err){
     return err;
   }

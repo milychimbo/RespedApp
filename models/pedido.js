@@ -45,7 +45,9 @@ const Pedido = connection.define('pedido', {
 
 async function getAllPedidos() {
     try {
-        return await Pedido.findAll();
+        return await Pedido.findAll({
+            raw: true
+           });
     } catch {}
 }
 

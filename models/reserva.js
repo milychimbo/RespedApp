@@ -41,7 +41,9 @@ const Reserva = connection.define('reserva', {
 
 async function getAllReservas() {
     try {
-        return await Reserva.findAll();
+        return await Reserva.findAll({
+            raw: true
+           });
     } catch(err){
         return err;
     }

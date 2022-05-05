@@ -20,6 +20,7 @@ app.get('/api', (req, res) => {
 
 app.use('/api/user', require('./routes/api/user'));
 app.use('/api/restaurante', require('./routes/api/restaurante'));
+app.use('/api/reserva', require('./routes/api/reserva'));
 app.use('/api/menu', require('./routes/api/menu'));
 
 app.listen(port, () => {

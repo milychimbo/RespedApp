@@ -7,7 +7,8 @@ const { encrypt } = require('../helpers/handleBCrypt');
 
 async function obtenerUsuarios(req = request,res = response){
     const users = await getAllUsers();
-    if(users.length!=0)
+    console.log(users)
+    if(users.length>0)
     res.json(responseJson(200, "success", users))
     else
     res.json(responseJson(204, "no existe"))
@@ -22,7 +23,6 @@ async function obtenerUsuarioId(req = request,res = response){
 }
 
 async function crearUsuario(req = request,res = response){
-    console.log(typeof req.body.password)
     req.body.password = await encrypt(req.body.password);
     const user = await createUser(req.body);
     if(Object.keys(user)[0]=="dataValues")

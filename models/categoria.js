@@ -25,9 +25,11 @@ const Categoria = connection.define('categoria', {
 
 //User.sync().then(() => {})
 
-async function getAllCategoria() {
+async function getAllCategorias() {
     try {
-        return await Categoria.findAll();
+        return await Categoria.findAll({
+            raw: true
+           });
     } catch {}
 }
 
