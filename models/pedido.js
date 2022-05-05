@@ -35,6 +35,9 @@ const Pedido = connection.define('pedido', {
     state: {
         type: DataTypes.INTEGER,
         allowNull: false
+    },idUsuario: {
+        type: DataTypes.INTEGER,
+        allowNull: false
     }
 }, {
     tableName: 'pedido',
@@ -69,7 +72,8 @@ async function createPedido(pedido) {
             type: pedido.type,
             idAddress: pedido.idAddress,
             note: pedido.note,
-            state: pedido.state
+            state: pedido.state,
+            idUsuario: pedido.idUsuario
         });
     }  catch(err){
         return err;
@@ -84,10 +88,11 @@ async function updatePedido(pedido) {
             type: pedido.type,
             idAddress: pedido.idAddress,
             note: pedido.note,
-            state: pedido.state
+            state: pedido.state,
+            idUsuario: pedido.idUsuario
         }, {
             where: {
-                idPedido: producto.idPedido,
+                idPedido: pedido.idPedido,
             }
         })
     }  catch(err){
