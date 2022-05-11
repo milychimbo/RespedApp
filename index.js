@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.get("/", (req, res) => {
-    res.send(`<h1>Hello!</h1>`)
+    res.json({ status: 200, message: "hola" })
 });
 app.get('/api', (req, res) => {
     res.json({ status: 400, message: "bad request" });
