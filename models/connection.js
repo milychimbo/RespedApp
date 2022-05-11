@@ -1,6 +1,6 @@
 const { Sequelize} = require('sequelize');
 
-const path = 'mysql://root:root@localhost:3306/bdd_respedapp';
+const path = 'mysql://angelojz7:fitmanager65656566@http://mysql-angelojz7.alwaysdata.net/angelojz7_respedapp';
 
 const sequelize = new Sequelize(path, { operatorsAliases: false });
 
@@ -13,4 +13,4 @@ sequelize.authenticate().then(() => {
 });
 
  
-  module.exports = {sequelize};
+  module.exports = {sequelize,path};
