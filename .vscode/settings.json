@@ -2,5 +2,7 @@
     "appService.zipIgnorePattern": [
         "node_modules{,/**}",
         ".vscode{,/**}"
-    ]
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/ebe8c505-447d-467d-bf00-bcc41e6c977b/resourceGroups/rgpracticas/providers/Microsoft.Web/sites/RespedApp",
+    "appService.deploySubpath": "."
 }
