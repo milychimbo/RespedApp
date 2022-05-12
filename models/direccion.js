@@ -2,9 +2,10 @@ const {
     Sequelize,
     DataTypes
 } = require('sequelize');
+const { path } = require('./connection');
 
-const path = 'mysql://root:root@localhost:3306/bdd_respedapp';
 
+//const path = 'mysql://root:root@localhost:3306/bdd_respedapp';
 const connection = new Sequelize(path);
 
 const Direccion = connection.define('direccion', {

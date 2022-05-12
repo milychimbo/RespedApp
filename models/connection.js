@@ -1,8 +1,12 @@
-const { Sequelize} = require('sequelize');
+const {
+  Sequelize
+} = require('sequelize');
 
-const path = 'mysql://angelojz7:fitmanager65656566@http://mysql-angelojz7.alwaysdata.net/angelojz7_respedapp';
+const path = 'mysql://angelojz7:fitmanager65656566@mysql-angelojz7.alwaysdata.net/angelojz7_respedapp';
 
-const sequelize = new Sequelize(path, { operatorsAliases: false });
+const sequelize = new Sequelize(path, {
+  operatorsAliases: false
+});
 
 sequelize.authenticate().then(() => {
   console.log('Connection established successfully.');
@@ -12,5 +16,8 @@ sequelize.authenticate().then(() => {
   sequelize.close();
 });
 
- 
-  module.exports = {sequelize,path};
+
+module.exports = {
+  sequelize,
+  path
+};
