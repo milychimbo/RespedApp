@@ -1,17 +1,17 @@
 const express = require('express')
-const morgan = require('morgan');
+//const morgan = require('morgan');
 
 
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use(morgan('dev'));
+//app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.get("/", (req, res) => {
-    res.send(`<h1>Hello!</h1>`)
+    res.json({ status: 200, message: "hola" })
 });
 app.get('/api', (req, res) => {
     res.json({ status: 400, message: "bad request" });

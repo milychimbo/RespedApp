@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt');
+/*const bcrypt = require('bcrypt');
 
 const encrypt = async (textPlain) =>{
     const hash = await bcrypt.hash(textPlain,10);
@@ -15,4 +15,4 @@ const verifyPassword = (txtPlain, hash) =>{
 }
 
 
-module.exports = {encrypt, verifyPassword};
+module.exports = {encrypt, verifyPassword};*/
