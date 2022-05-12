@@ -17,7 +17,17 @@ app.get('/api', (req, res) => {
     res.json({ status: 400, message: "bad request" });
 });
 
-
+var cors = require('cors')
+var whitelist = ['https://respedapp.onrender.com', 'http://localhost:3000']
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
 app.use('/api/user', require('./routes/api/user'));
 app.use('/api/restaurante', require('./routes/api/restaurante'));
 app.use('/api/reserva', require('./routes/api/reserva'));
