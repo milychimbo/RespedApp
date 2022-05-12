@@ -3,8 +3,7 @@ const {
   DataTypes
 } = require('sequelize');
 
-const path = 'mysql://angelojz7:fitmanager65656566@mysql-angelojz7.alwaysdata.net/angelojz7_respedapp';
-
+const { path } = require('./connection');
 
 const connection = new Sequelize(path);
 

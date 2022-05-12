@@ -3,7 +3,7 @@ const {
   DataTypes
 } = require('sequelize');
 
-const path = 'mysql://root:root@localhost:3306/bdd_respedapp';
+const { path } = require('./connection');
 
 const connection = new Sequelize(path);
 
