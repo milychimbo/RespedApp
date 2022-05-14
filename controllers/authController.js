@@ -2,6 +2,8 @@ const {request,response} = require('express');
 const {getAllUsers,getOneUser} = require('../models/user');
 const { responseJson } = require('../helpers/handleGenericFunction');
 const { verifyPassword } = require('../helpers/handleBCrypt');
+const jwt = require('jsonwebtoken')
+const secret = process.env.SECRET || '123';
 
 
 async function login(req = request,res = response){
@@ -15,19 +17,15 @@ async function login(req = request,res = response){
         if(user.userName == userName){
             const match = verifyPassword(password, user.password);
                 if (match) {
-                   /* const payloadToken = {
-                        tipoUsuario: user.tipoUsuario,
-                        id: user.idUsuario
-                    }
-                    const token = await tokenSign(payloadToken);
-                    res.cookie('token_session', token);
-                    res.redirect('/');*/
                     i=usersL+1;
-                    res.json(responseJson(200, "matchea"))
+                    const userToken = {
+                        id: user.idUsuario,
+                        username: user.userName
+                    }
+                    const token = jwt.sign(userToken, secret);
+                    res.json(responseJson(200, "matchea",token))
                     
                 } else {
-                    /*req.flash('type-error', "403");
-                    res.redirect('/login');*/
                     i=usersL+1;
                     res.json(responseJson(204, "contraseña incorrecta"))
                     
