@@ -27,8 +27,14 @@ async function crearUsuario(req = request,res = response){
     const user = await createUser(req.body);
     if(Object.keys(user)[0]=="dataValues")
     res.json(responseJson(200, "success"))
-    else
-    res.json(responseJson(400, "no se pudo crear",user))
+    else{
+        console.log(user)
+    const error = {
+        message: user.errors[0].message,
+        value: user.errors[0].value
+    }
+    res.json(responseJson(400, "no se pudo crear", error))
+}
 }
 
 async function actualizarUsuario(req = request,res = response){
