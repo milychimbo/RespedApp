@@ -1,9 +1,9 @@
 const {Router} =require('express');
-const {getToken} = require('../../controllers/authController');
-
+const {login} = require('../../controllers/authController');
+const { validationSearch } = require('../../controllers/validator/authValidator');
 
 const router = Router();
 
- router.get('/',getToken);
+ router.get('/',validationSearch, login);
 
 module.exports=router;

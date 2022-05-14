@@ -7,12 +7,13 @@ const encrypt = async (textPlain) =>{
 
 const verifyPassword = (txtPlain, hash) =>{
     try {
+        console.log(txtPlain);
+        console.log(hash)
         return bcrypt.compareSync(txtPlain, hash);
     } catch (error) {
         console.log("Verify: "+error);
         return false;
     }
 }
-
 
 module.exports = {encrypt, verifyPassword};

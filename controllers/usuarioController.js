@@ -1,13 +1,12 @@
 const {request,response} = require('express');
 const {getAllUsers, getOneUser, updateUser, createUser, deleteUser} = require('../models/user');
 const { responseJson } = require('../helpers/handleGenericFunction');
-//const { encrypt } = require('../helpers/handleBCrypt');
+const { encrypt } = require('../helpers/handleBCrypt');
 
 
 
 async function obtenerUsuarios(req = request,res = response){
     const users = await getAllUsers();
-    console.log(users)
     if(users.length>0)
     res.json(responseJson(200, "success", users))
     else
@@ -32,11 +31,12 @@ async function crearUsuario(req = request,res = response){
 }
 
 async function actualizarUsuario(req = request,res = response){
-   const user = await updateUser(req.body);
-   if(user==1)
-   res.json(responseJson(201, "success"))
-   else
-   res.json(responseJson(200, "no hubo cambios")) //me devuelve 1 si actualizo o 0 si no
+    req.body.password = await encrypt(req.body.password);
+    const user = await updateUser(req.body);
+    if(user==1)
+    res.json(responseJson(201, "success"))
+    else
+    res.json(responseJson(200, "no hubo cambios")) //me devuelve 1 si actualizo o 0 si no
 }
 
 async function borrarUsuario(req = request,res = response){
