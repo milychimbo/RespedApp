@@ -23,18 +23,18 @@ async function login(req = request,res = response){
                         username: user.userName
                     }
                     const token = jwt.sign(userToken, secret);
-                    res.json(responseJson(200, "matchea",token))
+                    res.status(200).json(responseJson(200, "matchea",token))
                     
                 } else {
                     i=usersL+1;
-                    res.json(responseJson(204, "contraseña incorrecta"))
+                    res.status(400).json(responseJson(400, "contraseña incorrecta"))
                     
                 }
         }
         else{
             if(i==usersL)
             {
-                res.json(responseJson(400, "no existe"))
+                res.status(404).json(responseJson(404, "no existe"))
             }
         }
     });

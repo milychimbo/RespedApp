@@ -1,24 +1,34 @@
-const {request,response} = require('express');
-const {getOneRestaurant, updateRestaurante} = require('../models/restaurante');
-const { responseJson } = require('../helpers/handleGenericFunction');
+const {
+    request,
+    response
+} = require('express');
+const {
+    getOneRestaurant,
+    updateRestaurante
+} = require('../models/restaurante');
+const {
+    responseJson
+} = require('../helpers/handleGenericFunction');
 
-
-async function obtenerRestauranteID(req = request,res = response){
+async function obtenerRestauranteID(req = request, res = response) {
     const restaurante = await getOneRestaurant(req.params.id);
-    if(restaurante!=null)
-    res.json(responseJson(200, "success", restaurante))
+    if (restaurante != null)
+        res.status(200).json(responseJson(200, "success", restaurante))
     else
-    res.json(responseJson(204, "no existe"))
+        res.status(404).json(responseJson(404, "no existe"))
 }
 
-async function actualizarRestaurante(req = request,res = response){
-   const restaurante = await updateRestaurante(req.body);
-   if(restaurante==1)
-   res.json(responseJson(201, "success"))
-   else
-   res.json(responseJson(200, "no hubo cambios")) //me devuelve 1 si actualizo o 0 si no
+async function actualizarRestaurante(req = request, res = response) {
+    const restaurante = await updateRestaurante(req.body);
+    if (restaurante == 1)
+        res.status(200).json(responseJson(201, "success"))
+    else
+        res.status(200).json(responseJson(200, "no hubo cambios")) //me devuelve 1 si actualizo o 0 si no
 }
 
 
 
-module.exports= {obtenerRestauranteID,actualizarRestaurante};
+module.exports = {
+    obtenerRestauranteID,
+    actualizarRestaurante
+};

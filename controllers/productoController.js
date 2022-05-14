@@ -5,29 +5,28 @@ const { updateMenu } = require('../models/menu');
 const { responseJson } = require('../helpers/handleGenericFunction');
 
 
-
 async function obtenerProductos(req = request,res = response){
     const productos = await getAllProductos();
     if(productos.length>0)
-    res.json(responseJson(200, "success", productos))
+    res.status(200).json(responseJson(200, "success", productos))
     else
-    res.json(responseJson(204, "no existe"))
+    res.status(404).json(responseJson(404, "no existe"))
 }
 
 async function obtenerProductosCategoria(req = request,res = response){
     const productos = await getCategoriaProductos(req.params.id);
     if(productos.length>0)
-    res.json(responseJson(200, "success", productos))
+    res.status(200).json(responseJson(200, "success", productos))
     else
-    res.json(responseJson(204, "no existe"))
+    res.status(404).json(responseJson(404, "no existe"))
 }
 
 async function obtenerProductoId(req = request,res = response){
     const producto = await getOneProducto(req.params.id);
     if(producto!=null)
-    res.json(responseJson(200, "success", producto))
+    res.status(200).json(responseJson(200, "success", producto))
     else
-    res.json(responseJson(204, "no existe"))
+    res.status(404).json(responseJson(404, "no existe"))
 }
 
 async function crearProducto(req = request,res = response){
@@ -51,25 +50,25 @@ async function crearProducto(req = request,res = response){
         }
         
     });
-    res.json(responseJson(200, "success"))}
+    res.status(200).json(responseJson(200, "success"))}
     else
-    res.json(responseJson(400, "no se pudo crear",producto))
+    res.status(400).json(responseJson(400, "no se pudo crear",producto))
 }
 
 async function actualizarProducto(req = request,res = response){
    const producto = await updateProducto(req.body);
    if(producto==1)
-   res.json(responseJson(201, "success"))
+   res.status(201).json(responseJson(201, "success"))
    else
-   res.json(responseJson(200, "no hubo cambios")) //me devuelve 1 si actualizo o 0 si no
+   res.status(200).json(responseJson(200, "no hubo cambios")) //me devuelve 1 si actualizo o 0 si no
 }
 
 async function borrarProducto(req = request,res = response){
     const producto = await deleteProducto(req.params.id);
     if(producto==1)
-   res.json(responseJson(201, "success"))
+   res.status(201).json(responseJson(201, "success"))
    else
-   res.json(responseJson(200, "no hubo cambios"))
+   res.status(200).json(responseJson(200, "no hubo cambios"))
 }
 
 
