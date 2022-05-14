@@ -1,5 +1,7 @@
 const {Router} =require('express');
 const { obtenerCategorias, obtenerCategoriaId, crearCategoria, actualizarCategoria, borrarCategoria } = require('../../controllers/categoriaController');
+const { validationInsert, validationUpdate } = require('../../controllers/validator/categoriaValidator');
+
 
 const router = Router();
 
@@ -7,9 +9,9 @@ const router = Router();
 
  router.get('/:id', obtenerCategoriaId);
 
- router.post('/', crearCategoria);
+ router.post('/', validationInsert, crearCategoria);
 
- router.put('/', actualizarCategoria);
+ router.put('/', validationUpdate, actualizarCategoria);
 
  router.delete('/:id', borrarCategoria);
 

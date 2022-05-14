@@ -1,5 +1,6 @@
 const {Router} =require('express');
 const { crearReserva, obtenerReservaID, obtenerReservas, actualizarReserva, borrarReserva } = require('../../controllers/reservaController');
+const { validationInsert, validationUpdate } = require('../../controllers/validator/reservaValidator');
 
 const router = Router();
 
@@ -7,9 +8,9 @@ const router = Router();
 
  router.get('/:id', obtenerReservaID);
 
- router.post('/', crearReserva);
+ router.post('/',validationInsert, crearReserva);
 
- router.put('/', actualizarReserva);
+ router.put('/', validationUpdate, actualizarReserva);
 
  router.delete('/:id', borrarReserva);
 

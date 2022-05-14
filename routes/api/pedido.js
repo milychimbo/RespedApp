@@ -1,5 +1,7 @@
 const {Router} =require('express');
 const { obtenerPedidos, obtenerPedidoId, crearPedido, actualizarPedido, borrarPedido } = require('../../controllers/pedidoController');
+const { validationInsert, validationUpdate } = require('../../controllers/validator/reservaValidator');
+
 
 const router = Router();
 
@@ -7,9 +9,9 @@ const router = Router();
 
  router.get('/:id', obtenerPedidoId);
 
- router.post('/', crearPedido);
+ router.post('/', validationInsert, crearPedido);
 
- router.put('/', actualizarPedido);
+ router.put('/', validationUpdate, actualizarPedido);
 
  router.delete('/:id', borrarPedido);
 

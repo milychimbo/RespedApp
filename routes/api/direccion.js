@@ -1,5 +1,7 @@
 const {Router} =require('express');
 const { obtenerDirecciones, obtenerDireccionId, crearDireccion, actualizarDireccion, borrarDireccion } = require('../../controllers/direccionController');
+const { validationInsert, validationUpdate } = require('../../controllers/validator/direccionValidator');
+
 
 const router = Router();
 
@@ -7,9 +9,9 @@ const router = Router();
 
  router.get('/:id', obtenerDireccionId);
 
- router.post('/', crearDireccion);
+ router.post('/',validationInsert, crearDireccion);
 
- router.put('/', actualizarDireccion);
+ router.put('/',validationUpdate, actualizarDireccion);
 
  router.delete('/:id', borrarDireccion);
 
