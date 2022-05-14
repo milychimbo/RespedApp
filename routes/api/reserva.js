@@ -1,17 +1,18 @@
 const {Router} =require('express');
 const { crearReserva, obtenerReservaID, obtenerReservas, actualizarReserva, borrarReserva } = require('../../controllers/reservaController');
 const { validationInsert, validationUpdate } = require('../../controllers/validator/reservaValidator');
+const { validateToken } = require('../../middlewares/verifyToken');
 
 const router = Router();
 
- router.get('/', obtenerReservas);
+ router.get('/',validateToken, obtenerReservas);
 
- router.get('/:id', obtenerReservaID);
+ router.get('/:id', validateToken,obtenerReservaID);
 
- router.post('/',validationInsert, crearReserva);
+ router.post('/',validateToken,validationInsert, crearReserva);
 
- router.put('/', validationUpdate, actualizarReserva);
+ router.put('/',validateToken, validationUpdate, actualizarReserva);
 
- router.delete('/:id', borrarReserva);
+ router.delete('/:id', validateToken,borrarReserva);
 
 module.exports=router;

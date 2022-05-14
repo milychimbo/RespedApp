@@ -8,12 +8,12 @@ const router = Router();
 
  router.get('/',validateToken, obtenerUsuarios);
 
- router.get('/:id', obtenerUsuarioId);
+ router.get('/:id',validateToken, obtenerUsuarioId);
 
- router.post('/',validationInsert, crearUsuario);
+ router.post('/',validateToken, validationInsert, crearUsuario);
 
- router.put('/', validationUpdate, actualizarUsuario);
+ router.put('/',validateToken, validationUpdate, actualizarUsuario);
 
- router.delete('/:id', borrarUsuario);
+ router.delete('/:id',validateToken, borrarUsuario);
 
 module.exports=router;

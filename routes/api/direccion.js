@@ -1,18 +1,18 @@
 const {Router} =require('express');
 const { obtenerDirecciones, obtenerDireccionId, crearDireccion, actualizarDireccion, borrarDireccion } = require('../../controllers/direccionController');
 const { validationInsert, validationUpdate } = require('../../controllers/validator/direccionValidator');
-
+const { validateToken } = require('../../middlewares/verifyToken');
 
 const router = Router();
 
- router.get('/', obtenerDirecciones);
+ router.get('/',validateToken, obtenerDirecciones);
 
- router.get('/:id', obtenerDireccionId);
+ router.get('/:id', validateToken,obtenerDireccionId);
 
- router.post('/',validationInsert, crearDireccion);
+ router.post('/',validateToken,validationInsert, crearDireccion);
 
- router.put('/',validationUpdate, actualizarDireccion);
+ router.put('/',validateToken,validationUpdate, actualizarDireccion);
 
- router.delete('/:id', borrarDireccion);
+ router.delete('/:id', validateToken,borrarDireccion);
 
 module.exports=router;

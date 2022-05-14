@@ -1,18 +1,18 @@
 const {Router} =require('express');
 const { obtenerPedidos, obtenerPedidoId, crearPedido, actualizarPedido, borrarPedido } = require('../../controllers/pedidoController');
 const { validationInsert, validationUpdate } = require('../../controllers/validator/reservaValidator');
-
+const { validateToken } = require('../../middlewares/verifyToken');
 
 const router = Router();
 
- router.get('/', obtenerPedidos);
+ router.get('/', validateToken,obtenerPedidos);
 
- router.get('/:id', obtenerPedidoId);
+ router.get('/:id',validateToken, obtenerPedidoId);
 
- router.post('/', validationInsert, crearPedido);
+ router.post('/', validateToken,validationInsert, crearPedido);
 
- router.put('/', validationUpdate, actualizarPedido);
+ router.put('/',validateToken, validationUpdate, actualizarPedido);
 
- router.delete('/:id', borrarPedido);
+ router.delete('/:id', validateToken,borrarPedido);
 
 module.exports=router;

@@ -1,18 +1,18 @@
 const {Router} =require('express');
 const { obtenerCategorias, obtenerCategoriaId, crearCategoria, actualizarCategoria, borrarCategoria } = require('../../controllers/categoriaController');
 const { validationInsert, validationUpdate } = require('../../controllers/validator/categoriaValidator');
-
+const { validateToken } = require('../../middlewares/verifyToken');
 
 const router = Router();
 
- router.get('/', obtenerCategorias);
+ router.get('/', validateToken,obtenerCategorias);
 
- router.get('/:id', obtenerCategoriaId);
+ router.get('/:id',validateToken, obtenerCategoriaId);
 
- router.post('/', validationInsert, crearCategoria);
+ router.post('/',validateToken, validationInsert, crearCategoria);
 
- router.put('/', validationUpdate, actualizarCategoria);
+ router.put('/',validateToken, validationUpdate, actualizarCategoria);
 
- router.delete('/:id', borrarCategoria);
+ router.delete('/:id',validateToken, borrarCategoria);
 
 module.exports=router;
