@@ -5,6 +5,6 @@ const { validateToken } = require('../../middlewares/verifyToken');
 
 const router = Router();
 
- router.get('/:id',validateToken, obtenerMenuID);
+ router.get('/:id', obtenerMenuID);
 
 module.exports=router;
