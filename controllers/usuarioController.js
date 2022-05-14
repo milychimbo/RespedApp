@@ -1,7 +1,7 @@
 const {request,response} = require('express');
 const {getAllUsers, getOneUser, updateUser, createUser, deleteUser} = require('../models/user');
 const { responseJson } = require('../helpers/handleGenericFunction');
-const { encrypt } = require('../helpers/handleBCrypt');
+//const { encrypt } = require('../helpers/handleBCrypt');
 
 
 
