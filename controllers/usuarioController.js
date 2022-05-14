@@ -2,6 +2,7 @@ const {request,response} = require('express');
 const {getAllUsers, getOneUser, updateUser, createUser, deleteUser} = require('../models/user');
 const { responseJson } = require('../helpers/handleGenericFunction');
 const { encrypt } = require('../helpers/handleBCrypt');
+const { body } = require('express-validator');
 
 
 
@@ -31,7 +32,9 @@ async function crearUsuario(req = request,res = response){
 }
 
 async function actualizarUsuario(req = request,res = response){
-    req.body.password = await encrypt(req.body.password);
+    if(req.params.password){
+        req.body.password = await encrypt(req.body.password);
+    }
     const user = await updateUser(req.body);
     if(user==1)
     res.json(responseJson(201, "success"))
