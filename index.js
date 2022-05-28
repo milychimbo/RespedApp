@@ -33,6 +33,8 @@ app.use('/api/usuario', require('./routes/api/usuario'));
 app.use('/api/auth', require('./routes/api/auth'));
 app.use('/api/categoria', require('./routes/api/categoria'));
 app.use('/api/direccion', require('./routes/api/direccion'));
+app.use('/api/pedido', require('./routes/api/pedido'));
+app.use('/api/producto', require('./routes/api/producto'));
 /*
 app.use('/api/reserva', require('./routes/api/reserva'));
 app.use('/api/categoria', require('./routes/api/categoria'));

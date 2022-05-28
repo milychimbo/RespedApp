@@ -45,9 +45,13 @@ const Pedido = connection.define('pedido', {
     NOTE: {
         type: DataTypes.STRING
     },
-    STATE: {
+    IDSTATE: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        references: {
+            model: 'state',
+            key: 'IDSTATE'
+        }
     }
 }, {
     tableName: 'pedido',
@@ -82,7 +86,7 @@ async function createPedido(pedido) {
             IDUSUARIO: pedido.IDUSUARIO,
             TOTALPRICE: pedido.TOTALPRICE,
             NOTE: pedido.NOTE,
-            STATE: pedido.STATE
+            IDSTATE: pedido.IDSTATE
         });
     }  catch(err){
         return err;
@@ -97,7 +101,7 @@ async function updatePedido(pedido) {
             IDUSUARIO: pedido.IDUSUARIO,
             TOTALPRICE: pedido.TOTALPRICE,
             NOTE: pedido.NOTE,
-            STATE: pedido.STATE
+            IDSTATE: pedido.IDSTATE
         }, {
             where: {
                 IDPEDIDO: pedido.IDPEDIDO

@@ -54,7 +54,7 @@ async function obtenerProductoId(req = request, res = response) {
 }
 
 async function crearProducto(req = request, res = response) {
-    const producto = await crearProducto(req.body);
+    const producto = await createProducto(req.body);
     if (Object.keys(producto)[0]=="dataValues"){
         res.status(200).json(responseJson(200, "success"))}
         else
