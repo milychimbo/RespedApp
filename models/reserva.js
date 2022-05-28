@@ -8,30 +8,42 @@ const { path } = require('./connection');
 const connection = new Sequelize(path);
 
 const Reserva = connection.define('reserva', {
-    idReserva: {
+    IDRESERVA: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,
         autoIncrement: true
     },
-    reservationDate: {
-        type: DataTypes.DATE,
-        allowNull: false
+    IDUSUARIO: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'usuario',
+            key: 'IDUSUARIO'
+        }
     },
-    reservationTime: {
-        type: DataTypes.STRING,
-        allowNull: false
+    IDPEDIDO: {
+        type: DataTypes.INTEGER,
+        references: {
+            model: 'pedido',
+            key: 'IDPEDIDO'
+        }
     },
-    people: {
+    PEOPLE: {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    idPedido: {
-        type: DataTypes.INTEGER
-    },
-    note: {
+    NOTE: {
         type: DataTypes.STRING
-    }
+    },
+    RESERVATIONDATE: {
+        type: DataTypes.DATE,
+        allowNull: false
+    },
+    RESERVATIONTIME: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
 }, {
     tableName: 'reserva',
     timestamps: false
@@ -49,9 +61,9 @@ async function getAllReservas() {
     }
 }
 
-async function getOneReserva(idReserva) {
+async function getOneReserva(IDRESERVA) {
     try {
-        return await Reserva.findByPk(idReserva)
+        return await Reserva.findByPk(IDRESERVA)
     } catch(err){
         return err;}
 }
@@ -59,11 +71,12 @@ async function getOneReserva(idReserva) {
 async function createReserva(reserva) {
     try {
         return await Reserva.create({
-            reservationDate: reserva.reservationDate,
-            reservationTime: reserva.reservationTime,
-            people: reserva.people,
-            idPedido: reserva.idPedido,
-            note: reserva.note
+            IDUSUARIO: reserva.IDUSUARIO,
+            IDPEDIDO: reserva.IDPEDIDO,
+            PEOPLE: reserva.PEOPLE,
+            NOTE: reserva.NOTE,
+            RESERVATIONDATE: reserva.RESERVATIONDATE,
+            RESERVATIONTIME: reserva.RESERVATIONTIME
         });
     } catch(err){
         return err;}
@@ -72,14 +85,15 @@ async function createReserva(reserva) {
 async function updateReserva(reserva) {
     try {
         return await Reserva.update({
-            reservationDate: reserva.reservationDate,
-            reservationTime: reserva.reservationTime,
-            people: reserva.people,
-            idPedido: reserva.idPedido,
-            note: reserva.note
+            IDUSUARIO: reserva.IDUSUARIO,
+            IDPEDIDO: reserva.IDPEDIDO,
+            PEOPLE: reserva.PEOPLE,
+            NOTE: reserva.NOTE,
+            RESERVATIONDATE: reserva.RESERVATIONDATE,
+            RESERVATIONTIME: reserva.RESERVATIONTIME
         }, {
             where: {
-                idReserva: reserva.idReserva
+                IDRESERVA: reserva.IDRESERVA
             }
         })
     } catch(err){
@@ -104,48 +118,3 @@ module.exports = {
     updateReserva,
     deleteReserva
 }
-
-/*
-const {getAllReservas, getOneReserva, createReserva, updateReserva,deleteReserva} = require('./models/reserva');
-
-getAllReservas().then(reserva => {
-    console.log(reserva[0].toJSON())
-  })
-  .catch(err => {
-    console.log(err)
-  })
-
-
-getOneReserva(1).then(reserva => {
-    console.log(reserva.toJSON())
-  })
-  .catch(err => {
-    console.log(err)
-  })
-
-var reserva = {
-    reservationDate: "2022/03/05", //aaaa-mm-dd o aaaa/mm/dd
-    reservationTime: "10:30",
-    people: 2,
-    idPedido: null,
-    note: null
-}
-createReserva(reserva)
-  .catch(err => {
-    console.log(err)
-  })
-
-var reserva = {
-    idReserva: 2,
-    reservationDate: "2022/03/05", //aaaa-mm-dd o aaaa/mm/dd
-    reservationTime: "10:30",
-    people: 2,
-    idPedido: null,
-    note: null
-}
-
-updateReserva(reserva)
-
-deleteReserva(2)
-
-*/

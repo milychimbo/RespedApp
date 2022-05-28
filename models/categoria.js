@@ -8,13 +8,13 @@ const { path } = require('./connection');
 const connection = new Sequelize(path);
 
 const Categoria = connection.define('categoria', {
-    idCategoria: {
+    IDCATEGORIA: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,
         autoIncrement: true
     },
-    name: {
+    NAME: {
         type: DataTypes.STRING,
         allowNull: false
     }
@@ -35,9 +35,9 @@ async function getAllCategorias() {
       }
 }
 
-async function getOneCategoria(idCategoria) {
+async function getOneCategoria(IDCATEGORIA) {
     try {
-        return await Categoria.findByPk(idCategoria)
+        return await Categoria.findByPk(IDCATEGORIA)
     } catch(err){
         return err;
       }
@@ -46,7 +46,7 @@ async function getOneCategoria(idCategoria) {
 async function createCategoria(categoria) {
     try {
         return await Categoria.create({
-            name: categoria.name
+            NAME: categoria.NAME
         });
     } catch(err){
         return err;
@@ -56,10 +56,10 @@ async function createCategoria(categoria) {
 async function updateCategoria(categoria) {
     try {
         return await Categoria.update({
-            name: categoria.name
+            NAME: categoria.NAME
         }, {
             where: {
-                idCategoria: categoria.idCategoria
+                IDCATEGORIA: categoria.IDCATEGORIA
             }
         })
     } catch(err){
@@ -67,11 +67,11 @@ async function updateCategoria(categoria) {
       }
 }
 
-async function deleteCategoria(idCategoria) {
+async function deleteCategoria(IDCATEGORIA) {
     try {
         return await Categoria.destroy({
             where: {
-                idCategoria: idCategoria
+                IDCATEGORIA: IDCATEGORIA
             }
         })
     } catch(err){
@@ -86,40 +86,3 @@ module.exports = {
     updateCategoria,
     deleteCategoria
 }
-
-/*
-const {getAllCategorias, getOneCategoria, createCategoria, updateCategoria,deleteCategoria} = require('./models/categoria');
-
-getAllCategorias().then(categoria => {
-    console.log(categoria[0].toJSON())
-  })
-  .catch(err => {
-    console.log(err)
-  })
-
-
-getOneCategoria(1).then(categoria => {
-    console.log(categoria.toJSON())
-  })
-  .catch(err => {
-    console.log(err)
-  })
-
-var categoria = {
-    name: "Refrescos"
-}
-createReserva(categoria)
-  .catch(err => {
-    console.log(err)
-  })
-
-var categoria = {
-    idCategoria: 2,
-    name: "Refrescos"
-}
-
-updateCategoria(categoria)
-
-deleteCategoria(2)
-
-*/

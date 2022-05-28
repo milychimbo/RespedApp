@@ -8,34 +8,44 @@ const { path } = require('./connection');
 const connection = new Sequelize(path);
 
 const Pedido = connection.define('pedido', {
-    idPedido: {
+    IDPEDIDO: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,
         autoIncrement: true
     },
-    products: {
-        type: DataTypes.JSON,
-        allowNull: false
+    IDTIPOPEDIDO: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'tipopedido',
+            key: 'IDTIPOPEDIDO'
+        }
     },
-    totalPrice: {
+    IDDIRECCION: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'direccion',
+            key: 'IDDIRECCION'
+        }
+    },
+    IDUSUARIO: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'usuario',
+            key: 'IDUSUARIO'
+        }
+    },
+    TOTALPRICE: {
         type: DataTypes.DOUBLE,
         allowNull: false
     },
-    type: {
-        type: DataTypes.TINYINT,
-        allowNull: false
-    },
-    idAddress: {
-        type: DataTypes.INTEGER
-    },
-    note: {
+    NOTE: {
         type: DataTypes.STRING
     },
-    state: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },idUsuario: {
+    STATE: {
         type: DataTypes.INTEGER,
         allowNull: false
     }
@@ -56,9 +66,9 @@ async function getAllPedidos() {
     }
 }
 
-async function getOnePedido(idPedido) {
+async function getOnePedido(IDPEDIDO) {
     try {
-        return await Pedido.findByPk(idPedido)
+        return await Pedido.findByPk(IDPEDIDO)
     }  catch(err){
         return err;
     }
@@ -67,13 +77,12 @@ async function getOnePedido(idPedido) {
 async function createPedido(pedido) {
     try {
         return await Pedido.create({
-            products: pedido.products,
-            totalPrice: pedido.totalPrice,
-            type: pedido.type,
-            idAddress: pedido.idAddress,
-            note: pedido.note,
-            state: pedido.state,
-            idUsuario: pedido.idUsuario
+            IDTIPOPEDIDO: pedido.IDTIPOPEDIDO,
+            IDDIRECCION: pedido.IDDIRECCION,
+            IDUSUARIO: pedido.IDUSUARIO,
+            TOTALPRICE: pedido.TOTALPRICE,
+            NOTE: pedido.NOTE,
+            STATE: pedido.STATE
         });
     }  catch(err){
         return err;
@@ -83,16 +92,15 @@ async function createPedido(pedido) {
 async function updatePedido(pedido) {
     try {
         return await Pedido.update({
-            products: pedido.products,
-            totalPrice: pedido.totalPrice,
-            type: pedido.type,
-            idAddress: pedido.idAddress,
-            note: pedido.note,
-            state: pedido.state,
-            idUsuario: pedido.idUsuario
+            IDTIPOPEDIDO: pedido.IDTIPOPEDIDO,
+            IDDIRECCION: pedido.IDDIRECCION,
+            IDUSUARIO: pedido.IDUSUARIO,
+            TOTALPRICE: pedido.TOTALPRICE,
+            NOTE: pedido.NOTE,
+            STATE: pedido.STATE
         }, {
             where: {
-                idPedido: pedido.idPedido,
+                IDPEDIDO: pedido.IDPEDIDO
             }
         })
     }  catch(err){
@@ -100,11 +108,11 @@ async function updatePedido(pedido) {
     }
 }
 
-async function deletePedido(idPedido) {
+async function deletePedido(IDPEDIDO) {
     try {
         return await Pedido.destroy({
             where: {
-                idPedido: idPedido
+                IDPEDIDO: IDPEDIDO
             }
         })
     }  catch(err){
@@ -119,51 +127,3 @@ module.exports = {
     updatePedido,
     deletePedido
 }
-
-/*
-const {getAllPedidos, getOnePedido, createPedido, updatePedido,deletePedido} = require('./models/pedido');
-
-getAllPedidos().then(pedido => {
-    console.log(pedido[0].toJSON())
-  })
-  .catch(err => {
-    console.log(err)
-  })
-
-
-getOnePedido(1).then(pedido => {
-    console.log(pedido.toJSON())
-  })
-  .catch(err => {
-    console.log(err)
-  })
-
-var pedido = {
-    products: [{}],
-    totalPrice: 31.50,
-    type: 1,
-    idAddress: null,
-    note: null,
-    state: 1
-
-}
-createPedido(pedido)
-  .catch(err => {
-    console.log(err)
-  })
-
-var pedido = {
-    idPedido: 2,
-    products: [{}],
-    totalPrice: 31.50,
-    type: 1,
-    idAddress: null,
-    note: null,
-    state: 1
-}
-
-updatePedido(pedido)
-
-deletePedido(2)
-
-*/

@@ -8,33 +8,41 @@ const { path } = require('./connection');
 const connection = new Sequelize(path);
 
 const User = connection.define('usuario', {
-  idUsuario: {
+  IDUSUARIO: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     allowNull: false,
     autoIncrement: true
   },
-  userName: {
+  IDTIPOUSUARIO: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+        references: {
+            model: 'tipousuario',
+            key: 'IDTIPOUSUARIO'
+        }
+},
+  USERNAME: {
     type: DataTypes.STRING,
     allowNull: false,
     unique: true
   },
-  email: {
+  EMAIL: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  name: {
+  NAME: {
     type: DataTypes.STRING
   },
-  lastName: {
+  LASTNAME: {
     type: DataTypes.STRING
   },
-  password: {
+  PASSWORD: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  tipoUsuario: {
-    type: DataTypes.TINYINT,
+  PHONE: {
+    type: DataTypes.STRING,
     allowNull: false
   },
 }, {
@@ -54,9 +62,9 @@ async function getAllUsers() {
   }
 }
 
-async function getOneUser(idUsuario) {
+async function getOneUser(IDUSUARIO) {
   try {
-    return await User.findByPk(idUsuario)
+    return await User.findByPk(IDUSUARIO)
   } catch(err){
     return err;
   }
@@ -65,12 +73,13 @@ async function getOneUser(idUsuario) {
 async function createUser(user) {
   try {
     return await User.create({
-      userName: user.userName,
-      email: user.email,
-      name: user.name,
-      lastName: user.lastName,
-      password: user.password,
-      tipoUsuario: user.tipoUsuario
+      IDTIPOUSUARIO: user.IDTIPOUSUARIO,
+      USERNAME: user.USERNAME,
+      EMAIL: user.EMAIL,
+      NAME: user.NAME,
+      LASTNAME: user.LASTNAME,
+      PASSWORD: user.PASSWORD,
+      PHONE: user.PHONE
     });
   } catch(err){
     return err;
@@ -80,15 +89,16 @@ async function createUser(user) {
 async function updateUser(user) {
   try {
     return await User.update({
-      userName: user.userName,
-      email: user.email,
-      name: user.name,
-      lastName: user.lastName,
-      password: user.password,
-      tipoUsuario: user.tipoUsuario
+      IDTIPOUSUARIO: user.IDTIPOUSUARIO,
+      USERNAME: user.USERNAME,
+      EMAIL: user.EMAIL,
+      NAME: user.NAME,
+      LASTNAME: user.LASTNAME,
+      PASSWORD: user.PASSWORD,
+      PHONE: user.PHONE
     }, {
       where: {
-        idUsuario: user.idUsuario
+        IDUSUARIO: user.IDUSUARIO
       }
     })
   } catch(err){
@@ -96,11 +106,11 @@ async function updateUser(user) {
   }
 }
 
-async function deleteUser(idUsuario) {
+async function deleteUser(IDUSUARIO) {
   try {
     return await User.destroy({
       where: {
-        idUsuario: idUsuario
+        IDUSUARIO: IDUSUARIO
       }
     })
   } catch(err){

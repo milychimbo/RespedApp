@@ -8,32 +8,36 @@ const { path } = require('./connection');
 const connection = new Sequelize(path);
 
 const Producto = connection.define('producto', {
-    idProducto: {
+    IDPRODUCTO: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,
         autoIncrement: true
     },
-    name: {
+    IDCATEGORIA: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'categoria',
+            key: 'IDCATEGORIA'
+        }
+    },
+    NAME: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    detail: {
+    DETAIL: {
         type: DataTypes.STRING
     },
-    price: {
+    PRICE: {
         type: DataTypes.DOUBLE,
         allowNull: false
     },
-    availability: {
-        type: DataTypes.TINYINT,
-        allowNull: false
-    },
-    image: {
+    IMAGE: {
         type: DataTypes.TEXT
     },
-    idCategoria: {
-        type: DataTypes.INTEGER,
+    AVAILABILITY: {
+        type: DataTypes.TINYINT,
         allowNull: false
     }
 }, {
@@ -53,36 +57,24 @@ async function getAllProductos() {
     }
 }
 
-async function getOneProducto(idProducto) {
+async function getOneProducto(IDPRODUCTO) {
     try {
-        return await Producto.findByPk(idProducto)
+        return await Producto.findByPk(IDPRODUCTO)
     }  catch(err){
         return err;
     }
 }
 
-async function getCategoriaProductos(idCategoria) {
-    try {
-        return await Producto.findAll({
-            where:{
-                idCategoria: idCategoria
-            },
-            raw: true
-        })
-    }  catch(err){
-        return err;
-    }
-}
 
 async function createProducto(producto) {
     try {
         return await Producto.create({
-            name: producto.name,
-            detail: producto.detail,
-            price: producto.price,
-            availability: producto.availability,
-            image: producto.image,
-            idCategoria: producto.idCategoria
+            IDCATEGORIA: producto.IDCATEGORIA,
+            NAME: producto.NAME,
+            DETAIL: producto.DETAIL,
+            PRICE: producto.PRICE,
+            IMAGE: producto.IMAGE,
+            AVAILABILITY: producto.AVAILABILITY
         });
     }  catch(err){
         return err;
@@ -92,15 +84,15 @@ async function createProducto(producto) {
 async function updateProducto(producto) {
     try {
         return await Reserva.update({
-            name: producto.name,
-            detail: producto.detail,
-            price: producto.price,
-            availability: producto.availability,
-            image: producto.image,
-            idCategoria: producto.idCategoria
+            IDCATEGORIA: producto.IDCATEGORIA,
+            NAME: producto.NAME,
+            DETAIL: producto.DETAIL,
+            PRICE: producto.PRICE,
+            IMAGE: producto.IMAGE,
+            AVAILABILITY: producto.AVAILABILITY
         }, {
             where: {
-                idProducto: producto.idProducto,
+                IDPRODUCTO: producto.IDPRODUCTO
             }
         })
     }  catch(err){
@@ -108,11 +100,11 @@ async function updateProducto(producto) {
     }
 }
 
-async function deleteProducto(idProducto) {
+async function deleteProducto(IDPRODUCTO) {
     try {
         return await Producto.destroy({
             where: {
-                idProducto: idProducto
+                IDPRODUCTO: IDPRODUCTO
             }
         })
     }  catch(err){
@@ -128,51 +120,3 @@ module.exports = {
     updateProducto,
     deleteProducto
 }
-
-/*
-const {getAllProductos, getOneProducto, createProducto, updateProducto,deleteProducto} = require('./models/producto');
-
-getAllProductos().then(producto => {
-    console.log(producto[0].toJSON())
-  })
-  .catch(err => {
-    console.log(err)
-  })
-
-
-getOneProducto(1).then(producto => {
-    console.log(producto.toJSON())
-  })
-  .catch(err => {
-    console.log(err)
-  })
-
-var producto = {
-    name: "Pepsi"
-    detail: null,
-    price: 2.50,
-    availability: 1,
-    image: null,
-    idCategoria: 1
-
-}
-createProducto(reserva)
-  .catch(err => {
-    console.log(err)
-  })
-
-var producto = {
-    idProducto: 2,
-    name: "Pepsi"
-    detail: null,
-    price: 2.50,
-    availability: 1,
-    image: null,
-    idCategoria: 1
-}
-
-updateProducto(producto)
-
-deleteProducto(2)
-
-*/

@@ -9,24 +9,30 @@ const { path } = require('./connection');
 const connection = new Sequelize(path);
 
 const Direccion = connection.define('direccion', {
-    idDireccion: {
+    IDDIRECCION: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,
         autoIncrement: true
     },
-    street1: {
-        type: DataTypes.STRING
-    },
-    street2: {
-        type: DataTypes.STRING
-    },
-    reference: {
-        type: DataTypes.STRING
-    },
-    idUsuario: {
-        type: DataTypes.INTEGER,
+    STREET1: {
+        type: DataTypes.STRING,
         allowNull: false
+    },
+    STREET2: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    REFERENCE: {
+        type: DataTypes.STRING
+    },
+    IDUSUARIO: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'usuario',
+            key: 'IDUSUARIO'
+        }
     }
 }, {
     tableName: 'direccion',
@@ -45,9 +51,9 @@ async function getAllDirecciones() {
     }
 }
 
-async function getOneDireccion(idDireccion) {
+async function getOneDireccion(IDDIRECCION) {
     try {
-        return await Direccion.findByPk(idDireccion)
+        return await Direccion.findByPk(IDDIRECCION)
     }  catch(err){
         return err;
     }
@@ -56,10 +62,10 @@ async function getOneDireccion(idDireccion) {
 async function createDireccion(direccion) {
     try {
         return await Direccion.create({
-            street1: direccion.street1,
-            street2: direccion.street2,
-            reference: direccion.reference,
-            idUsuario: direccion.idUsuario
+            STREET1: direccion.STREET1,
+            STREET2: direccion.STREET2,
+            REFERENCE: direccion.REFERENCE,
+            IDUSUARIO: direccion.IDUSUARIO
         });
     }  catch(err){
         return err;
@@ -69,13 +75,13 @@ async function createDireccion(direccion) {
 async function updateDireccion(direccion) {
     try {
         return await Direccion.update({
-            street1: direccion.street1,
-            street2: direccion.street2,
-            reference: direccion.reference,
-            idUsuario: direccion.idUsuario
+            STREET1: direccion.STREET1,
+            STREET2: direccion.STREET2,
+            REFERENCE: direccion.REFERENCE,
+            IDUSUARIO: direccion.IDUSUARIO
         }, {
             where: {
-                idDireccion: direccion.idDireccion
+                IDDIRECCION: direccion.IDDIRECCION
             }
         })
     }  catch(err){
@@ -83,11 +89,11 @@ async function updateDireccion(direccion) {
     }
 }
 
-async function deleteDireccion(idDireccion) {
+async function deleteDireccion(IDDIRECCION) {
     try {
         return await Direccion.destroy({
             where: {
-                idDireccion: idDireccion
+                IDDIRECCION: IDDIRECCION
             }
         })
     }  catch(err){
@@ -102,44 +108,3 @@ module.exports = {
     updateDireccion,
     deleteDireccion
 }
-
-/*
-const {getAllDirecciones, getOneDireccion, createDireccion, updateDireccion,deleteDireccion} = require('./models/direccion');
-
-getAllDirecciones().then(direccion => {
-    console.log(direccion[0].toJSON())
-  })
-  .catch(err => {
-    console.log(err)
-  })
-
-
-getOneDireccion(1).then(direccion => {
-    console.log(direccion.toJSON())
-  })
-  .catch(err => {
-    console.log(err)
-  })
-
-var direccion = {
-    street1: "Calle 1",
-    street2: "Calle 2",
-    reference: null
-}
-createDireccion(direccion)
-  .catch(err => {
-    console.log(err)
-  })
-
-var direccion = {
-    idReserva: 2,
-    street1: "Calle 1",
-    street2: "Calle 2",
-    reference: null
-}
-
-updateDireccion(direccion)
-
-deleteDireccion(2)
-
-*/
