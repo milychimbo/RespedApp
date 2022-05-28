@@ -83,7 +83,7 @@ async function createProducto(producto) {
 
 async function updateProducto(producto) {
     try {
-        return await Reserva.update({
+        return await Producto.update({
             IDCATEGORIA: producto.IDCATEGORIA,
             NAME: producto.NAME,
             DETAIL: producto.DETAIL,

@@ -63,6 +63,7 @@ async function crearProducto(req = request, res = response) {
 
 async function actualizarProducto(req = request, res = response) {
     const producto = await updateProducto(req.body);
+    console.log(producto)
     if (producto == 1)
         res.status(201).json(responseJson(201, "success"))
     else
