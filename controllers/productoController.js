@@ -28,24 +28,21 @@ async function obtenerProductos(req = request, res = response) {
 async function obtenerMenu(req = request, res = response) {
     const categorias = await getAllCategorias();
     const productos = await getAllProductos();
-    var aux2 = '{"CATEGORIAS":[]}';
-    var obj2 = JSON.parse(aux2);
+    var aux = '{"CATEGORIAS":[]}';
+    var obj = JSON.parse(aux);
     categorias.forEach(categoria => {
         
-        var obj = new Array;
+        var obj1 = new Array;
         productos.forEach(producto => {
             if(producto.IDCATEGORIA == categoria.IDCATEGORIA){
                 
-                obj.push(producto);
+                obj1.push(producto);
             }
         });
-        categoria.PRODUCTOS = obj;
-        var p = JSON.stringify(categoria)
-        obj2['CATEGORIAS'].push(categoria);
+        categoria.PRODUCTOS = obj1;
+        obj['CATEGORIAS'].push(categoria);
     });
-   var obj1 = new Object();
-   obj1.MENU=obj2;
-   res.status(200).json(responseJson(200, "success",obj1))
+   res.status(200).json(responseJson(200, "success",obj))
 }
 
 async function obtenerProductoId(req = request, res = response) {

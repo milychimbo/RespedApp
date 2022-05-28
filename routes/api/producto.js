@@ -5,7 +5,7 @@ const { validateToken } = require('../../middlewares/verifyToken');
 
 const router = Router();
 
- router.get('/', obtenerProductos);
+ router.get('/',validateToken, obtenerProductos);
 
  router.get('/menu/', obtenerMenu);
 

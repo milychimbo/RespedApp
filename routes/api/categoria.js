@@ -5,9 +5,9 @@ const { validateToken } = require('../../middlewares/verifyToken');
 
 const router = Router();
 
- router.get('/',obtenerCategorias);
+ router.get('/',validateToken,obtenerCategorias);
 
- router.get('/:id', obtenerCategoriaId);
+ router.get('/:id', validateToken,obtenerCategoriaId);
 
  router.post('/',validateToken, validationInsert, crearCategoria);
 
