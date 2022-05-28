@@ -1,5 +1,5 @@
 const {Router} =require('express');
-const { obtenerProductosCategoria, obtenerProductos, obtenerProductoId, crearProducto, actualizarProducto, borrarProducto } = require('../../controllers/productoController');
+const { obtenerMenu, obtenerProductos, obtenerProductoId, crearProducto, actualizarProducto, borrarProducto } = require('../../controllers/productoController');
 const { validationInsert, validationUpdate } = require('../../controllers/validator/productoValidator');
 const { validateToken } = require('../../middlewares/verifyToken');
 
@@ -7,7 +7,7 @@ const router = Router();
 
  router.get('/', obtenerProductos);
 
- router.get('/categoria/:id', obtenerProductosCategoria);
+ router.get('/menu/', obtenerMenu);
 
  router.get('/:id',validateToken, obtenerProductoId);
 

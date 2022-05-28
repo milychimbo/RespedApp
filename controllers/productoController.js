@@ -8,14 +8,10 @@ const {
     createProducto,
     updateProducto,
     deleteProducto,
-    getCategoriaProductos
 } = require('../models/producto');
 const {
     getAllCategorias
 } = require('../models/categoria');
-const {
-    updateMenu
-} = require('../models/menu');
 const {
     responseJson
 } = require('../helpers/handleGenericFunction');
@@ -29,10 +25,45 @@ async function obtenerProductos(req = request, res = response) {
         res.status(404).json(responseJson(404, "no existe"))
 }
 
-async function obtenerProductosCategoria(req = request, res = response) {
-    const productos = await getCategoriaProductos(req.params.id);
-    if (productos.length > 0)
-        res.status(200).json(responseJson(200, "success", productos))
+async function obtenerMenu(req = request, res = response) {
+    const categorias = await getAllCategorias();
+    const productos = await getAllProductos();
+    var menu = '{"menu":[]}';
+    //var obj = JSON.parse(menu);
+    
+
+
+    /*var jsonStr = '{"theTeam":[{"teamId":"1","status":"pending"},{"teamId":"2","status":"member"},{"teamId":"3","status":"member"}]}';
+
+    var obj = JSON.parse(jsonStr);
+    obj['theTeam'].push({"teamId":"4","status":"pending"});
+    jsonStr = JSON.stringify(obj);*/
+    
+    var aux2 = '{"categorias":[]}';
+    var obj2 = JSON.parse(aux2);
+    
+    categorias.forEach(categoria => {
+        
+       /* var aux = '{"'+categoria.NAME+'":[]}';
+        var auxi = "'"+categoria.NAME+"'";
+        var obj = JSON.stringify(aux);*/
+        
+        var obj = new Array;
+        productos.forEach(producto => {
+            if(producto.IDCATEGORIA == categoria.IDCATEGORIA){
+                
+                obj.push(producto);
+            }
+        });
+        categoria.productos = obj;
+        var p = JSON.stringify(categoria)
+        console.log(p)
+        obj2['categorias'].push(categoria);
+    });
+   var obj1 = new Object();
+   obj1.menu=obj2;
+    if (menu.length > 0)
+        res.status(200).json(responseJson(200, "success",obj1))
     else
         res.status(404).json(responseJson(404, "no existe"))
 }
@@ -73,7 +104,7 @@ async function borrarProducto(req = request, res = response) {
 module.exports = {
     obtenerProductos,
     obtenerProductoId,
-    obtenerProductosCategoria,
+    obtenerMenu,
     crearProducto,
     actualizarProducto,
     borrarProducto

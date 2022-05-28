@@ -115,7 +115,6 @@ async function deleteProducto(IDPRODUCTO) {
 module.exports = {
     getAllProductos,
     getOneProducto,
-    getCategoriaProductos,
     createProducto,
     updateProducto,
     deleteProducto

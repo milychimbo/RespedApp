@@ -8,7 +8,7 @@ const {
     updateUser,
     createUser,
     deleteUser
-} = require('../models/user');
+} = require('../models/usuario');
 const {
     responseJson
 } = require('../helpers/handleGenericFunction');
@@ -34,7 +34,7 @@ async function obtenerUsuarioId(req = request, res = response) {
 
 
 async function crearUsuario(req = request, res = response) {
-    req.body.password = await encrypt(req.body.password);
+    req.body.PASSWORD = await encrypt(req.body.PASSWORD);
     const user = await createUser(req.body);
     if (Object.keys(user)[0] == "dataValues")
         res.status(201).json(responseJson(201, "success"))
@@ -49,8 +49,8 @@ async function crearUsuario(req = request, res = response) {
 
 
 async function actualizarUsuario(req = request, res = response) {
-    if (req.params.password) {
-        req.body.password = await encrypt(req.body.password);
+    if (req.body.PASSWORD) {
+        req.body.PASSWORD = await encrypt(req.body.PASSWORD);
     }
     const user = await updateUser(req.body);
     if (user == 1)
