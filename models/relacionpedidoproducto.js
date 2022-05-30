@@ -47,9 +47,10 @@ async function getAllRelacionPedidoProducto() {
     }
 }
 
-async function getPedidoProducto(IDPEDIDO) {
+async function getPedidoProducto(IDPEDIDOX) {
     try {
-        return await RelacionPedidoProducto.findByPk(1,4)
+        return await RelacionPedidoProducto.findAll({
+            where: { IDPEDIDO: IDPEDIDOX }})
     }  catch(err){
         return err;
     }
