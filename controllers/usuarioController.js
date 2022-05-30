@@ -17,6 +17,7 @@ const {
 } = require('../helpers/handleBCrypt');
 
 async function obtenerUsuarios(req = request, res = response) {
+   
     const users = await getAllUsers();
     if (users.length > 0)
         res.status(200).json(responseJson(200, "success", users))

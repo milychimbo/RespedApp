@@ -9,7 +9,7 @@ const {
 
 const connection = new Sequelize(path);
 
-const Estado = connection.define('estado', {
+const Estado = connection.define('ESTADO', {
     IDSTATE: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -21,7 +21,7 @@ const Estado = connection.define('estado', {
         allowNull: false
     }
 }, {
-    tableName: 'estado',
+    tableName: 'ESTADO',
     timestamps: false
 })
 

@@ -7,7 +7,7 @@ const { path } = require('./connection');
 
 const connection = new Sequelize(path);
 
-const TipoUsuario = connection.define('tipousuario', {
+const TipoUsuario = connection.define('TIPOUSUARIO', {
     IDTIPOUSUARIO: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -19,7 +19,7 @@ const TipoUsuario = connection.define('tipousuario', {
         allowNull: false
     }
 }, {
-    tableName: 'tipousuario',
+    tableName: 'TIPOUSUARIO',
     timestamps: false
 })
 

@@ -8,7 +8,7 @@ const { path } = require('./connection');
 //const path = 'mysql://root:root@localhost:3306/bdd_respedapp';
 const connection = new Sequelize(path);
 
-const Direccion = connection.define('direccion', {
+const Direccion = connection.define('DIRECCION', {
     IDDIRECCION: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -30,12 +30,12 @@ const Direccion = connection.define('direccion', {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: 'usuario',
+            model: 'USUARIO',
             key: 'IDUSUARIO'
         }
     }
 }, {
-    tableName: 'direccion',
+    tableName: 'DIRECCION',
     timestamps: false
 })
 
