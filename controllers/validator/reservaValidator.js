@@ -2,28 +2,30 @@ const { check } = require("express-validator");
 const { validateResult } = require('../../helpers/handleGenericFunction');
 
 const validationInsert = [
-    check('reservationDate').not().isEmpty().trim().isDate().withMessage('No puede ser vacio'),
-    check('reservationTime').not().isEmpty().withMessage('No puede ser vacio'),
-    check('reservationTime').isString().withMessage('Debe ser de tipo texto'),
-    check('reservationTime').isLength({ min: 4, max: 12 }).withMessage('Longitud de 4 a 12'),
-    check('people').not().isEmpty().isInt({ gt: 0, lt: 81 }).withMessage('Debe ser un valor del 1-3'),
-    check('idPedido').optional().isInt().trim().withMessage('No es un valor valido'),
-    check('note').optional().isString().trim().withMessage('Debe ser de tipo texto'),
-    check('note').optional().isLength({max: 150 }).withMessage('Longitud máxima de 150'),
+    check('IDUSUARIO').not().isEmpty().isInt().trim().withMessage('No es un valor valido'),
+    check('IDPEDIDO').optional().isInt().trim().withMessage('No es un valor valido'),
+    check('PEOPLE').not().isEmpty().isInt().trim().withMessage('No es un valor valido'),
+    check('NOTE').optional().isString().trim().withMessage('Debe ser de tipo texto'),
+    check('NOTE').optional().isLength({max: 150 }).withMessage('Longitud máxima de 150'),
+    check('RESERVATIONDATE').not().isEmpty().trim().isDate().withMessage('No puede ser vacio'),
+    check('RESERVATIONTIME').not().isEmpty().withMessage('No puede ser vacio'),
+    check('RESERVATIONTIME').isString().withMessage('Debe ser de tipo texto'),
+    check('RESERVATIONTIME').isLength({ min: 5, max: 5 }).withMessage('Longitud de 5'),
     (req, res, next) => {
         validateResult(req, res, next)
     }
 ];
 
 const validationUpdate = [
-    check('idReserva').not().isEmpty().isInt().withMessage('No es un valor valido'),
-    check('reservationDate').optional().isDate().withMessage('Debe de ser tipo fecha'),
-    check('reservationTime').optional().isString().withMessage('Debe ser de tipo texto'),
-    check('reservationTime').optional().isLength({ min: 4, max: 12 }).withMessage('Longitud de 4 a 12'),
-    check('people').optional().isInt({ gt: 0, lt: 81 }).withMessage('Debe ser un valor del 1-3'),
-    check('idPedido').optional().isInt().trim().withMessage('No es un valor valido'),
-    check('note').optional().isString().trim().withMessage('Debe ser de tipo texto'),
-    check('note').optional().isLength({max: 150 }).withMessage('Longitud máxima de 150'),
+    check('IDRESERVA').not().isEmpty().isInt().withMessage('No es un valor valido'),
+    check('IDUSUARIO').optional().isInt().trim().withMessage('No es un valor valido'),
+    check('IDPEDIDO').optional().isInt().trim().withMessage('No es un valor valido'),
+    check('PEOPLE').optional().isInt().trim().withMessage('No es un valor valido'),
+    check('NOTE').optional().isString().trim().withMessage('Debe ser de tipo texto'),
+    check('NOTE').optional().isLength({max: 150 }).withMessage('Longitud máxima de 150'),
+    check('RESERVATIONDATE').optional().isDate().withMessage('Debe de ser tipo fecha'),
+    check('RESERVATIONTIME').optional().isString().withMessage('Debe ser de tipo texto'),
+    check('RESERVATIONTIME').optional().isLength({ min: 5, max: 5}).withMessage('Longitud de 5'),
     (req, res, next) => {
         validateResult(req, res, next)
     }

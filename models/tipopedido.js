@@ -47,18 +47,6 @@ async function getOneTipoPedido(IDTIPOPEDIDO) {
       }
 }
 
-async function createTipoPedido(tipopedido) {
-    try {
-        return await TipoPedido.create({
-            TIPO: tipopedido.TIPO,
-            EXTRA: tipopedido.EXTRA
-
-        });
-    } catch(err){
-        return err;
-      }
-}
-
 async function updateTipoPedido(tipopedido) {
     try {
         return await TipoPedido.update({
@@ -74,22 +62,9 @@ async function updateTipoPedido(tipopedido) {
       }
 }
 
-async function deleteTipoPedido(IDTIPOPEDIDO) {
-    try {
-        return await TipoPedido.destroy({
-            where: {
-                IDTIPOPEDIDO: IDTIPOPEDIDO
-            }
-        })
-    } catch(err){
-        return err;
-      }
-}
 
 module.exports = {
     getAllTipoPedidos,
     getOneTipoPedido,
-    createTipoPedido,
-    updateTipoPedido,
-    deleteTipoPedido
+    updateTipoPedido
 }

@@ -11,6 +11,7 @@ const RelacionPedidoProducto = connection.define('relacionpedidoproducto', {
     IDPEDIDO: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        primaryKey: true,
         references: {
             model: 'pedido',
             key: 'IDPEDIDO'
@@ -19,6 +20,7 @@ const RelacionPedidoProducto = connection.define('relacionpedidoproducto', {
     IDPRODUCTO: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        primaryKey: true,
         references: {
             model: 'producto',
             key: 'IDPRODUCTO'
@@ -47,67 +49,27 @@ async function getAllRelacionPedidoProducto() {
 
 async function getPedidoProducto(IDPEDIDO) {
     try {
-        return await RelacionPedidoProducto.findByPk(IDPEDIDO)
+        return await RelacionPedidoProducto.findByPk(1,4)
     }  catch(err){
         return err;
     }
 }
 
-async function getProductoPedido(IDPRODUCTO) {
-    try {
-        return await RelacionPedidoProducto.findByPk(IDPRODUCTO)
-    }  catch(err){
-        return err;
-    }
-}
-
-async function createPedidoProducto(relacionpedidoproducto) {
+async function createPedidoProducto(relacion) {
     try {
         return await RelacionPedidoProducto.create({
-            IDPEDIDO: relacionpedidoproducto.IDPEDIDO,
-            IDPRODUCTO: relacionpedidoproducto.IDPRODUCTO,
-            PRICE: relacionpedidoproducto.PRICE
+            IDPEDIDO: relacion.IDPEDIDO,
+            IDPRODUCTO: relacion.IDPRODUCTO,
+            PRICE: relacion.PRICE
         });
     }  catch(err){
         return err;
     }
 }
 
-async function updatePedidoProducto(relacionpedidoproducto) {
-    try {
-        return await Reserva.update({
-            IDPEDIDO: relacionpedidoproducto.IDPEDIDO,
-            IDPRODUCTO: relacionpedidoproducto.IDPRODUCTO,
-            PRICE: relacionpedidoproducto.PRICE
-        }, {
-            where: {
-                IDPEDIDO: relacionpedidoproducto.IDPEDIDO,
-                IDPRODUCTO: relacionpedidoproducto.IDPRODUCTO
-            }
-        })
-    }  catch(err){
-        return err;
-    }
-}
-
-async function deletePedidoProducto(relacionpedidoproducto) {
-    try {
-        return await Producto.destroy({
-            where: {
-                IDPEDIDO: relacionpedidoproducto.IDPEDIDO,
-                IDPRODUCTO: relacionpedidoproducto.IDPRODUCTO
-            }
-        })
-    }  catch(err){
-        return err;
-    }
-}
 
 module.exports = {
     getAllRelacionPedidoProducto,
     getPedidoProducto,
-    getProductoPedido,
-    createPedidoProducto,
-    updatePedidoProducto,
-    deletePedidoProducto
+    createPedidoProducto
 }

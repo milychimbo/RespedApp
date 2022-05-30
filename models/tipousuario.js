@@ -43,15 +43,6 @@ async function getOneTipoUsuario(IDTIPOUSUARIO) {
       }
 }
 
-async function createTipoUsuario(tipousuario) {
-    try {
-        return await TipoUsuario.create({
-            TIPO: tipousuario.TIPO
-        });
-    } catch(err){
-        return err;
-      }
-}
 
 async function updateTipoUsuario(tipousuario) {
     try {
@@ -67,22 +58,9 @@ async function updateTipoUsuario(tipousuario) {
       }
 }
 
-async function deleteTipoUsuario(IDTIPOUSUARIO) {
-    try {
-        return await TipoUsuario.destroy({
-            where: {
-                idTipoUsuario: IDTIPOUSUARIO
-            }
-        })
-    } catch(err){
-        return err;
-      }
-}
 
 module.exports = {
     getAllTipoUsuarios,
     getOneTipoUsuario,
-    createTipoUsuario,
-    updateTipoUsuario,
-    deleteTipoUsuario
+    updateTipoUsuario
 }
