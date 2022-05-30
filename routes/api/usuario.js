@@ -6,13 +6,13 @@ const { validateToken } = require('../../middlewares/verifyToken');
 
 const router = Router();
 
- router.get('/',obtenerUsuarios);
+ router.get('/',validateToken, obtenerUsuarios);
 
  router.get('/:id',validateToken, obtenerUsuarioId);
 
  router.post('/',validateToken, validationInsert, crearUsuario);
 
- router.put('/',actualizarUsuario);
+ router.put('/',validateToken, validationUpdate, actualizarUsuario);
 
  router.delete('/:id',validateToken, borrarUsuario);
 
