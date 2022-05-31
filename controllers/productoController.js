@@ -10,7 +10,7 @@ const {
     deleteProducto,
 } = require('../models/producto');
 const {
-    getAllCategorias
+    getAllCategorias,getOneCategoria
 } = require('../models/categoria');
 const {
     responseJson
@@ -49,6 +49,29 @@ async function obtenerMenu(req = request, res = response) {
    res.status(200).json(responseJson(200, "success",obj))
 }
 
+async function obtenerProductoCategoria(req = request, res = response) {
+    const productos = await getAllProductos();
+    const categoria = await getOneCategoria(req.params.id);
+    if(categoria!=null ){
+        console.log(categoria.IDCATEGORIA)
+        var obj1 = new Array;
+        productos.forEach(producto => {
+        producto.PRICE= addZeroes(producto.PRICE.toString());
+        
+        if(producto.IDCATEGORIA == categoria.IDCATEGORIA){
+            obj1.push(producto);
+        }
+    });
+    categoria.PRODUCTOS = obj1;
+    res.status(200).json(responseJson(200, "success",obj1))
+    }
+    else {
+        res.status(400).json(responseJson(400, "no existe"))
+    }
+    
+}
+
+
 async function obtenerProductoId(req = request, res = response) {
     const producto = await getOneProducto(req.params.id);
     if (producto != null){
@@ -78,9 +101,9 @@ async function actualizarProducto(req = request, res = response) {
 async function borrarProducto(req = request, res = response) {
     const producto = await deleteProducto(req.params.id);
     if (producto == 1)
-        res.status(201).json(responseJson(201, "success"))
+        res.status(201).json(responseJson(201, "success",producto))
     else
-        res.status(200).json(responseJson(200, "no hubo cambios"))
+        res.status(200).json(responseJson(200, "no hubo cambios",producto))
 }
 
 function addZeroes(num) {
@@ -101,6 +124,7 @@ module.exports = {
     obtenerProductos,
     obtenerProductoId,
     obtenerMenu,
+    obtenerProductoCategoria,
     crearProducto,
     actualizarProducto,
     borrarProducto
