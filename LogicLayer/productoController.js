@@ -8,10 +8,10 @@ const {
     createProducto,
     updateProducto,
     deleteProducto,
-} = require('../models/producto');
+} = require('../DataLayer/producto');
 const {
     getAllCategorias,getOneCategoria
-} = require('../models/categoria');
+} = require('../DataLayer/categoria');
 const {
     responseJson
 } = require('../helpers/handleGenericFunction');

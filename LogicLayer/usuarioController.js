@@ -8,7 +8,7 @@ const {
     updateUser,
     createUser,
     deleteUser
-} = require('../models/usuario');
+} = require('../DataLayer/usuario');
 const {
     responseJson
 } = require('../helpers/handleGenericFunction');
