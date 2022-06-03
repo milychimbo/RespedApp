@@ -1,6 +1,6 @@
 const {Router} =require('express');
-const { crearReserva, obtenerReservaID, obtenerReservas, actualizarReserva, borrarReserva } = require('../../controllers/reservaController');
-const { validationInsert, validationUpdate } = require('../../controllers/validator/reservaValidator');
+const { crearReserva, obtenerReservaID, obtenerReservas, actualizarReserva, borrarReserva } = require('../../LogicLayer/reservaController');
+const { validationInsert, validationUpdate } = require('../../LogicLayer/validator/reservaValidator');
 const { validateToken } = require('../../middlewares/verifyToken');
 
 const router = Router();

@@ -1,5 +1,5 @@
 const {request,response} = require('express');
-const {getAllDirecciones, getOneDireccion, updateDireccion, deleteDireccion, createDireccion} = require('../models/direccion');
+const {getAllDirecciones, getOneDireccion, updateDireccion, deleteDireccion, createDireccion} = require('../DataLayer/direccion');
 const { responseJson } = require('../helpers/handleGenericFunction');
 
 async function obtenerDirecciones(req = request,res = response){

@@ -1,6 +1,6 @@
 const {Router} =require('express');
-const { obtenerDirecciones, obtenerDireccionId, crearDireccion, actualizarDireccion, borrarDireccion } = require('../../controllers/direccionController');
-const { validationInsert, validationUpdate } = require('../../controllers/validator/direccionValidator');
+const { obtenerDirecciones, obtenerDireccionId, crearDireccion, actualizarDireccion, borrarDireccion } = require('../../LogicLayer/direccionController');
+const { validationInsert, validationUpdate } = require('../../LogicLayer/validator/direccionValidator');
 const { validateToken } = require('../../middlewares/verifyToken');
 
 const router = Router();

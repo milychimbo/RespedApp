@@ -1,5 +1,5 @@
 const {request,response} = require('express');
-const {getAllTipoPedidos, getOneTipoPedido, updateTipoPedido} = require('../models/tipopedido');
+const {getAllTipoPedidos, getOneTipoPedido, updateTipoPedido} = require('../DataLayer/tipopedido');
 const { responseJson } = require('../helpers/handleGenericFunction');
 
 

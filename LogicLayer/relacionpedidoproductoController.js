@@ -1,5 +1,5 @@
 const {request,response} = require('express');
-const {getAllRelacionPedidoProducto,getPedidoProducto,createPedidoProducto } = require('../models/relacionpedidoproducto');
+const {getAllRelacionPedidoProducto,getPedidoProducto,createPedidoProducto } = require('../DataLayer/relacionpedidoproducto');
 const { responseJson } = require('../helpers/handleGenericFunction');
 
 

@@ -1,5 +1,5 @@
 const {request,response} = require('express');
-const {getAllEstados, getOneEstado, updateEstado, deleteEstado, createEstado} = require('../models/estado');
+const {getAllEstados, getOneEstado} = require('../DataLayer/estado');
 const { responseJson } = require('../helpers/handleGenericFunction');
 
 

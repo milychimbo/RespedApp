@@ -1,5 +1,5 @@
 const {Router} =require('express');
-const { obtenerTipoUsuarios, obtenerTipoUsuarioId } = require('../../controllers/tipousuarioController');
+const { obtenerTipoUsuarios, obtenerTipoUsuarioId } = require('../../LogicLayer/tipousuarioController');
 
 const { validateToken } = require('../../middlewares/verifyToken');
 

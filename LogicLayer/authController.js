@@ -1,5 +1,5 @@
 const {request,response} = require('express');
-const {getAllUsers} = require('../models/usuario');
+const {getAllUsers} = require('../DataLayer/usuario');
 const { responseJson } = require('../helpers/handleGenericFunction');
 const { verifyPassword } = require('../helpers/handleBCrypt');
 const jwt = require('jsonwebtoken')

@@ -1,5 +1,5 @@
 const {request,response} = require('express');
-const {getAllPedidos, getOnePedido, updatePedido, deletePedido, createPedido} = require('../models/pedido');
+const {getAllPedidos, getOnePedido, updatePedido, deletePedido, createPedido} = require('../DataLayer/pedido');
 const { responseJson } = require('../helpers/handleGenericFunction');
 
 

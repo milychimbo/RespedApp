@@ -1,6 +1,6 @@
 const {Router} =require('express');
-const { obtenerUsuarios, obtenerUsuarioId, actualizarUsuario, crearUsuario, borrarUsuario } = require('../../controllers/usuarioController');
-const { validationInsert, validationUpdate } = require('../../controllers/validator/usuarioValidator');
+const { obtenerUsuarios, obtenerUsuarioId, actualizarUsuario, crearUsuario, borrarUsuario } = require('../../LogicLayer/usuarioController');
+const { validationInsert, validationUpdate } = require('../../LogicLayer/validator/usuarioValidator');
 const { validateToken } = require('../../middlewares/verifyToken');
 
 

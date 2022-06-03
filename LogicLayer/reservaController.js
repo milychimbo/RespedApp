@@ -11,7 +11,7 @@ const {
     createReserva,
     updateReserva,
     deleteReserva
-} = require('../models/reserva');
+} = require('../DataLayer/reserva');
 
 
 async function obtenerReservas(req = request, res = response) {

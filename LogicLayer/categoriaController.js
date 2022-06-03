@@ -1,5 +1,5 @@
 const {request,response} = require('express');
-const {getAllCategorias, getOneCategoria, updateCategoria, deleteCategoria, createCategoria} = require('../models/categoria');
+const {getAllCategorias, getOneCategoria, updateCategoria, deleteCategoria, createCategoria} = require('../DataLayer/categoria');
 const { responseJson } = require('../helpers/handleGenericFunction');
 
 

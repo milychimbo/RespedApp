@@ -1,6 +1,6 @@
 const {Router} =require('express');
-const { obtenerTipoPedidos, obtenerTipoPedidoId, actualizarTipoPedido } = require('../../controllers/tipopedidoController');
-const {  validationUpdate } = require('../../controllers/validator/tipopedidoValidator');
+const { obtenerTipoPedidos, obtenerTipoPedidoId, actualizarTipoPedido } = require('../../LogicLayer/tipopedidoController');
+const {  validationUpdate } = require('../../LogicLayer/validator/tipopedidoValidator');
 const { validateToken } = require('../../middlewares/verifyToken');
 
 const router = Router();

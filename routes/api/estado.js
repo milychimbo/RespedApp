@@ -7,11 +7,11 @@ const {
     crearEstado,
     actualizarEstado,
     borrarEstado
-} = require('../../controllers/estadoController');
+} = require('../../LogicLayer/estadoController');
 const {
     validationInsert,
     validationUpdate
-} = require('../../controllers/validator/estadoValidator');
+} = require('../../LogicLayer/validator/estadoValidator');
 const {
     validateToken
 } = require('../../middlewares/verifyToken');

@@ -1,6 +1,6 @@
 const {Router} =require('express');
-const {login} = require('../../controllers/authController');
-const { validationSearch } = require('../../controllers/validator/authValidator');
+const {login} = require('../../LogicLayer/authController');
+const { validationSearch } = require('../../LogicLayer/validator/authValidator');
 
 const router = Router();
 
