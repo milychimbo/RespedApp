@@ -41,7 +41,7 @@ app.use('/api/auth', require('./routes/api/auth'));
 app.use('/api/reserva', require('./routes/api/reserva'));
 // app.use('/api/categoria', require('./routes/api/categoria'));
 // app.use('/api/producto', require('./routes/api/producto'));
-// app.use('/api/pedido', require('./routes/api/pedido'));
+app.use('/api/pedido', require('./routes/api/pedido'));
 
 
 

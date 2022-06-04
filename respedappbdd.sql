@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     6/3/2022 11:04:38 PM                         */
+/* Created on:     6/4/2022 9:48:49 AM                          */
 /*==============================================================*/
 
 
@@ -189,44 +189,44 @@ create table USUARIO
 );
 
 alter table PEDIDODOMICILIO add constraint FK_RELATIONSHIP_10 foreign key (IDRELACIONUD)
-      references RELACIONUSUARIODIRECCION (IDRELACIONUD) on delete cascade on update cascade;
+      references RELACIONUSUARIODIRECCION (IDRELACIONUD) on delete cascade;
 
 alter table PEDIDODOMICILIO add constraint FK_RELATIONSHIP_15 foreign key (IDPEDIDOTOTAL)
-      references PEDIDOTOTAL (IDPEDIDOTOTAL) on delete cascade on update cascade;
+      references PEDIDOTOTAL (IDPEDIDOTOTAL) on delete cascade;
 
 alter table PEDIDOLOCAL add constraint FK_RELATIONSHIP_13 foreign key (IDPEDIDOTOTAL)
-      references PEDIDOTOTAL (IDPEDIDOTOTAL) on delete cascade on update cascade;
+      references PEDIDOTOTAL (IDPEDIDOTOTAL) on delete cascade;
 
 alter table PEDIDOLOCAL add constraint FK_RELATIONSHIP_9 foreign key (IDUSUARIO)
-      references USUARIO (IDUSUARIO) on delete cascade on update cascade;
+      references USUARIO (IDUSUARIO) on delete cascade;
 
 alter table PEDIDORESERVA add constraint FK_RELATIONSHIP_12 foreign key (IDRESERVA)
-      references RESERVA (IDRESERVA) on delete cascade on update cascade;
+      references RESERVA (IDRESERVA) on delete cascade;
 
 alter table PEDIDORESERVA add constraint FK_RELATIONSHIP_14 foreign key (IDPEDIDOTOTAL)
-      references PEDIDOTOTAL (IDPEDIDOTOTAL) on delete cascade on update cascade;
+      references PEDIDOTOTAL (IDPEDIDOTOTAL) on delete cascade;
 
 alter table PEDIDOTOTAL add constraint FK_RELATIONSHIP_18 foreign key (IDSTATE)
-      references ESTADO (IDSTATE) on delete cascade on update cascade;
+      references ESTADO (IDSTATE) on delete cascade;
 
 alter table PRODUCTO add constraint FK_RELATIONSHIP_17 foreign key (IDCATEGORIA)
-      references CATEGORIA (IDCATEGORIA) on delete cascade on update cascade;
+      references CATEGORIA (IDCATEGORIA) on delete cascade;
 
 alter table RELACIONPEDIDOPRODUCTO add constraint FK_REFERENCE_18 foreign key (IDPEDIDOTOTAL)
-      references PEDIDOTOTAL (IDPEDIDOTOTAL) on delete cascade on update cascade;
+      references PEDIDOTOTAL (IDPEDIDOTOTAL) on delete cascade;
 
 alter table RELACIONPEDIDOPRODUCTO add constraint FK_REFERENCE_19 foreign key (IDPRODUCTO)
-      references PRODUCTO (IDPRODUCTO) on delete cascade on update cascade;
+      references PRODUCTO (IDPRODUCTO) on delete cascade;
 
 alter table RELACIONUSUARIODIRECCION add constraint FK_RELATIONSHIP_19 foreign key (IDUSUARIO)
-      references USUARIO (IDUSUARIO) on delete cascade on update cascade;
+      references USUARIO (IDUSUARIO) on delete cascade;
 
 alter table RELACIONUSUARIODIRECCION add constraint FK_RELATIONSHIP_20 foreign key (IDDIRECCION)
-      references DIRECCION (IDDIRECCION) on delete cascade on update cascade;
+      references DIRECCION (IDDIRECCION) on delete cascade;
 
 alter table RESERVA add constraint FK_RELATIONSHIP_11 foreign key (IDUSUARIO)
-      references USUARIO (IDUSUARIO) on delete cascade on update cascade;
+      references USUARIO (IDUSUARIO) on delete cascade;
 
 alter table USUARIO add constraint FK_RELATIONSHIP_16 foreign key (IDTIPOUSUARIO)
-      references TIPOUSUARIO (IDTIPOUSUARIO) on delete cascade on update cascade;
+      references TIPOUSUARIO (IDTIPOUSUARIO) on delete cascade;
 

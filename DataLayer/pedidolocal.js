@@ -61,7 +61,7 @@ async function getOnePedidoLocal(IDPEDIDO) {
 
 async function createPedidoLocal(pedido) {
     try {
-        return await Pedido.create({
+        return await PedidoLocal.create({
             IDUSUARIO: pedido.IDUSUARIO,
             IDPEDIDOTOTAL: pedido.IDPEDIDOTOTAL,
             MESA: pedido.MESA
