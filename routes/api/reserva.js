@@ -1,5 +1,5 @@
 const {Router} =require('express');
-const { crearReserva, obtenerReservaID, obtenerReservas, actualizarReserva, borrarReserva } = require('../../LogicLayer/reservaController');
+const { crearReserva, obtenerUsuarioReserva,obtenerReservaID, obtenerReservas, actualizarReserva, borrarReserva } = require('../../LogicLayer/reservaController');
 const { validationInsert, validationUpdate } = require('../../LogicLayer/validator/reservaValidator');
 const { validateToken } = require('../../middlewares/verifyToken');
 
@@ -8,6 +8,8 @@ const router = Router();
  router.get('/',validateToken, obtenerReservas);
 
  router.get('/:id', validateToken,obtenerReservaID);
+ 
+router.get('/usuario/:id',validateToken, obtenerUsuarioReserva);
 
  router.post('/',validateToken,validationInsert, crearReserva);
 

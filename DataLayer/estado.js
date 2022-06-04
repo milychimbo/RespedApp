@@ -25,17 +25,7 @@ const Estado = connection.define('ESTADO', {
     timestamps: false
 })
 
-//User.sync().then(() => {})
 
-async function getAllEstados() {
-    try {
-        return await Estado.findAll({
-            raw: true
-        });
-    } catch (err) {
-        return err;
-    }
-}
 
 async function getOneEstado(IDSTATE) {
     try {
@@ -47,6 +37,6 @@ async function getOneEstado(IDSTATE) {
 
 
 module.exports = {
-    getAllEstados,
+    
     getOneEstado
 }

@@ -10,6 +10,10 @@ const {
     deleteUser
 } = require('../DataLayer/usuario');
 const {
+    getOneTipoUsuario,
+    updateTipoUsuario
+} = require('../DataLayer/tipousuario');
+const {
     responseJson
 } = require('../helpers/handleGenericFunction');
 const {
@@ -21,8 +25,10 @@ async function obtenerUsuarios(req = request, res = response) {
     const users = await getAllUsers();
     if (users.length > 0)
         res.status(200).json(responseJson(200, "success", users))
-    else
+    else{
         res.status(404).json(responseJson(404, "no existe"))
+    }
+        
 }
 
 async function obtenerUsuarioId(req = request, res = response) {
@@ -33,6 +39,24 @@ async function obtenerUsuarioId(req = request, res = response) {
         res.status(404).json(responseJson(404, "no existe"))
 }
 
+async function obtenerTipoUsuario(req = request, res = response) {
+    const user = await getOneTipoUsuario(req.params.id);
+    if (user != null)
+        res.status(200).json(responseJson(200, "success", user))
+    else
+        res.status(404).json(responseJson(404, "no existe"))
+}
+
+async function actualizarTipoUsuario(req = request, res = response) {
+    const user = await updateTipoUsuario(req.body);
+    console.log(user)
+    if (user == 1)
+        res.status(201).json(responseJson(201, "success"))
+    else{
+        res.status(400).json(responseJson(400, "no se puede actualizar")) //me devuelve 1 si actualizo o 0 si no
+    }
+}
+
 
 async function crearUsuario(req = request, res = response) {
     req.body.PASSWORD = await encrypt(req.body.PASSWORD);
@@ -40,11 +64,7 @@ async function crearUsuario(req = request, res = response) {
     if (Object.keys(user)[0] == "dataValues")
         res.status(201).json(responseJson(201, "success"))
     else {
-        const error = {
-            message: user.errors[0].message,
-            value: user.errors[0].value
-        }
-        res.status(400).json(responseJson(400, "no se pudo crear", error))
+        res.status(400).json(responseJson(400, "no se pudo crear", user.parent.sqlMessage))
     }
 }
 
@@ -56,8 +76,14 @@ async function actualizarUsuario(req = request, res = response) {
     const user = await updateUser(req.body);
     if (user == 1)
         res.status(201).json(responseJson(201, "success"))
-    else
-        res.status(200).json(responseJson(200, "no hubo cambios")) //me devuelve 1 si actualizo o 0 si no
+    else{
+        if(user.parent.sqlMessage){
+            res.status(400).json(responseJson(400, "no se puede actualizar",user.parent.sqlMessage)) //me devuelve 1 si actualizo o 0 si no
+        }
+        else{
+            res.status(200).json(responseJson(200, "no hubo cambios")) //me devuelve 1 si actualizo o 0 si no
+        }
+    }
 }
 
 
@@ -65,15 +91,18 @@ async function borrarUsuario(req = request, res = response) {
     const user = await deleteUser(req.params.id);
     if (user == 1)
         res.status(201).json(responseJson(201, "success"))
-    else
-        res.status(200).json(responseJson(200, "no hubo cambios"))
+    else{
+        res.status(200).json(responseJson(200, "no hubo cambios")) //me devuelve 1 si actualizo o 0 si no
+    }
 }
 
 
 module.exports = {
     obtenerUsuarios,
     obtenerUsuarioId,
+    obtenerTipoUsuario,
     crearUsuario,
     actualizarUsuario,
+    actualizarTipoUsuario,
     borrarUsuario
 };

@@ -61,6 +61,14 @@ async function getOneReserva(IDRESERVA) {
         return err;}
 }
 
+async function getUsuarioReserva(IDUSUARIOX) {
+    try {
+        return await Reserva.findAll({
+            where: { IDUSUARIO: IDUSUARIOX }})
+    }  catch(err){
+        return err;
+    }
+}
 async function createReserva(reserva) {
     try {
         return await Reserva.create({
@@ -105,6 +113,7 @@ async function deleteReserva(idReserva) {
 module.exports = {
     getAllReservas,
     getOneReserva,
+    getUsuarioReserva,
     createReserva,
     updateReserva,
     deleteReserva

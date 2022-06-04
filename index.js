@@ -32,17 +32,13 @@ var corsOptions = {
 app.use('/api/usuario', require('./routes/api/usuario'));
 app.use('/api/direccion', require('./routes/api/direccion'));
 app.use('/api/auth', require('./routes/api/auth'));
-// app.use('/api/categoria', require('./routes/api/categoria'));
 
-// app.use('/api/pedido', require('./routes/api/pedido'));
-// app.use('/api/producto', require('./routes/api/producto'));
 // app.use('/api/estado', require('./routes/api/estado'));
-// app.use('/api/reserva', require('./routes/api/reserva'));
 // app.use('/api/tipousuario', require('./routes/api/tipousuario'));
 // app.use('/api/tipopedido', require('./routes/api/tipopedido'));
 // app.use('/api/relacion', require('./routes/api/relacion'));
 
-// app.use('/api/reserva', require('./routes/api/reserva'));
+app.use('/api/reserva', require('./routes/api/reserva'));
 // app.use('/api/categoria', require('./routes/api/categoria'));
 // app.use('/api/producto', require('./routes/api/producto'));
 // app.use('/api/pedido', require('./routes/api/pedido'));
