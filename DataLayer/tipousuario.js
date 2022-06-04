@@ -25,16 +25,6 @@ const TipoUsuario = connection.define('TIPOUSUARIO', {
 
 //User.sync().then(() => {})
 
-async function getAllTipoUsuarios() {
-    try {
-        return await TipoUsuario.findAll({
-            raw: true
-           });
-    } catch(err){
-        return err;
-      }
-}
-
 async function getOneTipoUsuario(IDTIPOUSUARIO) {
     try {
         return await TipoUsuario.findByPk(IDTIPOUSUARIO)
@@ -60,7 +50,6 @@ async function updateTipoUsuario(tipousuario) {
 
 
 module.exports = {
-    getAllTipoUsuarios,
     getOneTipoUsuario,
     updateTipoUsuario
 }

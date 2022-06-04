@@ -7,38 +7,14 @@ const { path } = require('./connection');
 
 const connection = new Sequelize(path);
 
-const Pedido = connection.define('PEDIDO', {
-    IDPEDIDO: {
+const PedidoTotal = connection.define('PEDIDOTOTAL', {
+    IDPEDIDOTOTAL: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,
         autoIncrement: true
     },
-    IDTIPOPEDIDO: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: 'TIPOPEDIDO',
-            key: 'IDTIPOPEDIDO'
-        }
-    },
-    IDDIRECCION: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: 'DIRECCION',
-            key: 'IDDIRECCION'
-        }
-    },
-    IDUSUARIO: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: 'USUARIO',
-            key: 'IDUSUARIO'
-        }
-    },
-    TOTALPRICE: {
+    VALORTOTAL: {
         type: DataTypes.DOUBLE,
         allowNull: false
     },
@@ -54,7 +30,7 @@ const Pedido = connection.define('PEDIDO', {
         }
     }
 }, {
-    tableName: 'PEDIDO',
+    tableName: 'PEDIDOTOTAL',
     timestamps: false
 })
 
@@ -62,7 +38,7 @@ const Pedido = connection.define('PEDIDO', {
 
 async function getAllPedidos() {
     try {
-        return await Pedido.findAll({
+        return await PedidoTotal.findAll({
             raw: true
            });
     }  catch(err){
@@ -70,9 +46,9 @@ async function getAllPedidos() {
     }
 }
 
-async function getOnePedido(IDPEDIDO) {
+async function getOnePedido(IDPEDIDOTOTAL) {
     try {
-        return await Pedido.findByPk(IDPEDIDO)
+        return await PedidoTotal.findByPk(IDPEDIDOTOTAL)
     }  catch(err){
         return err;
     }
@@ -80,11 +56,8 @@ async function getOnePedido(IDPEDIDO) {
 
 async function createPedido(pedido) {
     try {
-        return await Pedido.create({
-            IDTIPOPEDIDO: pedido.IDTIPOPEDIDO,
-            IDDIRECCION: pedido.IDDIRECCION,
-            IDUSUARIO: pedido.IDUSUARIO,
-            TOTALPRICE: pedido.TOTALPRICE,
+        return await PedidoTotal.create({
+            VALORTOTAL: pedido.VALORTOTAL,
             NOTE: pedido.NOTE,
             IDSTATE: pedido.IDSTATE
         });
@@ -95,16 +68,13 @@ async function createPedido(pedido) {
 
 async function updatePedido(pedido) {
     try {
-        return await Pedido.update({
-            IDTIPOPEDIDO: pedido.IDTIPOPEDIDO,
-            IDDIRECCION: pedido.IDDIRECCION,
-            IDUSUARIO: pedido.IDUSUARIO,
-            TOTALPRICE: pedido.TOTALPRICE,
+        return await PedidoTotal.update({
+            VALORTOTAL: pedido.VALORTOTAL,
             NOTE: pedido.NOTE,
             IDSTATE: pedido.IDSTATE
         }, {
             where: {
-                IDPEDIDO: pedido.IDPEDIDO
+                IDPEDIDOTOTAL: pedido.IDPEDIDOTOTAL
             }
         })
     }  catch(err){
@@ -112,11 +82,11 @@ async function updatePedido(pedido) {
     }
 }
 
-async function deletePedido(IDPEDIDO) {
+async function deletePedido(IDPEDIDOTOTAL) {
     try {
-        return await Pedido.destroy({
+        return await PedidoTotal.destroy({
             where: {
-                IDPEDIDO: IDPEDIDO
+                IDPEDIDOTOTAL: IDPEDIDOTOTAL
             }
         })
     }  catch(err){

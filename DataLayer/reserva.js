@@ -22,13 +22,6 @@ const Reserva = connection.define('RESERVA', {
             key: 'IDUSUARIO'
         }
     },
-    IDPEDIDO: {
-        type: DataTypes.INTEGER,
-        references: {
-            model: 'PEDIDO',
-            key: 'IDPEDIDO'
-        }
-    },
     PEOPLE: {
         type: DataTypes.INTEGER,
         allowNull: false
@@ -72,7 +65,6 @@ async function createReserva(reserva) {
     try {
         return await Reserva.create({
             IDUSUARIO: reserva.IDUSUARIO,
-            IDPEDIDO: reserva.IDPEDIDO,
             PEOPLE: reserva.PEOPLE,
             NOTE: reserva.NOTE,
             RESERVATIONDATE: reserva.RESERVATIONDATE,
@@ -86,7 +78,6 @@ async function updateReserva(reserva) {
     try {
         return await Reserva.update({
             IDUSUARIO: reserva.IDUSUARIO,
-            IDPEDIDO: reserva.IDPEDIDO,
             PEOPLE: reserva.PEOPLE,
             NOTE: reserva.NOTE,
             RESERVATIONDATE: reserva.RESERVATIONDATE,

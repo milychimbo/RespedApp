@@ -25,14 +25,6 @@ const Direccion = connection.define('DIRECCION', {
     },
     REFERENCE: {
         type: DataTypes.STRING
-    },
-    IDUSUARIO: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: 'USUARIO',
-            key: 'IDUSUARIO'
-        }
     }
 }, {
     tableName: 'DIRECCION',
@@ -64,8 +56,7 @@ async function createDireccion(direccion) {
         return await Direccion.create({
             STREET1: direccion.STREET1,
             STREET2: direccion.STREET2,
-            REFERENCE: direccion.REFERENCE,
-            IDUSUARIO: direccion.IDUSUARIO
+            REFERENCE: direccion.REFERENCE
         });
     }  catch(err){
         return err;
@@ -77,8 +68,7 @@ async function updateDireccion(direccion) {
         return await Direccion.update({
             STREET1: direccion.STREET1,
             STREET2: direccion.STREET2,
-            REFERENCE: direccion.REFERENCE,
-            IDUSUARIO: direccion.IDUSUARIO
+            REFERENCE: direccion.REFERENCE
         }, {
             where: {
                 IDDIRECCION: direccion.IDDIRECCION

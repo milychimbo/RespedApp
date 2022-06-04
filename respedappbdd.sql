@@ -1,5 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
+/* Created on:     6/3/2022 11:04:38 PM                         */
 /*==============================================================*/
 
 
@@ -7,15 +8,23 @@ drop table if exists CATEGORIA;
 
 drop table if exists DIRECCION;
 
-drop table if exists PEDIDO;
+drop table if exists ESTADO;
+
+drop table if exists PEDIDODOMICILIO;
+
+drop table if exists PEDIDOLOCAL;
+
+drop table if exists PEDIDORESERVA;
+
+drop table if exists PEDIDOTOTAL;
 
 drop table if exists PRODUCTO;
 
 drop table if exists RELACIONPEDIDOPRODUCTO;
 
-drop table if exists RESERVA;
+drop table if exists RELACIONUSUARIODIRECCION;
 
-drop table if exists TIPOPEDIDO;
+drop table if exists RESERVA;
 
 drop table if exists TIPOUSUARIO;
 
@@ -37,7 +46,6 @@ create table CATEGORIA
 create table DIRECCION
 (
    IDDIRECCION          int not null auto_increment,
-   IDUSUARIO            int not null,
    REFERENCE            varchar(150),
    STREET1              varchar(100) not null,
    STREET2              varchar(100) not null,
@@ -45,18 +53,60 @@ create table DIRECCION
 );
 
 /*==============================================================*/
-/* Table: PEDIDO                                                */
+/* Table: ESTADO                                                */
 /*==============================================================*/
-create table PEDIDO
+create table ESTADO
+(
+   IDSTATE              int not null auto_increment,
+   STATE                varchar(20) not null,
+   primary key (IDSTATE)
+);
+
+/*==============================================================*/
+/* Table: PEDIDODOMICILIO                                       */
+/*==============================================================*/
+create table PEDIDODOMICILIO
 (
    IDPEDIDO             int not null auto_increment,
-   IDTIPOPEDIDO         int not null,
-   IDDIRECCION          int not null,
-   IDUSUARIO            int not null,
-   TOTALPRICE           float not null,
-   NOTE                 varchar(150),
-   STATE                varchar(20) not null,
+   IDRELACIONUD         int not null,
+   IDPEDIDOTOTAL        int not null,
+   ENVIO                float not null,
    primary key (IDPEDIDO)
+);
+
+/*==============================================================*/
+/* Table: PEDIDOLOCAL                                           */
+/*==============================================================*/
+create table PEDIDOLOCAL
+(
+   IDPEDIDO             int not null auto_increment,
+   IDUSUARIO            int not null,
+   IDPEDIDOTOTAL        int not null,
+   MESA                 int not null,
+   primary key (IDPEDIDO)
+);
+
+/*==============================================================*/
+/* Table: PEDIDORESERVA                                         */
+/*==============================================================*/
+create table PEDIDORESERVA
+(
+   IDPEDIDO             int not null auto_increment,
+   IDRESERVA            int not null,
+   IDPEDIDOTOTAL        int not null,
+   primary key (IDPEDIDO)
+);
+
+/*==============================================================*/
+/* Table: PEDIDOTOTAL                                           */
+/*==============================================================*/
+create table PEDIDOTOTAL
+(
+   IDPEDIDOTOTAL        int not null auto_increment,
+   IDSTATE              int not null,
+   VALORTOTAL           float not null,
+   NOTE                 varchar(150),
+   primary key (IDPEDIDOTOTAL)
 );
 
 /*==============================================================*/
@@ -79,9 +129,22 @@ create table PRODUCTO
 /*==============================================================*/
 create table RELACIONPEDIDOPRODUCTO
 (
-   IDPEDIDO             int not null,
+   IDRELACIONPP         int not null auto_increment,
+   IDPEDIDOTOTAL        int not null,
    IDPRODUCTO           int not null,
-   PRICE                float not null
+   PRICE                float not null,
+   primary key (IDRELACIONPP)
+);
+
+/*==============================================================*/
+/* Table: RELACIONUSUARIODIRECCION                              */
+/*==============================================================*/
+create table RELACIONUSUARIODIRECCION
+(
+   IDRELACIONUD         int not null auto_increment,
+   IDUSUARIO            int not null,
+   IDDIRECCION          int not null,
+   primary key (IDRELACIONUD)
 );
 
 /*==============================================================*/
@@ -91,23 +154,11 @@ create table RESERVA
 (
    IDRESERVA            int not null auto_increment,
    IDUSUARIO            int not null,
-   IDPEDIDO             int,
    PEOPLE               int not null,
    NOTE                 varchar(150),
    RESERVATIONDATE      date not null,
    RESERVATIONTIME      varchar(5) not null,
    primary key (IDRESERVA)
-);
-
-/*==============================================================*/
-/* Table: TIPOPEDIDO                                            */
-/*==============================================================*/
-create table TIPOPEDIDO
-(
-   IDTIPOPEDIDO         int not null auto_increment,
-   TIPO                 varchar(20) not null,
-   EXTRA                float not null,
-   primary key (IDTIPOPEDIDO)
 );
 
 /*==============================================================*/
@@ -134,36 +185,48 @@ create table USUARIO
    PASSWORD             varchar(12) not null,
    PHONE                varchar(15) not null,
    primary key (IDUSUARIO),
-   unique key AK_KEY_2 (USERNAME)
+   key AK_IDENTIFIER_2 (USERNAME)
 );
 
-alter table DIRECCION add constraint FK_RELATIONSHIP_10 foreign key (IDUSUARIO)
-      references USUARIO (IDUSUARIO) on delete restrict on update restrict;
+alter table PEDIDODOMICILIO add constraint FK_RELATIONSHIP_10 foreign key (IDRELACIONUD)
+      references RELACIONUSUARIODIRECCION (IDRELACIONUD) on delete cascade on update cascade;
 
-alter table PEDIDO add constraint FK_RELATIONSHIP_11 foreign key (IDUSUARIO)
-      references USUARIO (IDUSUARIO) on delete restrict on update restrict;
+alter table PEDIDODOMICILIO add constraint FK_RELATIONSHIP_15 foreign key (IDPEDIDOTOTAL)
+      references PEDIDOTOTAL (IDPEDIDOTOTAL) on delete cascade on update cascade;
 
-alter table PEDIDO add constraint FK_RELATIONSHIP_13 foreign key (IDDIRECCION)
-      references DIRECCION (IDDIRECCION) on delete restrict on update restrict;
+alter table PEDIDOLOCAL add constraint FK_RELATIONSHIP_13 foreign key (IDPEDIDOTOTAL)
+      references PEDIDOTOTAL (IDPEDIDOTOTAL) on delete cascade on update cascade;
 
-alter table PEDIDO add constraint FK_RELATIONSHIP_15 foreign key (IDTIPOPEDIDO)
-      references TIPOPEDIDO (IDTIPOPEDIDO) on delete restrict on update restrict;
+alter table PEDIDOLOCAL add constraint FK_RELATIONSHIP_9 foreign key (IDUSUARIO)
+      references USUARIO (IDUSUARIO) on delete cascade on update cascade;
+
+alter table PEDIDORESERVA add constraint FK_RELATIONSHIP_12 foreign key (IDRESERVA)
+      references RESERVA (IDRESERVA) on delete cascade on update cascade;
+
+alter table PEDIDORESERVA add constraint FK_RELATIONSHIP_14 foreign key (IDPEDIDOTOTAL)
+      references PEDIDOTOTAL (IDPEDIDOTOTAL) on delete cascade on update cascade;
+
+alter table PEDIDOTOTAL add constraint FK_RELATIONSHIP_18 foreign key (IDSTATE)
+      references ESTADO (IDSTATE) on delete cascade on update cascade;
 
 alter table PRODUCTO add constraint FK_RELATIONSHIP_17 foreign key (IDCATEGORIA)
-      references CATEGORIA (IDCATEGORIA) on delete restrict on update restrict;
+      references CATEGORIA (IDCATEGORIA) on delete cascade on update cascade;
 
-alter table RELACIONPEDIDOPRODUCTO add constraint FK_REFERENCE_18 foreign key (IDPEDIDO)
-      references PEDIDO (IDPEDIDO) on delete restrict on update restrict;
+alter table RELACIONPEDIDOPRODUCTO add constraint FK_REFERENCE_18 foreign key (IDPEDIDOTOTAL)
+      references PEDIDOTOTAL (IDPEDIDOTOTAL) on delete cascade on update cascade;
 
 alter table RELACIONPEDIDOPRODUCTO add constraint FK_REFERENCE_19 foreign key (IDPRODUCTO)
-      references PRODUCTO (IDPRODUCTO) on delete restrict on update restrict;
+      references PRODUCTO (IDPRODUCTO) on delete cascade on update cascade;
 
-alter table RESERVA add constraint FK_RELATIONSHIP_12 foreign key (IDPEDIDO)
-      references PEDIDO (IDPEDIDO) on delete restrict on update restrict;
+alter table RELACIONUSUARIODIRECCION add constraint FK_RELATIONSHIP_19 foreign key (IDUSUARIO)
+      references USUARIO (IDUSUARIO) on delete cascade on update cascade;
 
-alter table RESERVA add constraint FK_RELATIONSHIP_14 foreign key (IDUSUARIO)
-      references USUARIO (IDUSUARIO) on delete restrict on update restrict;
+alter table RELACIONUSUARIODIRECCION add constraint FK_RELATIONSHIP_20 foreign key (IDDIRECCION)
+      references DIRECCION (IDDIRECCION) on delete cascade on update cascade;
+
+alter table RESERVA add constraint FK_RELATIONSHIP_11 foreign key (IDUSUARIO)
+      references USUARIO (IDUSUARIO) on delete cascade on update cascade;
 
 alter table USUARIO add constraint FK_RELATIONSHIP_16 foreign key (IDTIPOUSUARIO)
-      references TIPOUSUARIO (IDTIPOUSUARIO) on delete restrict on update restrict;
+      references TIPOUSUARIO (IDTIPOUSUARIO) on delete cascade on update cascade;
 

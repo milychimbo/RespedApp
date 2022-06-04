@@ -8,10 +8,15 @@ const { path } = require('./connection');
 const connection = new Sequelize(path);
 
 const RelacionPedidoProducto = connection.define('RELACIONPEDIDOPRODUCTO', {
-    IDPEDIDO: {
+    IDRELACIONPP: {
         type: DataTypes.INTEGER,
         allowNull: false,
         primaryKey: true,
+        autoIncrement: true
+    },
+    IDPEDIDOTOTAL: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
         references: {
             model: 'PEDIDO',
             key: 'IDPEDIDO'
@@ -37,20 +42,11 @@ const RelacionPedidoProducto = connection.define('RELACIONPEDIDOPRODUCTO', {
 
 //User.sync().then(() => {})
 
-async function getAllRelacionPedidoProducto() {
-    try {
-        return await RelacionPedidoProducto.findAll({
-            raw: true
-           });
-    }  catch(err){
-        return err;
-    }
-}
 
-async function getPedidoProducto(IDPEDIDOX) {
+async function getPedidoProducto(IDPEDIDOTOTALX) {
     try {
         return await RelacionPedidoProducto.findAll({
-            where: { IDPEDIDO: IDPEDIDOX }})
+            where: { IDPEDIDOTOTAL: IDPEDIDOTOTALX }})
     }  catch(err){
         return err;
     }
@@ -68,9 +64,20 @@ async function createPedidoProducto(relacion) {
     }
 }
 
+async function deletePedidoProducto(IDRELACIONPPX) {
+    try {
+        return await RelacionPedidoProducto.destroy({
+            where: {
+                IDRELACIONPP: IDRELACIONPPX
+            }
+        })
+    } catch(err){
+        return err;
+      }
+}
 
 module.exports = {
-    getAllRelacionPedidoProducto,
     getPedidoProducto,
-    createPedidoProducto
+    createPedidoProducto,
+    deletePedidoProducto
 }
