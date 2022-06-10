@@ -33,23 +33,6 @@ async function getOneTipoUsuario(IDTIPOUSUARIO) {
       }
 }
 
-
-async function updateTipoUsuario(tipousuario) {
-    try {
-        return await TipoUsuario.update({
-            TIPO: tipousuario.TIPO
-        }, {
-            where: {
-                IDTIPOUSUARIO: tipousuario.IDTIPOUSUARIO
-            }
-        })
-    } catch(err){
-        return err;
-      }
-}
-
-
 module.exports = {
-    getOneTipoUsuario,
-    updateTipoUsuario
+    getOneTipoUsuario
 }

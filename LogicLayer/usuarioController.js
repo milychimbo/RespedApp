@@ -47,16 +47,6 @@ async function obtenerTipoUsuario(req = request, res = response) {
         res.status(404).json(responseJson(404, "no existe"))
 }
 
-async function actualizarTipoUsuario(req = request, res = response) {
-    const user = await updateTipoUsuario(req.body);
-    console.log(user)
-    if (user == 1)
-        res.status(201).json(responseJson(201, "success"))
-    else{
-        res.status(400).json(responseJson(400, "no se puede actualizar")) //me devuelve 1 si actualizo o 0 si no
-    }
-}
-
 
 async function crearUsuario(req = request, res = response) {
     req.body.PASSWORD = await encrypt(req.body.PASSWORD);
@@ -103,6 +93,5 @@ module.exports = {
     obtenerTipoUsuario,
     crearUsuario,
     actualizarUsuario,
-    actualizarTipoUsuario,
     borrarUsuario
 };

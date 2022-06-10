@@ -30,7 +30,7 @@ const validationUpdate = [
     check('PASSWORD').optional().not().isAlpha().withMessage('Debe contener al menos un numero'),
     check('PASSWORD').optional().isLength({ min: 4, max: 12 }).withMessage('Longitud de 4 a 12'),
     check('PHONE').optional().isString().withMessage('Debe ser de tipo texto'),
-    check('PHONE').optional().isLength({ min: 4, max: 12 }).withMessage('Longitud de 4 a 12'),
+    check('PHONE').optional().isLength({ min: 9, max: 15 }).withMessage('Longitud de 4 a 12'),
     (req, res, next) => {
         validateResult(req, res, next)
     }

@@ -1,5 +1,4 @@
 const {request,response} = require('express');
-const { NULL } = require('mysql/lib/protocol/constants/types');
 const {getOneDireccion,updateDireccion, deleteDireccion, createDireccion} = require('../DataLayer/direccion');
 const {getUsuarioDireccion,createUsuarioDireccion} = require('../DataLayer/relacionusuariodireccion');
 const { responseJson } = require('../helpers/handleGenericFunction');
