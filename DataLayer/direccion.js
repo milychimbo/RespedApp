@@ -25,7 +25,15 @@ const Direccion = connection.define('DIRECCION', {
     },
     REFERENCE: {
         type: DataTypes.STRING
-    }
+    },
+    NAME: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    PHONEDIR: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
 }, {
     tableName: 'DIRECCION',
     timestamps: false
@@ -56,7 +64,9 @@ async function createDireccion(direccion) {
         return await Direccion.create({
             STREET1: direccion.STREET1,
             STREET2: direccion.STREET2,
-            REFERENCE: direccion.REFERENCE
+            REFERENCE: direccion.REFERENCE,
+            NAME: direccion.NAME,
+            PHONEDIR: direccion.PHONEDIR
         });
     }  catch(err){
         return err;
@@ -68,7 +78,9 @@ async function updateDireccion(direccion) {
         return await Direccion.update({
             STREET1: direccion.STREET1,
             STREET2: direccion.STREET2,
-            REFERENCE: direccion.REFERENCE
+            REFERENCE: direccion.REFERENCE,
+            NAME: direccion.NAME,
+            PHONEDIR: direccion.PHONEDIR
         }, {
             where: {
                 IDDIRECCION: direccion.IDDIRECCION
