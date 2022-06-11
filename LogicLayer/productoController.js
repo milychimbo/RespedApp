@@ -28,27 +28,6 @@ async function obtenerProductos(req = request, res = response) {
         res.status(404).json(responseJson(404, "no existe"))
 }
 
-async function obtenerMenu(req = request, res = response) {
-    const categorias = await getAllCategorias();
-    const productos = await getAllProductos();
-    var aux = '{"CATEGORIAS":[]}';
-    var obj = JSON.parse(aux);
-    categorias.forEach(categoria => {
-        
-        var obj1 = new Array;
-        productos.forEach(producto => {
-            producto.PRICE= addZeroes(producto.PRICE.toString());
-            if(producto.IDCATEGORIA == categoria.IDCATEGORIA){
-                
-                obj1.push(producto);
-            }
-        });
-        categoria.PRODUCTOS = obj1;
-        obj['CATEGORIAS'].push(categoria);
-    });
-   res.status(200).json(responseJson(200, "success",obj))
-}
-
 async function obtenerProductoCategoria(req = request, res = response) {
     const productos = await getAllProductos();
     const categoria = await getOneCategoria(req.params.id);
@@ -123,7 +102,6 @@ function addZeroes(num) {
 module.exports = {
     obtenerProductos,
     obtenerProductoId,
-    obtenerMenu,
     obtenerProductoCategoria,
     crearProducto,
     actualizarProducto,

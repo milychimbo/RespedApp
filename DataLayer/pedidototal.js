@@ -14,6 +14,10 @@ const PedidoTotal = connection.define('PEDIDOTOTAL', {
         allowNull: false,
         autoIncrement: true
     },
+    NUMPEDIDO: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
     VALORTOTAL: {
         type: DataTypes.DOUBLE,
         allowNull: false
@@ -57,6 +61,7 @@ async function getOnePedido(IDPEDIDOTOTAL) {
 async function createPedido(pedido) {
     try {
         return await PedidoTotal.create({
+            NUMPEDIDO: pedido.NUMPEDIDO,
             VALORTOTAL: pedido.VALORTOTAL,
             NOTE: pedido.NOTE,
             IDSTATE: pedido.IDSTATE

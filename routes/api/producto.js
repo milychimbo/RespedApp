@@ -7,7 +7,6 @@ const router = Router();
 
  router.get('/',validateToken, obtenerProductos);
 
- router.get('/menu/', obtenerMenu);
  router.get('/categoria/:id', obtenerProductoCategoria);
 
  router.get('/:id',validateToken, obtenerProductoId);
