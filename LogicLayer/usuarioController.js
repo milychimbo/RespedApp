@@ -67,12 +67,8 @@ async function actualizarUsuario(req = request, res = response) {
     if (user == 1)
         res.status(201).json(responseJson(201, "success"))
     else{
-        if(user.parent.sqlMessage){
-            res.status(400).json(responseJson(400, "no se puede actualizar",user.parent.sqlMessage)) //me devuelve 1 si actualizo o 0 si no
-        }
-        else{
-            res.status(200).json(responseJson(200, "no hubo cambios")) //me devuelve 1 si actualizo o 0 si no
-        }
+        
+            res.status(200).json(responseJson(200, "no hubo cambios",user)) 
     }
 }
 

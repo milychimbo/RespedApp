@@ -1,5 +1,5 @@
 const {Router} =require('express');
-const { obtenerUsuarios, obtenerUsuarioId, obtenerTipoUsuario,actualizarUsuario, crearUsuario,actualizarTipoUsuario, borrarUsuario } = require('../../LogicLayer/usuarioController');
+const { obtenerUsuarios, obtenerUsuarioId, obtenerTipoUsuario,actualizarUsuario, crearUsuario, borrarUsuario } = require('../../LogicLayer/usuarioController');
 const { validationInsert, validationUpdate } = require('../../LogicLayer/validator/usuarioValidator');
 const { validateToken } = require('../../middlewares/verifyToken');
 
@@ -15,8 +15,6 @@ const router = Router();
  router.post('/',validateToken, validationInsert, crearUsuario);
 
  router.put('/',validateToken, validationUpdate, actualizarUsuario);
- 
- router.put('/tipo/',validateToken, actualizarTipoUsuario);
 
  router.delete('/:id',validateToken, borrarUsuario);
 

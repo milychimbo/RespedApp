@@ -29,6 +29,10 @@ const RelacionUsuarioDireccion = connection.define('RELACIONUSUARIODIRECCION', {
             model: 'DIRECCION',
             key: 'IDDIRECCION'
         }
+    },
+    DEFAULTDIR: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false
     }
 }, {
     tableName: 'RELACIONUSUARIODIRECCION',
@@ -50,7 +54,8 @@ async function createUsuarioDireccion(relacion) {
     try {
         return await RelacionUsuarioDireccion.create({
             IDUSUARIO: relacion.IDUSUARIO,
-            IDDIRECCION: relacion.IDDIRECCION
+            IDDIRECCION: relacion.IDDIRECCION,
+            DEFAULTDIR: relacion.DEFAULTDIR
         });
     }  catch(err){
         return err;
@@ -58,7 +63,24 @@ async function createUsuarioDireccion(relacion) {
 }
 
 
+async function updateUsuarioDireccion(relacion) {
+    try {
+        return await RelacionUsuarioDireccion.update({
+            IDUSUARIO: relacion.IDUSUARIO,
+            IDDIRECCION: relacion.IDDIRECCION,
+            DEFAULTDIR: relacion.DEFAULTDIR
+        }, {
+            where: {
+                IDRELACIONUD: relacion.IDRELACIONUD
+            }
+        })
+    }  catch(err){
+        return err;
+    }
+}
+
 module.exports = {
     getUsuarioDireccion,
-    createUsuarioDireccion
+    createUsuarioDireccion,
+    updateUsuarioDireccion
 }
