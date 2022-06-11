@@ -2,8 +2,9 @@ const { check } = require("express-validator");
 const { validateResult } = require('../../helpers/handleGenericFunction');
 
 const validationInsert = [
+    check('NUMRESERVA').not().isEmpty().isString().trim().withMessage('Debe ser de tipo texto'),
+    check('NUMRESERVA').isLength({max: 20 }).withMessage('Longitud máxima de 150'),
     check('IDUSUARIO').not().isEmpty().isInt().trim().withMessage('No es un valor valido'),
-    check('IDPEDIDO').optional().isInt().trim().withMessage('No es un valor valido'),
     check('PEOPLE').not().isEmpty().isInt().trim().withMessage('No es un valor valido'),
     check('NOTE').optional().isString().trim().withMessage('Debe ser de tipo texto'),
     check('NOTE').optional().isLength({max: 150 }).withMessage('Longitud máxima de 150'),
@@ -18,8 +19,6 @@ const validationInsert = [
 
 const validationUpdate = [
     check('IDRESERVA').not().isEmpty().isInt().withMessage('No es un valor valido'),
-    check('IDUSUARIO').optional().isInt().trim().withMessage('No es un valor valido'),
-    check('IDPEDIDO').optional().isInt().trim().withMessage('No es un valor valido'),
     check('PEOPLE').optional().isInt().trim().withMessage('No es un valor valido'),
     check('NOTE').optional().isString().trim().withMessage('Debe ser de tipo texto'),
     check('NOTE').optional().isLength({max: 150 }).withMessage('Longitud máxima de 150'),

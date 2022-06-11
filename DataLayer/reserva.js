@@ -14,6 +14,10 @@ const Reserva = connection.define('RESERVA', {
         allowNull: false,
         autoIncrement: true
     },
+    NUMRESERVA: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
     IDUSUARIO: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -54,9 +58,9 @@ async function getAllReservas() {
     }
 }
 
-async function getOneReserva(IDRESERVA) {
+async function getOneReserva(NUMRESERVA) {
     try {
-        return await Reserva.findByPk(IDRESERVA)
+        return await Reserva.findOne(NUMRESERVA)
     } catch(err){
         return err;}
 }
@@ -72,6 +76,7 @@ async function getUsuarioReserva(IDUSUARIOX) {
 async function createReserva(reserva) {
     try {
         return await Reserva.create({
+            NUMRESERVA: reserva.NUMRESERVA,
             IDUSUARIO: reserva.IDUSUARIO,
             PEOPLE: reserva.PEOPLE,
             NOTE: reserva.NOTE,
@@ -85,7 +90,6 @@ async function createReserva(reserva) {
 async function updateReserva(reserva) {
     try {
         return await Reserva.update({
-            IDUSUARIO: reserva.IDUSUARIO,
             PEOPLE: reserva.PEOPLE,
             NOTE: reserva.NOTE,
             RESERVATIONDATE: reserva.RESERVATIONDATE,
@@ -99,11 +103,11 @@ async function updateReserva(reserva) {
         return err;}
 }
 
-async function deleteReserva(idReserva) {
+async function deleteReserva(IDRESERVA) {
     try {
         return await Reserva.destroy({
             where: {
-                idReserva: idReserva
+                IDRESERVA: IDRESERVA
             }
         })
     } catch(err){

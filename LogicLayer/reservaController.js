@@ -29,7 +29,7 @@ async function obtenerUsuarioReserva(req = request,res = response){
     var obj1 = new Array;
     if(reservas.length>0){
         reservas.forEach(async (reserva,index)=> {
-            const reservaResponse = await getOneReserva(reserva.IDRESERVA);
+            const reservaResponse = await getOneReserva(reserva.NUMRESERVA);
             obj1.push(reservaResponse);
             if(index==(reservas.length-1)){
                 res.status(200).json(responseJson(200, "success", obj1))
@@ -41,8 +41,8 @@ async function obtenerUsuarioReserva(req = request,res = response){
 }
 
 async function obtenerReservaID(req = request, res = response) {
-    const reserva = await getOneReserva(req.params.id);
-    if (reserva != null)
+    const reserva = await getOneReserva(req.params.NUMRESERVA);
+    if (reserva.length>0)
         res.status(200).json(responseJson(200, "success", reserva))
     else
         res.status(404).json(responseJson(404, "no existe"))
@@ -53,7 +53,7 @@ async function crearReserva(req = request, res = response) {
     if (Object.keys(reserva)[0] == "dataValues")
         res.status(200).json(responseJson(200, "success"))
     else
-        res.status(400).json(responseJson(400, "no se pudo crear", reserva))
+        res.status(400).json(responseJson(400, "no se pudo crear", reserva.parent.sqlMessage))
 }
 
 async function actualizarReserva(req = request, res = response) {
