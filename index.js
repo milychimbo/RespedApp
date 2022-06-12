@@ -18,7 +18,7 @@ app.get('/api', (req, res) => {
 });
 
 var cors = require('cors')
-var whitelist = ['https://respedapp.onrender.com', 'http://localhost:3000']
+/*var whitelist = ['https://respedapp.onrender.com', 'http://localhost:3000']
 var corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
@@ -27,7 +27,8 @@ var corsOptions = {
       callback(new Error('Not allowed by CORS'))
     }
   }
-}
+}*/
+app.use(cors());
 
 app.use('/api/usuario', require('./routes/api/usuario'));
 app.use('/api/direccion', require('./routes/api/direccion'));
