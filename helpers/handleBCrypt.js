@@ -5,9 +5,9 @@ const encrypt = async (textPlain) =>{
     return hash;
 }
 
-const verifyPassword = (txtPlain, hash) =>{
+const verifyPassword = async (txtPlain, hash) =>{
     try {
-        return bcrypt.compareSync(txtPlain, hash);
+        return await bcrypt.compareSync(txtPlain, hash);
     } catch (error) {
         console.log("Verify: "+error);
         return false;
