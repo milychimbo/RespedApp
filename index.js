@@ -1,11 +1,11 @@
 const express = require('express');
 const morgan = require('morgan');
-
+const cors = require('cors')
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-
+app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -17,7 +17,7 @@ app.get('/api', (req, res) => {
     res.json({ status: 400, message: "bad request" });
 });
 
-var cors = require('cors')
+
 /*var whitelist = ['https://respedapp.onrender.com', 'http://localhost:3000']
 var corsOptions = {
   origin: function (origin, callback) {
@@ -28,7 +28,7 @@ var corsOptions = {
     }
   }
 }*/
-app.use(cors());
+
 
 app.use('/api/usuario', require('./routes/api/usuario'));
 app.use('/api/direccion', require('./routes/api/direccion'));
