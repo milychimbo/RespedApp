@@ -11,11 +11,10 @@ const {
 const secret = process.env.SECRET || '123';
 
 function validateToken(req = request, res = response, next) {
-    const authorization = req.headers.authorization;
-    let token = null;
-    if (authorization != undefined) {
-        if (authorization.startsWith('Bearer')) {
-            token = authorization.substring(7);
+    
+    let token = req.cookies.token;
+    console.log(token)
+    if (token != undefined) {
             try {
                 const decodedToken = jwt.verify(token, secret);
                 req.currentToken=decodedToken;
@@ -23,7 +22,6 @@ function validateToken(req = request, res = response, next) {
             } catch {
                 res.status(401).json(responseJson(401, "no autorizado"))
             }
-        }
     } else {
         res.status(401).json(responseJson(401, "no autorizado"))
     }

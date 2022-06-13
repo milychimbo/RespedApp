@@ -13,6 +13,7 @@ const {
     updateReserva,
     deleteReserva
 } = require('../DataLayer/reserva');
+const jwt_decode = require('jwt-decode');
 
 
 async function obtenerReservas(req = request, res = response) {
@@ -49,7 +50,15 @@ async function obtenerReservaID(req = request, res = response) {
 }
 
 async function crearReserva(req = request, res = response) {
-    const reserva = await createReserva(req.body);
+    const reservaJson={
+        "NUMRESERVA": req.body.NUMRESERVA,
+        "IDUSUARIO": jwt_decode(req.cookies.token).IDUSUARIO,
+        "PEOPLE": req.body.PEOPLE,
+        "NOTE": req.body.NOTE,
+        "RESERVATIONDATE": req.body.RESERVATIONDATE,
+        "RESERVATIONTIME": req.body.RESERVATIONTIME
+    }
+    const reserva = await createReserva(reservaJson);
     if (Object.keys(reserva)[0] == "dataValues")
         res.status(200).json(responseJson(200, "success"))
     else

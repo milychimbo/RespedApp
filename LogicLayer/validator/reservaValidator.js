@@ -4,7 +4,6 @@ const { validateResult } = require('../../helpers/handleGenericFunction');
 const validationInsert = [
     check('NUMRESERVA').not().isEmpty().isString().trim().withMessage('Debe ser de tipo texto'),
     check('NUMRESERVA').isLength({max: 20 }).withMessage('Longitud máxima de 150'),
-    check('IDUSUARIO').not().isEmpty().isInt().trim().withMessage('No es un valor valido'),
     check('PEOPLE').not().isEmpty().isInt().trim().withMessage('No es un valor valido'),
     check('NOTE').optional().isString().trim().withMessage('Debe ser de tipo texto'),
     check('NOTE').optional().isLength({max: 150 }).withMessage('Longitud máxima de 150'),

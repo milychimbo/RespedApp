@@ -23,8 +23,10 @@ async function login(req = request,res = response){
                         IDUSUARIO: user.IDUSUARIO,
                         USERNAME: user.USERNAME
                     }
-                    const token = jwt.sign(userToken, secret);
-                    res.status(200).json(responseJson(200, "matchea",token))
+                    const token = jwt.sign(userToken, secret,{expiresIn:'1h'});
+                    const time= 1000*60*60;
+                    res.cookie("token",token,{maxAge:time}).status(200).json(responseJson(200, "matchea",token))
+                    
                     
                 } else {
                     i=usersL+1;
