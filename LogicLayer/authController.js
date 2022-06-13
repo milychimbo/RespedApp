@@ -8,7 +8,8 @@ const secret = process.env.SECRET || '123';
 
 async function login(req = request,res = response){
     
-    const { USERNAME, PASSWORD} = req.body;
+    const USERNAME = req.query.USERNAME;
+    const PASSWORD = req.query.PASSWORD;
     const users = await getAllUsers();
     const usersL = users.length;
     var i =0;

@@ -4,6 +4,6 @@ const { validationSearch } = require('../../LogicLayer/validator/authValidator')
 
 const router = Router();
 
- router.get('/',login);
+ router.get('/',validationSearch, login);
 
 module.exports=router;

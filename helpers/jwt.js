@@ -1,9 +1,9 @@
 var jwt = require('jsonwebtoken');
 
-const tokenSign = async (payload) =>{
-    const secretKey = process.env.TOKEN_JWT;
-    return await jwt.sign(payload,secretKey,{expiresIn:'1d'});
-}
+// const tokenSign = async (payload) =>{
+//     const secretKey = process.env.TOKEN_JWT;
+//     return await jwt.sign(payload,secretKey,{expiresIn:'1d'});
+// }
 
 const verifyToken = async (token) => {
     const secretKey = process.env.TOKEN_JWT;
