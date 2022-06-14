@@ -24,7 +24,7 @@ async function obtenerUsuarios(req = request, res = response) {
    
     const users = await getAllUsers();
     if (users.length > 0)
-        res.status(200).json(responseJson(users))
+        res.status(200).json(responseJson(200, "success", users))
     else{
         res.status(404).json(responseJson(404, "no existe"))
     }
