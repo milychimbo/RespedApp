@@ -23,14 +23,15 @@ async function login(req = request, res = response) {
                     IDUSUARIO: user.IDUSUARIO,
                     USERNAME: user.USERNAME,
                     TIPO: user.IDTIPOUSUARIO,
-
                 }
                 const token = jwt.sign(userToken, secret, { expiresIn: '1h' });
                 const time = 1000 * 60 * 60;
                 const data = {
                     token,
+                    id: user.IDUSUARIO,
                     username: user.USERNAME,
                     email: user.EMAIL,
+                    rol: user.IDTIPOUSUARIO,
                 }
                 res.cookie("SESSION_ID", token, { maxAge: time, httpOnly: true, secure: true }).status(200).json(responseJson(200, "success", data))
 
