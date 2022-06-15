@@ -8,7 +8,7 @@ const {
     responseJson
 } = require('../helpers/handleGenericFunction');
 
-const secret = process.env.SECRET || '123';
+const secret = process.env.SECRET || 'p2s5v8y/';
 
 function validateToken(req = request, res = response, next) {
     
