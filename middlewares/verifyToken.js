@@ -12,7 +12,7 @@ const secret = process.env.SECRET || '123';
 
 function validateToken(req = request, res = response, next) {
     
-    let token = req.cookies.token;
+    let token = req.cookies.SESSION_ID;
     if (token != undefined) {
             try {
                 const decodedToken = jwt.verify(token, secret);
