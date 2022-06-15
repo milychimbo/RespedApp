@@ -25,7 +25,7 @@ async function login(req = request,res = response){
                     }
                     const token = jwt.sign(userToken, secret,{expiresIn:'1h'});
                     const time= 1000*60*60;
-                    res.cookie("token",token,{maxAge:time}).status(200).json(responseJson(200, "matchea",token))
+                    res.cookie("SESSION_ID",token,{maxAge:time}).status(200).json(responseJson(200, "matchea",token))
                     
                     
                 } else {
