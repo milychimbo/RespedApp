@@ -11,6 +11,12 @@ const validationSearch = [
         validateResult(req, res, next)
     }
 ];
+const validationToken = [
+    check('token').not().isEmpty().trim().isString().withMessage('No puede ser vacio'),
+    (req, res, next) => {
+        validateResult(req, res, next)
+    }
+];
 
 
-module.exports = {validationSearch }
+module.exports = { validationSearch, validationToken }

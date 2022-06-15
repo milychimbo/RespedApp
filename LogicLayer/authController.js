@@ -7,7 +7,6 @@ const secret = process.env.SECRET || 'CDjNU7uuZWazUSQsScR/P5RYwSeTsm2I0HLCUXKWnH
 
 
 async function login(req = request, res = response) {
-
     const USERNAME = req.body.USERNAME;
     const PASSWORD = req.body.PASSWORD;
     const users = await getAllUsers();
@@ -48,8 +47,21 @@ async function login(req = request, res = response) {
             }
         }
     });
-
-
 }
 
-module.exports = { login };
+async function validate(req = request, res = response) {
+    let { token } = req.body;
+    console.log(token);
+    if (token != undefined) {
+        try {
+            const decodedToken = jwt.verify(token, secret);
+            res.status(200).json(responseJson(200, "token valido", decodedToken))
+        } catch {
+            res.status(401).json(responseJson(401, "El token no es valido"))
+        }
+    } else {
+        res.status(401).json(responseJson(401, "No se recibio un token"))
+    }
+}
+
+module.exports = { login, validate };
