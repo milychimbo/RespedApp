@@ -18,8 +18,8 @@ const RelacionPedidoProducto = connection.define('RELACIONPEDIDOPRODUCTO', {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: 'PEDIDO',
-            key: 'IDPEDIDO'
+            model: 'PEDIDOTOTAL',
+            key: 'IDPEDIDOTOTAL'
         }
     },
     IDPRODUCTO: {
@@ -55,7 +55,7 @@ async function getPedidoProducto(IDPEDIDOTOTALX) {
 async function createPedidoProducto(relacion) {
     try {
         return await RelacionPedidoProducto.create({
-            IDPEDIDO: relacion.IDPEDIDO,
+            IDPEDIDOTOTAL: relacion.IDPEDIDOTOTAL,
             IDPRODUCTO: relacion.IDPRODUCTO,
             PRICE: relacion.PRICE
         });

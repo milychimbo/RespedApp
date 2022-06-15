@@ -3,6 +3,9 @@ const {getAllPedidosLocales, getOnePedidoLocal, createPedidoLocal} = require('..
 const {getOnePedido,createPedido,updatePedido} = require('../DataLayer/pedidototal');
 const {getOneEstado} = require('../DataLayer/estado');
 const { responseJson } = require('../helpers/handleGenericFunction');
+const { getOneProducto } = require('../DataLayer/producto');
+const { generateUUID } = require('../middlewares/generateUUID');
+const { createPedidoProducto } = require('../DataLayer/relacionpedidoproducto');
 
 
 async function obtenerPedidosLocales(req = request,res = response){
@@ -11,6 +14,74 @@ async function obtenerPedidosLocales(req = request,res = response){
     res.status(200).json(responseJson(200, "success", pedidos))
     else
     res.status(404).json(responseJson(404, "no existe"))
+}
+
+async function crearPedido(req = request,res = response){
+    const listaProductos = req.body;
+    let valorTotal=0;
+    let infoProductos = [];
+    if (Object.keys(req.body).length != 0) {
+        listaProductos.forEach(async (idproducto,index) => {
+            let producto = await getOneProducto(idproducto)
+            let info = {
+             "IDPRODUCTO": producto.IDPRODUCTO,
+              "PRICE": producto.PRICE
+            }
+            infoProductos.push(info)
+            valorTotal=valorTotal+producto.PRICE;
+            if(index==listaProductos.length-1){
+              const idState = 1;
+              const numPedido = generateUUID();
+              const pedidoJson={
+                 "NUMPEDIDO": numPedido,
+                 "VALORTOTAL": valorTotal,
+                 "IDSTATE": idState
+              }
+              const pedidoTotal = await createPedido(pedidoJson)
+              
+              // AQUI CREAR RELACION
+              infoProductos.forEach(async (el)=>{
+                 
+                 const relacionJson={
+                     "IDPEDIDOTOTAL": pedidoTotal.IDPEDIDOTOTAL,
+                     "IDPRODUCTO": el.IDPRODUCTO,
+                     "PRICE": el.PRICE
+                  }
+                  await createPedidoProducto(relacionJson)
+              })
+              
+              const respuesta={
+                "NUMPEDIDO": numPedido,
+                "NUMITEMS": listaProductos.length,
+                "VALORTOTAL": valorTotal.toFixed(2)
+             }
+              res.status(200).json(responseJson(200, "success",respuesta))
+              
+            }
+         });
+    }
+    else{
+    res.status(404).json(responseJson(404, "no puede ser vacio"))
+    }
+    
+    
+   
+    //res.status(200).json(responseJson(200, "success", listaProductos))
+   /* const pedido = await getOnePedidoLocal(req.params.id);
+    if(pedido!=null){
+        const pedidoTotal = await getOnePedido(pedido.IDPEDIDOTOTAL)
+        const state = await getOneEstado(pedidoTotal.IDSTATE)
+        const pedidoJson={
+            "IDPEDIDO": pedido.IDPEDIDO,
+            "MESA": pedido.MESA,
+            "VALORTOTAL": pedidoTotal.VALORTOTAL,
+            "NOTE": pedidoTotal.NOTE,
+            "STATE": state.STATE
+        }
+        res.status(200).json(responseJson(200, "success", pedidoJson))
+    }
+    else
+    res.status(404).json(responseJson(404, "no existe"))*/
 }
 
 async function obtenerPedidoLocalID(req = request,res = response){
@@ -74,4 +145,4 @@ async function borrarPedido(req = request,res = response){
 }
 
 
-module.exports= {obtenerPedidosLocales,obtenerPedidoLocalID,crearPedidoLocal,actualizarPedidoTotal,borrarPedido};
+module.exports= {obtenerPedidosLocales,obtenerPedidoLocalID,crearPedido,crearPedidoLocal,actualizarPedidoTotal,borrarPedido};
