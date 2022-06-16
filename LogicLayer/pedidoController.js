@@ -259,6 +259,13 @@ async function crearPedidoReserva(req = request,res = response){
     }
 }
 
+async function actualizarPedido(req = request,res = response){
+    const pedido = await updatePedido(req.body);
+    if(pedido==1)
+   res.status(201).json(responseJson(201, "success"))
+   else
+   res.status(200).json(responseJson(200, "no hubo cambios"))
+}
 
 
 async function borrarPedido(req = request,res = response){
@@ -270,4 +277,4 @@ async function borrarPedido(req = request,res = response){
 }
 
 
-module.exports= {obtenerPedidos,obtenerPedidosLocales,obtenerPedidosDomicilio,obtenerPedidosReserva,crearPedido,crearPedidoLocal,crearPedidoDomicilio,crearPedidoReserva,borrarPedido};
+module.exports= {obtenerPedidos,obtenerPedidosLocales,obtenerPedidosDomicilio,obtenerPedidosReserva,crearPedido,crearPedidoLocal,crearPedidoDomicilio,crearPedidoReserva,actualizarPedido,borrarPedido};

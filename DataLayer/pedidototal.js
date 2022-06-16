@@ -74,8 +74,6 @@ async function createPedido(pedido) {
 async function updatePedido(pedido) {
     try {
         return await PedidoTotal.update({
-            VALORTOTAL: pedido.VALORTOTAL,
-            NOTE: pedido.NOTE,
             IDSTATE: pedido.IDSTATE
         }, {
             where: {
