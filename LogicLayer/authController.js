@@ -32,7 +32,7 @@ async function login(req = request, res = response) {
                     email: user.EMAIL,
                     rol: user.IDTIPOUSUARIO,
                 }
-                res.cookie("SESSION_ID", token, { maxAge: time, httpOnly: true, secure: true }).status(200).json(responseJson(200, "success", data))
+                res.status(200).json(responseJson(200, "success", data))
 
 
             } else {

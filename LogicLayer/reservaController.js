@@ -13,7 +13,6 @@ const {
     updateReserva,
     deleteReserva
 } = require('../DataLayer/reserva');
-const jwt_decode = require('jwt-decode');
 const { generateUUID } = require('../middlewares/generateUUID');
 
 
@@ -53,7 +52,7 @@ async function obtenerReservaID(req = request, res = response) {
 async function crearReserva(req = request, res = response) {
    const reservaJson={
         "NUMRESERVA": generateUUID(),
-        "IDUSUARIO": jwt_decode(req.cookies.token).IDUSUARIO,
+        "IDUSUARIO": req.currentToken.IDUSUARIO,
         "PEOPLE": req.body.PEOPLE,
         "NOTE": req.body.NOTE,
         "RESERVATIONDATE": req.body.RESERVATIONDATE,

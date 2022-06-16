@@ -5,7 +5,7 @@ const { responseJson } = require('../helpers/handleGenericFunction');
 
 
 async function obtenerUsuarioDireccion(req = request,res = response){
-    const direcciones = await getUsuarioDireccion(req.params.id);
+    const direcciones = await getUsuarioDireccion(req.currentToken.IDUSUARIO);
     var obj1 = new Array;
     if(direcciones.length>0){
         direcciones.forEach(async (direccion,index)=> {
@@ -49,13 +49,13 @@ async function crearDireccion(req = request,res = response){
     }
     const direccion = await createDireccion(direccionJson);
     relacionJson={
-        "IDUSUARIO": req.body.IDUSUARIO,
+        "IDUSUARIO": req.currentToken.IDUSUARIO,
         "IDDIRECCION": direccion.IDDIRECCION,
         "DEFAULTDIR": req.body.DEFAULTDIR,
     }
     var aux = 0
     if(Object.keys(direccion)[0]=="dataValues"){
-            const direcciones = await getUsuarioDireccion(req.body.IDUSUARIO);
+            const direcciones = await getUsuarioDireccion(req.currentToken.IDUSUARIO);
            if(direcciones.length>0)
            {
             if(req.body.DEFAULTDIR==true){
@@ -88,7 +88,7 @@ async function crearDireccion(req = request,res = response){
            }
             else{
                 relacionJson={
-                    "IDUSUARIO": req.body.IDUSUARIO,
+                    "IDUSUARIO": req.currentToken.IDUSUARIO,
                     "IDDIRECCION": direccion.IDDIRECCION,
                     "DEFAULTDIR": true,
                 }

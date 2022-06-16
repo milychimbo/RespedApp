@@ -1,17 +1,51 @@
 const {request,response} = require('express');
 const {getAllPedidosLocales, getOnePedidoLocal, createPedidoLocal} = require('../DataLayer/pedidolocal');
-const {getOnePedido,createPedido,updatePedido} = require('../DataLayer/pedidototal');
+const {getAllPedidos,getOnePedido,createPedido,updatePedido} = require('../DataLayer/pedidototal');
 const {getOneEstado} = require('../DataLayer/estado');
 const { responseJson } = require('../helpers/handleGenericFunction');
 const { getOneProducto } = require('../DataLayer/producto');
 const { generateUUID } = require('../middlewares/generateUUID');
-const { createPedidoProducto } = require('../DataLayer/relacionpedidoproducto');
+const { createPedidoProducto,getPedidoProducto } = require('../DataLayer/relacionpedidoproducto');
 
-
-async function obtenerPedidosLocales(req = request,res = response){
-    const pedidos = await getAllPedidosLocales();
+async function obtenerPedidos(req = request,res = response){
+    const pedidos = await getAllPedidos();
     if(pedidos.length>0)
     res.status(200).json(responseJson(200, "success", pedidos))
+    else
+    res.status(404).json(responseJson(404, "no existe"))
+}
+async function obtenerPedidosLocales(req = request,res = response){
+    const pedidos = await getAllPedidosLocales();
+    const respuestas =[];
+    if(pedidos.length>0){
+        pedidos.forEach(async (pedido,index) =>{
+            const pedidoTotal = await getOnePedido(pedido.IDPEDIDOTOTAL);
+            const productos = await getPedidoProducto(pedido.IDPEDIDOTOTAL);
+            const arrayProductos = [];
+            productos.forEach(async (producto,index1) =>{
+                const productovar = await getOneProducto(producto.IDPRODUCTO)
+                arrayProductos.push(productovar.NAME)
+                if(index1==(productos.length-1)){
+                    const estado = await getOneEstado(pedidoTotal.IDSTATE);
+                    const respuesta = {
+                        "IDPEDIDO": pedido.IDPEDIDO,
+                        "NUMPEDIDO": pedidoTotal.NUMPEDIDO,
+                        "PRODUCTOS": arrayProductos,
+                        "ESTADO": estado.STATE,
+                        "MESA": pedido.MESA,
+                        "VALORTOTAL": pedidoTotal.VALORTOTAL.toFixed(2),
+                        "NOTE": pedidoTotal.NOTE
+                    }
+                    respuestas.push(respuesta);
+                    if(index==(pedidos.length-1)){
+                        res.status(200).json(responseJson(200, "success", respuestas))
+                    }
+                }
+            })
+            //const arrayProductos = await getOneProducto(pedido.IDPEDIDOTOTAL);
+            
+        })
+    }
     else
     res.status(404).json(responseJson(404, "no existe"))
 }
@@ -84,48 +118,45 @@ async function crearPedido(req = request,res = response){
     res.status(404).json(responseJson(404, "no existe"))*/
 }
 
-async function obtenerPedidoLocalID(req = request,res = response){
-    const pedido = await getOnePedidoLocal(req.params.id);
-    if(pedido!=null){
-        const pedidoTotal = await getOnePedido(pedido.IDPEDIDOTOTAL)
-        const state = await getOneEstado(pedidoTotal.IDSTATE)
-        const pedidoJson={
-            "IDPEDIDO": pedido.IDPEDIDO,
-            "MESA": pedido.MESA,
-            "VALORTOTAL": pedidoTotal.VALORTOTAL,
-            "NOTE": pedidoTotal.NOTE,
-            "STATE": state.STATE
-        }
-        res.status(200).json(responseJson(200, "success", pedidoJson))
-    }
-    else
-    res.status(404).json(responseJson(404, "no existe"))
-}
+// async function obtenerPedidoLocalID(req = request,res = response){
+//     const pedido = await getOnePedidoLocal(req.params.id);
+//     if(pedido!=null){
+//         const pedidoTotal = await getOnePedido(pedido.IDPEDIDOTOTAL)
+//         const state = await getOneEstado(pedidoTotal.IDSTATE)
+//         const pedidoJson={
+//             "IDPEDIDO": pedido.IDPEDIDO,
+//             "MESA": pedido.MESA,
+//             "VALORTOTAL": pedidoTotal.VALORTOTAL,
+//             "NOTE": pedidoTotal.NOTE,
+//             "STATE": state.STATE
+//         }
+//         res.status(200).json(responseJson(200, "success", pedidoJson))
+//     }
+//     else
+//     res.status(404).json(responseJson(404, "no existe"))
+// }
 
 async function crearPedidoLocal(req = request,res = response){
-    const pedidoTotalJson = {
-        "VALORTOTAL": 0,
-        "IDSTATE": 1
+    const pedidoLocalJson = {
+        "IDUSUARIO": req.currentToken.IDUSUARIO ,
+        "IDPEDIDOTOTAL": req.body.IDPEDIDOTOTAL,
+        "MESA": req.body.MESA
     }
-    const pedidototal = await createPedido(pedidoTotalJson);
-    if(Object.keys(pedidototal)[0]=="dataValues"){
-         const pedidoJson = {
-                "IDUSUARIO": req.body.IDUSUARIO,
-                "IDPEDIDOTOTAL": pedidototal.IDPEDIDOTOTAL,
-                "MESA": req.body.MESA
-            }
-            const pedido = await createPedidoLocal(pedidoJson);
-            if(Object.keys(pedido)[0]=="dataValues"){
-                res.status(200).json(responseJson(200, "success"))
-               }
-               else
-               {
-                res.status(400).json(responseJson(400, "no se pudo crear pedido local",pedido))
-               }
-               
+
+   const pedido = await createPedidoLocal(pedidoLocalJson);
+    if(Object.keys(pedido)[0]=="dataValues"){
+        const requestNota ={
+            "IDPEDIDOTOTAL": req.body.IDPEDIDOTOTAL,
+            "NOTE": req.body.NOTE
         }
-        else
-        res.status(400).json(responseJson(400, "no se pudo crear pedido total",pedidototal))
+        const agregarNota = await updatePedido(requestNota);
+        console.log(agregarNota)
+         res.status(200).json(responseJson(200, "success"))
+     }
+    else
+    {
+     res.status(400).json(responseJson(400, "no se pudo crear pedido local",pedido))
+    }
 }
 
 async function actualizarPedidoTotal(req = request,res = response){
@@ -145,4 +176,4 @@ async function borrarPedido(req = request,res = response){
 }
 
 
-module.exports= {obtenerPedidosLocales,obtenerPedidoLocalID,crearPedido,crearPedidoLocal,actualizarPedidoTotal,borrarPedido};
+module.exports= {obtenerPedidos,obtenerPedidosLocales,obtenerPedidoLocalID,crearPedido,crearPedidoLocal,actualizarPedidoTotal,borrarPedido};

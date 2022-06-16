@@ -1,7 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors')
-const cookieParser = require('cookie-parser');
 
 
 const app = express();
@@ -11,18 +10,12 @@ app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
 
 app.get("/", (req, res) => {
     res.json({ status: 200, message: "hola" })
 });
 app.get('/api', (req, res) => {
     res.json({ status: 400, message: "bad request" });
-});
-
-app.get('/cookie',function(req, res){
-  res.cookie("loggedin", "true");
-    res.send("Cookie sent!");
 });
 
 app.get('/kill',function(req, res){
