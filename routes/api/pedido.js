@@ -8,7 +8,7 @@ const router = Router();
  router.get('/', validateToken,obtenerPedidos);
  router.get('/local/', validateToken,obtenerPedidosLocales);
 
- router.get('/:id',validateToken, obtenerPedidoLocalID);
+// router.get('/:id',validateToken, obtenerPedidoLocalID);
 
  //router.post('/', validateToken, crearPedidoLocal);
 

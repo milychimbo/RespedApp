@@ -85,6 +85,7 @@ async function crearPedido(req = request,res = response){
               })
               
               const respuesta={
+                "IDPEDIDOTOTAL": pedidoTotal.IDPEDIDOTOTAL,
                 "NUMPEDIDO": numPedido,
                 "NUMITEMS": listaProductos.length,
                 "VALORTOTAL": valorTotal.toFixed(2)
@@ -176,4 +177,4 @@ async function borrarPedido(req = request,res = response){
 }
 
 
-module.exports= {obtenerPedidos,obtenerPedidosLocales,obtenerPedidoLocalID,crearPedido,crearPedidoLocal,actualizarPedidoTotal,borrarPedido};
+module.exports= {obtenerPedidos,obtenerPedidosLocales,crearPedido,crearPedidoLocal,actualizarPedidoTotal,borrarPedido};
