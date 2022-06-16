@@ -62,6 +62,15 @@ async function getAllUsers() {
   }
 }
 
+async function getAllUsersByType(tipo) {
+  try {
+    return await User.findAll({
+      where: { IDTIPOUSUARIO: tipo }})
+}  catch(err){
+  return err;
+}
+}
+
 async function getOneUser(IDUSUARIO) {
   try {
     return await User.findByPk(IDUSUARIO)
@@ -120,6 +129,7 @@ async function deleteUser(IDUSUARIO) {
 
 module.exports = {
   getAllUsers,
+  getAllUsersByType,
   getOneUser,
   createUser,
   updateUser,

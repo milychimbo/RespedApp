@@ -4,14 +4,13 @@ const {
 } = require('express');
 const {
     getAllUsers,
-    getOneUser,
     updateUser,
     createUser,
-    deleteUser
+    deleteUser,
+    getAllUsersByType
 } = require('../DataLayer/usuario');
 const {
-    getOneTipoUsuario,
-    updateTipoUsuario
+    getOneTipoUsuario
 } = require('../DataLayer/tipousuario');
 const {
     responseJson
@@ -21,7 +20,6 @@ const {
 } = require('../helpers/handleBCrypt');
 
 async function obtenerUsuarios(req = request, res = response) {
-   
     const users = await getAllUsers();
     if (users.length > 0)
         res.status(200).json(responseJson(200, "success", users))
@@ -31,22 +29,33 @@ async function obtenerUsuarios(req = request, res = response) {
         
 }
 
-async function obtenerUsuarioId(req = request, res = response) {
-    const user = await getOneUser(req.params.id);
-    if (user != null)
-        res.status(200).json(responseJson(200, "success", user))
-    else
+async function obtenerUsuariosPorTipo(req = request, res = response) {
+   
+    const users = await getAllUsersByType(req.params.id);
+    const arrayUsers = [];
+    if (users.length > 0){
+        users.forEach(async (user,index) => {
+            const tipo = await getOneTipoUsuario(req.params.id);
+            const respuesta = {
+                "IDUSUARIO":user.IDUSUARIO,
+                "USERNAME":user.USERNAME,
+                "EMAIL":user.EMAIL,
+                "NAME":user.NAME,
+                "LASTNAME":user.LASTNAME,
+                "PHONE":user.PHONE,
+                "TIPO": tipo.TIPO
+            }
+            arrayUsers.push(respuesta)
+            if(index==(users.length-1)){
+                res.status(200).json(responseJson(200, "success", arrayUsers))
+            }
+        });
+    }
+    else{
         res.status(404).json(responseJson(404, "no existe"))
+    }
+        
 }
-
-async function obtenerTipoUsuario(req = request, res = response) {
-    const user = await getOneTipoUsuario(req.params.id);
-    if (user != null)
-        res.status(200).json(responseJson(200, "success", user))
-    else
-        res.status(404).json(responseJson(404, "no existe"))
-}
-
 
 async function crearUsuario(req = request, res = response) {
     req.body.PASSWORD = await encrypt(req.body.PASSWORD);
@@ -85,8 +94,7 @@ async function borrarUsuario(req = request, res = response) {
 
 module.exports = {
     obtenerUsuarios,
-    obtenerUsuarioId,
-    obtenerTipoUsuario,
+    obtenerUsuariosPorTipo,
     crearUsuario,
     actualizarUsuario,
     borrarUsuario
