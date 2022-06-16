@@ -13,7 +13,8 @@ async function obtenerUsuarioDireccion(req = request,res = response){
             if(Object.keys(direccionResponse)[0]=="dataValues"){
                 
                 var jsonadd = {
-                    "DEFAULTDIR": direccion.DEFAULTDIR
+                    "DEFAULTDIR": direccion.DEFAULTDIR,
+                    "IDRELACIONUD": direccion.IDRELACIONUD
                 }
                 const result = Object.assign({}, direccionResponse.dataValues, jsonadd);
                 obj1.push(result);
@@ -26,6 +27,28 @@ async function obtenerUsuarioDireccion(req = request,res = response){
     else
     res.status(404).json(responseJson(404, "no existe",direcciones))
 }
+// async function obtenerUsuarioDireccion(req = request,res = response){
+//     const direcciones = await getUsuarioDireccion(req.currentToken.IDUSUARIO);
+//     var obj1 = new Array;
+//     if(direcciones.length>0){
+//         direcciones.forEach(async (direccion,index)=> {
+//             const direccionResponse = await getOneDireccion(direccion.IDDIRECCION);
+//             if(Object.keys(direccionResponse)[0]=="dataValues"){
+                
+//                 var jsonadd = {
+//                     "DEFAULTDIR": direccion.DEFAULTDIR
+//                 }
+//                 const result = Object.assign({}, direccionResponse.dataValues, jsonadd);
+//                 obj1.push(result);
+//             }
+//             if(index==(direcciones.length-1)){
+//                 res.status(200).json(responseJson(200, "success", obj1))
+//             }
+//         });
+//     }
+//     else
+//     res.status(404).json(responseJson(404, "no existe",direcciones))
+// }
 
 async function crearDireccion(req = request,res = response){
     let direccionJson;

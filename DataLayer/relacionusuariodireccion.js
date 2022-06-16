@@ -50,6 +50,14 @@ async function getUsuarioDireccion(IDUSUARIOX) {
     }
 }
 
+async function getRelacion(IDRELACIONUD) {
+    try {
+        return await RelacionUsuarioDireccion.findByPk(IDRELACIONUD)
+    }  catch(err){
+        return err;
+    }
+}
+
 async function createUsuarioDireccion(relacion) {
     try {
         return await RelacionUsuarioDireccion.create({
@@ -82,5 +90,6 @@ async function updateUsuarioDireccion(relacion) {
 module.exports = {
     getUsuarioDireccion,
     createUsuarioDireccion,
+    getRelacion,
     updateUsuarioDireccion
 }

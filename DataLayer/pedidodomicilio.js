@@ -29,10 +29,6 @@ const PedidoDomicilio = connection.define('PEDIDODOMICILIO', {
             model: 'PEDIDOTOTAL',
             key: 'IDPEDIDOTOTAL'
         }
-    },
-    ENVIO: {
-        type: DataTypes.DOUBLE,
-        allowNull: false
     }
 }, {
     tableName: 'PEDIDODOMICILIO',
@@ -63,8 +59,7 @@ async function createPedidoDomicilio(pedido) {
     try {
         return await PedidoDomicilio.create({
             IDRELACIONUD: pedido.IDRELACIONUD,
-            IDPEDIDOTOTAL: pedido.IDPEDIDOTOTAL,
-            ENVIO: pedido.ENVIO
+            IDPEDIDOTOTAL: pedido.IDPEDIDOTOTAL
         });
     }  catch(err){
         return err;
