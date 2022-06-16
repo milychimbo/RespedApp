@@ -58,9 +58,9 @@ async function getAllReservas() {
     }
 }
 
-async function getOneReserva(NUMRESERVA) {
+async function getOneReserva(IDRESERVA) {
     try {
-        return await Reserva.findOne(NUMRESERVA)
+        return await Reserva.findByPk(IDRESERVA)
     } catch(err){
         return err;}
 }

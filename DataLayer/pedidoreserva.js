@@ -57,7 +57,7 @@ async function getOnePedidoReserva(IDPEDIDO) {
 
 async function createPedidoReserva(pedido) {
     try {
-        return await Pedido.create({
+        return await PedidoReserva.create({
             IDRESERVA: pedido.IDRESERVA,
             IDPEDIDOTOTAL: pedido.IDPEDIDOTOTAL
         });

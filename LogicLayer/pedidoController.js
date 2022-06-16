@@ -1,7 +1,8 @@
 const {request,response} = require('express');
-const {getAllPedidosLocales, getOnePedidoLocal, createPedidoLocal} = require('../DataLayer/pedidolocal');
+const {getAllPedidosLocales, createPedidoLocal} = require('../DataLayer/pedidolocal');
 const {createPedidoDomicilio,getAllPedidosDomicilio} = require('../DataLayer/pedidodomicilio');
-const {getAllPedidos,getOnePedido,createPedido,updatePedido} = require('../DataLayer/pedidototal');
+const {createPedidoReserva,getAllPedidosReserva} = require('../DataLayer/pedidoreserva');
+const {getAllPedidos,getOnePedido,createPedido,updatePedido,deletePedido} = require('../DataLayer/pedidototal');
 const {getOneEstado} = require('../DataLayer/estado');
 const {getOneDireccion} = require('../DataLayer/direccion');
 const { responseJson } = require('../helpers/handleGenericFunction');
@@ -9,6 +10,7 @@ const { getOneProducto } = require('../DataLayer/producto');
 const { generateUUID } = require('../middlewares/generateUUID');
 const { createPedidoProducto,getPedidoProducto} = require('../DataLayer/relacionpedidoproducto');
 const { getRelacion } = require('../DataLayer/relacionusuariodireccion');
+const { getOneReserva } = require('../DataLayer/reserva');
 
 async function obtenerPedidos(req = request,res = response){
     const pedidos = await getAllPedidos();
@@ -52,8 +54,6 @@ async function obtenerPedidosLocales(req = request,res = response){
     else
     res.status(404).json(responseJson(404, "no existe"))
 }
-
-
 async function obtenerPedidosDomicilio(req = request,res = response){
     const pedidos = await getAllPedidosDomicilio();
     const respuestas =[];
@@ -77,6 +77,42 @@ async function obtenerPedidosDomicilio(req = request,res = response){
                         "VALORTOTAL": pedidoTotal.VALORTOTAL.toFixed(2),
                         "NOTE": pedidoTotal.NOTE,
                         "DIRECCION": direccion
+                    }
+                    respuestas.push(respuesta);
+                    if(index==(pedidos.length-1)){
+                        res.status(200).json(responseJson(200, "success", respuestas))
+                    }
+                }
+            })
+            //const arrayProductos = await getOneProducto(pedido.IDPEDIDOTOTAL);
+            
+        })
+    }
+    else
+    res.status(404).json(responseJson(404, "no existe"))
+}
+async function obtenerPedidosReserva(req = request,res = response){
+    const pedidos = await getAllPedidosReserva();
+    const respuestas =[];
+    if(pedidos.length>0){
+        pedidos.forEach(async (pedido,index) =>{
+            const pedidoTotal = await getOnePedido(pedido.IDPEDIDOTOTAL);
+            const productos = await getPedidoProducto(pedido.IDPEDIDOTOTAL);
+            const arrayProductos = [];
+            productos.forEach(async (producto,index1) =>{
+                const productovar = await getOneProducto(producto.IDPRODUCTO)
+                arrayProductos.push(productovar.NAME)
+                if(index1==(productos.length-1)){
+                    const estado = await getOneEstado(pedidoTotal.IDSTATE);
+                    const reserva = await getOneReserva(pedido.IDRESERVA);
+                    const respuesta = {
+                        "IDPEDIDO": pedido.IDPEDIDO,
+                        "NUMPEDIDO": pedidoTotal.NUMPEDIDO,
+                        "PRODUCTOS": arrayProductos,
+                        "ESTADO": estado.STATE,
+                        "VALORTOTAL": pedidoTotal.VALORTOTAL.toFixed(2),
+                        "NOTE": pedidoTotal.NOTE,
+                        "RESERVA": reserva
                     }
                     respuestas.push(respuesta);
                     if(index==(pedidos.length-1)){
@@ -160,24 +196,6 @@ async function crearPedido(req = request,res = response){
     res.status(404).json(responseJson(404, "no existe"))*/
 }
 
-// async function obtenerPedidoLocalID(req = request,res = response){
-//     const pedido = await getOnePedidoLocal(req.params.id);
-//     if(pedido!=null){
-//         const pedidoTotal = await getOnePedido(pedido.IDPEDIDOTOTAL)
-//         const state = await getOneEstado(pedidoTotal.IDSTATE)
-//         const pedidoJson={
-//             "IDPEDIDO": pedido.IDPEDIDO,
-//             "MESA": pedido.MESA,
-//             "VALORTOTAL": pedidoTotal.VALORTOTAL,
-//             "NOTE": pedidoTotal.NOTE,
-//             "STATE": state.STATE
-//         }
-//         res.status(200).json(responseJson(200, "success", pedidoJson))
-//     }
-//     else
-//     res.status(404).json(responseJson(404, "no existe"))
-// }
-
 async function crearPedidoLocal(req = request,res = response){
     const pedidoLocalJson = {
         "IDUSUARIO": req.currentToken.IDUSUARIO ,
@@ -196,17 +214,9 @@ async function crearPedidoLocal(req = request,res = response){
      }
     else
     {
-     res.status(400).json(responseJson(400, "no se pudo crear pedido local",pedido))
+     res.status(400).json(responseJson(400, "no se pudo crear pedido local",pedido.parent.sqlMessage))
     }
 }
-
-// async function actualizarPedidoTotal(req = request,res = response){
-//    const pedido = await updatePedido(req.body);
-//    if(pedido==1)
-//    res.status(201).json(responseJson(201, "success"))
-//    else
-//    res.status(200).json(responseJson(200, "no hubo cambios")) //me devuelve 1 si actualizo o 0 si no
-// }
 
 async function crearPedidoDomicilio(req = request,res = response){
     const pedidoDomicilioJson = {
@@ -225,17 +235,31 @@ async function crearPedidoDomicilio(req = request,res = response){
      }
     else
     {
-     res.status(400).json(responseJson(400, "no se pudo crear pedido local",pedido))
+     res.status(400).json(responseJson(400, "no se pudo crear pedido a domicilio",pedido.parent.sqlMessage))
     }
 }
 
-// async function actualizarPedidoTotal(req = request,res = response){
-//    const pedido = await updatePedido(req.body);
-//    if(pedido==1)
-//    res.status(201).json(responseJson(201, "success"))
-//    else
-//    res.status(200).json(responseJson(200, "no hubo cambios")) //me devuelve 1 si actualizo o 0 si no
-// }
+async function crearPedidoReserva(req = request,res = response){
+    const pedidoReservaJson = {
+        "IDRESERVA": req.body.IDRESERVA ,
+        "IDPEDIDOTOTAL": req.body.IDPEDIDOTOTAL
+    }
+   const pedido = await createPedidoReserva(pedidoReservaJson);
+    if(Object.keys(pedido)[0]=="dataValues"){
+        const requestNota ={
+            "IDPEDIDOTOTAL": req.body.IDPEDIDOTOTAL,
+            "NOTE": req.body.NOTE
+        }
+        await updatePedido(requestNota);
+         res.status(200).json(responseJson(200, "success"))
+     }
+    else
+    {
+     res.status(400).json(responseJson(400, "no se pudo crear pedido de reserva",pedido.parent.sqlMessage))
+    }
+}
+
+
 
 async function borrarPedido(req = request,res = response){
     const pedido = await deletePedido(req.params.id);
@@ -246,4 +270,4 @@ async function borrarPedido(req = request,res = response){
 }
 
 
-module.exports= {obtenerPedidos,obtenerPedidosLocales,obtenerPedidosDomicilio,crearPedido,crearPedidoLocal,crearPedidoDomicilio,borrarPedido};
+module.exports= {obtenerPedidos,obtenerPedidosLocales,obtenerPedidosDomicilio,obtenerPedidosReserva,crearPedido,crearPedidoLocal,crearPedidoDomicilio,crearPedidoReserva,borrarPedido};
