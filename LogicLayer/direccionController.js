@@ -142,7 +142,7 @@ async function actualizarDireccion(req = request,res = response){
         "PHONEDIR": req.body.PHONEDIR
     }
     if(req.body.DEFAULTDIR){
-        const direcciones = await getUsuarioDireccion(req.body.IDUSUARIO);
+        const direcciones = await getUsuarioDireccion(req.currentToken.IDUSUARIO);
            if(direcciones.length>0)
            {
             let aux =0;
@@ -156,6 +156,7 @@ async function actualizarDireccion(req = request,res = response){
                                 "DEFAULTDIR": false,
                             }
                             await updateUsuarioDireccion(update1)
+                            
                         });
                     }
                     const update = {
@@ -198,7 +199,7 @@ async function actualizarDireccion(req = request,res = response){
 }
 
 async function borrarDireccion(req = request,res = response){
-    const direcciones = await getUsuarioDireccion(req.body.IDUSUARIO);
+    const direcciones = await getUsuarioDireccion(req.currentToken.IDUSUARIO);
     if(direcciones.length>0){
         let aux =0;
         direcciones.forEach(async (direccionx,index)=>{
