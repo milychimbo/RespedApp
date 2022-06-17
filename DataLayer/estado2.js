@@ -29,7 +29,7 @@ const Estado2 = connection.define('ESTADO2', {
 
 async function getOneEstado(IDSTATE) {
     try {
-        return await Estado.findByPk(IDSTATE)
+        return await Estado2.findByPk(IDSTATE)
     } catch (err) {
         return err;
     }

@@ -66,6 +66,15 @@ async function getAllReservas() {
     }
 }
 
+async function getReservasPorEstado(estado) {
+    try {
+        return await Reserva.findAll({
+            where: {IDSTATE : estado}
+           });
+    } catch(err){
+        return err;
+    }
+}
 async function getOneReserva(IDRESERVA) {
     try {
         return await Reserva.findByPk(IDRESERVA)
@@ -99,10 +108,6 @@ async function createReserva(reserva) {
 async function updateReserva(reserva) {
     try {
         return await Reserva.update({
-            PEOPLE: reserva.PEOPLE,
-            NOTE: reserva.NOTE,
-            RESERVATIONDATE: reserva.RESERVATIONDATE,
-            RESERVATIONTIME: reserva.RESERVATIONTIME,
             IDSTATE: reserva.IDSTATE
         }, {
             where: {
@@ -127,6 +132,7 @@ async function deleteReserva(IDRESERVA) {
 module.exports = {
     getAllReservas,
     getOneReserva,
+    getReservasPorEstado,
     getUsuarioReserva,
     createReserva,
     updateReserva,
