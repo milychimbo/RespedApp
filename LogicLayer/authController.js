@@ -23,7 +23,7 @@ async function login(req = request, res = response) {
                     USERNAME: user.USERNAME,
                     TIPO: user.IDTIPOUSUARIO,
                 }
-                const token = jwt.sign(userToken, secret, { expiresIn: '1h' });
+                const token = jwt.sign(userToken, secret, { expiresIn: '1d' });
                 const time = 1000 * 60 * 60;
                 const data = {
                     token,

@@ -22,6 +22,7 @@ const validationUpdate = [
     check('RESERVATIONDATE').optional().isDate().withMessage('Debe de ser tipo fecha'),
     check('RESERVATIONTIME').optional().isString().withMessage('Debe ser de tipo texto'),
     check('RESERVATIONTIME').optional().isLength({ min: 5, max: 5}).withMessage('Longitud de 5'),
+    check('IDSTATE').optional().isInt().trim().withMessage('No es un valor valido'),
     (req, res, next) => {
         validateResult(req, res, next)
     }

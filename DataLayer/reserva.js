@@ -26,6 +26,14 @@ const Reserva = connection.define('RESERVA', {
             key: 'IDUSUARIO'
         }
     },
+    IDSTATE: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'ESTADO',
+            key: 'IDSTATE'
+        }
+    },
     PEOPLE: {
         type: DataTypes.INTEGER,
         allowNull: false
@@ -81,7 +89,8 @@ async function createReserva(reserva) {
             PEOPLE: reserva.PEOPLE,
             NOTE: reserva.NOTE,
             RESERVATIONDATE: reserva.RESERVATIONDATE,
-            RESERVATIONTIME: reserva.RESERVATIONTIME
+            RESERVATIONTIME: reserva.RESERVATIONTIME,
+            IDSTATE: reserva.IDSTATE
         });
     } catch(err){
         return err;}
@@ -93,7 +102,8 @@ async function updateReserva(reserva) {
             PEOPLE: reserva.PEOPLE,
             NOTE: reserva.NOTE,
             RESERVATIONDATE: reserva.RESERVATIONDATE,
-            RESERVATIONTIME: reserva.RESERVATIONTIME
+            RESERVATIONTIME: reserva.RESERVATIONTIME,
+            IDSTATE: reserva.IDSTATE
         }, {
             where: {
                 IDRESERVA: reserva.IDRESERVA

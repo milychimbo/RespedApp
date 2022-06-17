@@ -56,7 +56,8 @@ async function crearReserva(req = request, res = response) {
         "PEOPLE": req.body.PEOPLE,
         "NOTE": req.body.NOTE,
         "RESERVATIONDATE": req.body.RESERVATIONDATE,
-        "RESERVATIONTIME": req.body.RESERVATIONTIME
+        "RESERVATIONTIME": req.body.RESERVATIONTIME,
+        "IDSTATE": 1
     }
     const reserva = await createReserva(reservaJson);
     if (Object.keys(reserva)[0] == "dataValues")
