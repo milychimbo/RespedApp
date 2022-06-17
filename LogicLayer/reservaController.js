@@ -7,8 +7,7 @@ const {
 } = require('../helpers/handleGenericFunction');
 const {
     getAllReservas,
-    getOneReserva,
-    getUsuarioReserva,
+    getReservasPorUsuario,
     createReserva,
     updateReserva,
     deleteReserva,
@@ -59,6 +58,31 @@ async function obtenerReservas(req = request, res = response) {
             }
         });
     }
+    else
+        res.status(404).json(responseJson(404, "no existe"))
+}
+async function obtenerReservasUsuario(req = request, res = response) {
+    const reservas = await getReservasPorUsuario(req.currentToken.IDUSUARIO);
+    const arrayReservas = [];
+    if (reservas.length>0){
+        reservas.forEach(async (reserva,index) => {
+            //estadoreserva
+            const estado = await getOneEstado(reserva.IDSTATE);
+            const reservaJson={
+                "NUMRESERVA": reserva.NUMRESERVA,
+                "PEOPLE": reserva.PEOPLE,
+                "NOTE": reserva.NOTE,
+                "RESERVATIONDATE": reserva.RESERVATIONDATE,
+                "RESERVATIONTIME": reserva.RESERVATIONTIME,
+                "STATE": estado.STATE
+            }
+            arrayReservas.push(reservaJson);
+            if(index==(reservas.length-1)){
+                res.status(200).json(responseJson(200, "success", arrayReservas))
+            }
+        });
+    }
+        
     else
         res.status(404).json(responseJson(404, "no existe"))
 }
@@ -143,6 +167,7 @@ async function borrarReserva(req = request, res = response) {
 module.exports = {
     obtenerReservas,
     obtenerReservasPorEstado,
+    obtenerReservasUsuario,
     crearReserva,
     actualizarReserva,
     borrarReserva

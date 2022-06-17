@@ -65,7 +65,15 @@ async function getAllReservas() {
         return err;
     }
 }
-
+async function getReservasPorUsuario(usuario) {
+    try {
+        return await Reserva.findAll({
+            where: {IDUSUARIO : usuario}
+           });
+    } catch(err){
+        return err;
+    }
+}
 async function getReservasPorEstado(estado) {
     try {
         return await Reserva.findAll({
@@ -133,6 +141,7 @@ module.exports = {
     getAllReservas,
     getOneReserva,
     getReservasPorEstado,
+    getReservasPorUsuario,
     getUsuarioReserva,
     createReserva,
     updateReserva,
