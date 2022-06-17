@@ -49,6 +49,13 @@ async function obtenerUsuarioDireccion(req = request,res = response){
 //     else
 //     res.status(404).json(responseJson(404, "no existe",direcciones))
 // }
+async function obtenerDireccionId(req = request, res = response) {
+    const direccion = await getOneDireccion(req.params.id);
+    if (direccion != null){
+        res.status(200).json(responseJson(200, "success", direccion))}
+    else
+        res.status(404).json(responseJson(404, "no existe"))
+}
 
 async function crearDireccion(req = request,res = response){
     let direccionJson;
@@ -233,4 +240,4 @@ async function borrarDireccion(req = request,res = response){
 }
 
 
-module.exports= {obtenerUsuarioDireccion,crearDireccion,actualizarDireccion,borrarDireccion};
+module.exports= {obtenerUsuarioDireccion,obtenerDireccionId,crearDireccion,actualizarDireccion,borrarDireccion};
