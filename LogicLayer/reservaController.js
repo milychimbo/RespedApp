@@ -20,7 +20,7 @@ const { getOneEstado } = require('../DataLayer/estado2');
 
 async function obtenerReservas(req = request, res = response) {
     const reservas = await getAllReservas();
-    const arrayReservas = [];
+   
     if (reservas.length > 0){
         reservas.forEach(async (reserva,index) => {
             //nombreusuario
@@ -90,8 +90,44 @@ async function obtenerReservasUsuario(req = request, res = response) {
 
 async function obtenerReservasPorEstado(req = request, res = response) {
     const reservas = await getReservasPorEstado(req.params.id);
-    if (reservas.length>0)
-        res.status(200).json(responseJson(200, "success", reservas))
+    const arrayReservas = [];
+    if (reservas.length>0){
+        reservas.forEach(async (reserva,index) => {
+            //nombreusuario
+            const usuario = await getOneUser(reserva.IDUSUARIO);
+            let nombre = usuario.NAME;
+            let apellido = usuario.LASTNAME;
+            if(nombre==null){
+                if(apellido==null){
+                    nombre = usuario.USERNAME;
+                }
+                else{
+                    nombre = usuario.LASTNAME;
+                }
+            }
+            else{
+                if(apellido!=null){
+                    nombre = usuario.NAME+ " "+usuario.LASTNAME;
+                }
+            }
+            //estadoreserva
+            const estado = await getOneEstado(reserva.IDSTATE);
+            const reservaJson={
+                "IDRESERVA": reserva.IDRESERVA,
+                "NUMRESERVA": reserva.NUMRESERVA,
+                "NAME": nombre,
+                "PEOPLE": reserva.PEOPLE,
+                "NOTE": reserva.NOTE,
+                "RESERVATIONDATE": reserva.RESERVATIONDATE,
+                "RESERVATIONTIME": reserva.RESERVATIONTIME,
+                "STATE": estado.STATE
+            }
+            arrayReservas.push(reservaJson);
+            if(index==(reservas.length-1)){
+                res.status(200).json(responseJson(200, "success", arrayReservas))
+            }
+        });
+    }
     else
         res.status(404).json(responseJson(404, "no existe"))
 }
