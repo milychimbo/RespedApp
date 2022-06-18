@@ -46,7 +46,15 @@ async function getAllPedidosReserva() {
         return err;
     }
 }
-
+async function getReservaPorIdReserva(idreserva) {
+    try {
+        return await PedidoReserva.findOne({
+            where: {IDRESERVA : idreserva}
+           });
+    } catch(err){
+        return err;
+    }
+}
 async function getOnePedidoReserva(IDPEDIDO) {
     try {
         return await PedidoReserva.findByPk(IDPEDIDO)
@@ -69,6 +77,7 @@ async function createPedidoReserva(pedido) {
 
 module.exports = {
     getAllPedidosReserva,
+    getReservaPorIdReserva,
     getOnePedidoReserva,
     createPedidoReserva
 }

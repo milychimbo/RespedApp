@@ -69,6 +69,7 @@ async function obtenerReservasUsuario(req = request, res = response) {
             //estadoreserva
             const estado = await getOneEstado(reserva.IDSTATE);
             const reservaJson={
+                "IDRESERVA": reserva.IDRESERVA,
                 "NUMRESERVA": reserva.NUMRESERVA,
                 "PEOPLE": reserva.PEOPLE,
                 "NOTE": reserva.NOTE,

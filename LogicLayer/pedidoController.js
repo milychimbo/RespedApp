@@ -1,7 +1,7 @@
 const {request,response} = require('express');
 const {getAllPedidosLocales, createPedidoLocal, getPedidosPorUsuario} = require('../DataLayer/pedidolocal');
 const {createPedidoDomicilio,getAllPedidosDomicilio, getPedidosPorRelacion} = require('../DataLayer/pedidodomicilio');
-const {createPedidoReserva,getAllPedidosReserva} = require('../DataLayer/pedidoreserva');
+const {createPedidoReserva,getAllPedidosReserva, getReservaPorIdReserva} = require('../DataLayer/pedidoreserva');
 const {getAllPedidos,getOnePedido,createPedido,updatePedido,deletePedido} = require('../DataLayer/pedidototal');
 const {getOneEstado} = require('../DataLayer/estado');
 const {getOneDireccion} = require('../DataLayer/direccion');
@@ -10,7 +10,7 @@ const { getOneProducto } = require('../DataLayer/producto');
 const { generateUUID } = require('../middlewares/generateUUID');
 const { createPedidoProducto,getPedidoProducto} = require('../DataLayer/relacionpedidoproducto');
 const { getRelacion, getUsuarioDireccion } = require('../DataLayer/relacionusuariodireccion');
-const { getOneReserva } = require('../DataLayer/reserva');
+const { getOneReserva, getUsuarioReserva } = require('../DataLayer/reserva');
 
 async function obtenerPedidos(req = request,res = response){
     const pedidos = await getAllPedidos();
@@ -188,6 +188,93 @@ async function obtenerPedidosDomicilio(req = request,res = response){
     else
     res.status(404).json(responseJson(404, "no existe"))
 }
+async function obtenerPedidosUsuarioReserva(req = request,res = response){
+    const reservas = await getUsuarioReserva(req.currentToken.IDUSUARIO);
+    const respuestas =[];
+    if(reservas.length>0){
+        reservas.forEach(async (reserva,index2) => {
+            const pedido = await getReservaPorIdReserva(reserva.IDRESERVA);
+            if(pedido!=null){
+                respuestas.push(pedido.dataValues);
+            }
+            if(index2==(reservas.length-1)){
+                if(respuestas!=[]){
+                    const respuestas1 =[];
+                    respuestas.forEach(async (pedido,index) =>{
+                        const pedidoTotal = await getOnePedido(pedido.IDPEDIDOTOTAL);
+                        const productos = await getPedidoProducto(pedido.IDPEDIDOTOTAL);
+                        const arrayProductos = [];
+                        productos.forEach(async (producto,index1) =>{
+                            const productovar = await getOneProducto(producto.IDPRODUCTO)
+                            arrayProductos.push(productovar.NAME)
+                            if(index1==(productos.length-1)){
+                                const estado = await getOneEstado(pedidoTotal.IDSTATE);
+                                const reserva = await getOneReserva(pedido.IDRESERVA);
+                                const respuesta = {
+                                "IDPEDIDO": pedido.IDPEDIDO,
+                                "NUMPEDIDO": pedidoTotal.NUMPEDIDO,
+                                "PRODUCTOS": arrayProductos,
+                                "ESTADO": estado.STATE,
+                                "VALORTOTAL": pedidoTotal.VALORTOTAL.toFixed(2),
+                                "NOTE": pedidoTotal.NOTE,
+                                "RESERVA": reserva.NUMRESERVA
+                                }
+                                respuestas1.push(respuesta);
+                                if(index==(respuestas.length-1)){
+                                    res.status(200).json(responseJson(200, "success", respuestas1))
+                                }
+                            }
+                        })
+                            
+                    })
+                 }
+                else{
+                  res.status(404).json(responseJson(404, "no existe"))
+                 }
+
+            }
+                    //res.status(200).json(responseJson(200, "success", respuestas))
+            
+        });
+    }else{
+        res.status(404).json(responseJson(404, "no existe"))
+    }
+
+    // const pedidos = await getAllPedidosReserva();
+    // const respuestas =[];
+    // if(pedidos.length>0){
+    //     pedidos.forEach(async (pedido,index) =>{
+    //         const pedidoTotal = await getOnePedido(pedido.IDPEDIDOTOTAL);
+    //         const productos = await getPedidoProducto(pedido.IDPEDIDOTOTAL);
+    //         const arrayProductos = [];
+    //         productos.forEach(async (producto,index1) =>{
+    //             const productovar = await getOneProducto(producto.IDPRODUCTO)
+    //             arrayProductos.push(productovar.NAME)
+    //             if(index1==(productos.length-1)){
+    //                 const estado = await getOneEstado(pedidoTotal.IDSTATE);
+    //                 const reserva = await getOneReserva(pedido.IDRESERVA);
+    //                 const respuesta = {
+    //                     "IDPEDIDO": pedido.IDPEDIDO,
+    //                     "NUMPEDIDO": pedidoTotal.NUMPEDIDO,
+    //                     "PRODUCTOS": arrayProductos,
+    //                     "ESTADO": estado.STATE,
+    //                     "VALORTOTAL": pedidoTotal.VALORTOTAL.toFixed(2),
+    //                     "NOTE": pedidoTotal.NOTE,
+    //                     "RESERVA": reserva
+    //                 }
+    //                 respuestas.push(respuesta);
+    //                 if(index==(pedidos.length-1)){
+    //                     res.status(200).json(responseJson(200, "success", respuestas))
+    //                 }
+    //             }
+    //         })
+    //         const arrayProductos = await getOneProducto(pedido.IDPEDIDOTOTAL);
+            
+    //     })
+    // }
+    // else
+    // res.status(404).json(responseJson(404, "no existe"))
+}
 async function obtenerPedidosReserva(req = request,res = response){
     const pedidos = await getAllPedidosReserva();
     const respuestas =[];
@@ -209,7 +296,7 @@ async function obtenerPedidosReserva(req = request,res = response){
                         "ESTADO": estado.STATE,
                         "VALORTOTAL": pedidoTotal.VALORTOTAL.toFixed(2),
                         "NOTE": pedidoTotal.NOTE,
-                        "RESERVA": reserva
+                        "RESERVA": reserva.NUMRESERVA
                     }
                     respuestas.push(respuesta);
                     if(index==(pedidos.length-1)){
@@ -374,4 +461,4 @@ async function borrarPedido(req = request,res = response){
 }
 
 
-module.exports= {obtenerPedidos,obtenerPedidosLocalUsuario,obtenerPedidosLocales,obtenerPedidosUsuarioDomicilio,obtenerPedidosDomicilio,obtenerPedidosReserva,crearPedido,crearPedidoLocal,crearPedidoDomicilio,crearPedidoReserva,actualizarPedido,borrarPedido};
+module.exports= {obtenerPedidos,obtenerPedidosLocalUsuario,obtenerPedidosLocales,obtenerPedidosUsuarioDomicilio,obtenerPedidosUsuarioReserva,obtenerPedidosDomicilio,obtenerPedidosReserva,crearPedido,crearPedidoLocal,crearPedidoDomicilio,crearPedidoReserva,actualizarPedido,borrarPedido};
