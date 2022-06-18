@@ -47,6 +47,16 @@ async function getAllPedidosDomicilio() {
     }
 }
 
+async function getPedidosPorRelacion(relacion) {
+    try {
+        return await PedidoDomicilio.findAll({
+            where: {IDRELACIONUD : relacion}
+           });
+    } catch(err){
+        return err;
+    }
+}
+
 async function getOnePedidoDomicilio(IDPEDIDO) {
     try {
         return await PedidoDomicilio.findByPk(IDPEDIDO)
@@ -68,6 +78,7 @@ async function createPedidoDomicilio(pedido) {
 
 module.exports = {
     getAllPedidosDomicilio,
+    getPedidosPorRelacion,
     getOnePedidoDomicilio,
     createPedidoDomicilio
 }

@@ -51,6 +51,15 @@ async function getAllPedidosLocales() {
     }
 }
 
+async function getPedidosPorUsuario(usuario) {
+    try {
+        return await PedidoLocal.findAll({
+            where: {IDUSUARIO : usuario}
+           });
+    } catch(err){
+        return err;
+    }
+}
 async function getOnePedidoLocal(IDPEDIDO) {
     try {
         return await PedidoLocal.findByPk(IDPEDIDO)
@@ -74,5 +83,6 @@ async function createPedidoLocal(pedido) {
 module.exports = {
     getAllPedidosLocales,
     getOnePedidoLocal,
+    getPedidosPorUsuario,
     createPedidoLocal
 }

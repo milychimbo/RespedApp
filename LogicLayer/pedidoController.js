@@ -1,6 +1,6 @@
 const {request,response} = require('express');
-const {getAllPedidosLocales, createPedidoLocal} = require('../DataLayer/pedidolocal');
-const {createPedidoDomicilio,getAllPedidosDomicilio} = require('../DataLayer/pedidodomicilio');
+const {getAllPedidosLocales, createPedidoLocal, getPedidosPorUsuario} = require('../DataLayer/pedidolocal');
+const {createPedidoDomicilio,getAllPedidosDomicilio, getPedidosPorRelacion} = require('../DataLayer/pedidodomicilio');
 const {createPedidoReserva,getAllPedidosReserva} = require('../DataLayer/pedidoreserva');
 const {getAllPedidos,getOnePedido,createPedido,updatePedido,deletePedido} = require('../DataLayer/pedidototal');
 const {getOneEstado} = require('../DataLayer/estado');
@@ -9,7 +9,7 @@ const { responseJson } = require('../helpers/handleGenericFunction');
 const { getOneProducto } = require('../DataLayer/producto');
 const { generateUUID } = require('../middlewares/generateUUID');
 const { createPedidoProducto,getPedidoProducto} = require('../DataLayer/relacionpedidoproducto');
-const { getRelacion } = require('../DataLayer/relacionusuariodireccion');
+const { getRelacion, getUsuarioDireccion } = require('../DataLayer/relacionusuariodireccion');
 const { getOneReserva } = require('../DataLayer/reserva');
 
 async function obtenerPedidos(req = request,res = response){
@@ -19,6 +19,43 @@ async function obtenerPedidos(req = request,res = response){
     else
     res.status(404).json(responseJson(404, "no existe"))
 }
+
+async function obtenerPedidosLocalUsuario(req = request,res = response){
+    const pedidos = await getPedidosPorUsuario(req.currentToken.IDUSUARIO);
+    const respuestas =[];
+    if(pedidos.length>0){
+        pedidos.forEach(async (pedido,index) =>{
+            const pedidoTotal = await getOnePedido(pedido.IDPEDIDOTOTAL);
+            const productos = await getPedidoProducto(pedido.IDPEDIDOTOTAL);
+            const arrayProductos = [];
+            productos.forEach(async (producto,index1) =>{
+                const productovar = await getOneProducto(producto.IDPRODUCTO)
+                arrayProductos.push(productovar.NAME)
+                if(index1==(productos.length-1)){
+                    const estado = await getOneEstado(pedidoTotal.IDSTATE);
+                    const respuesta = {
+                        "IDPEDIDO": pedido.IDPEDIDO,
+                        "NUMPEDIDO": pedidoTotal.NUMPEDIDO,
+                        "PRODUCTOS": arrayProductos,
+                        "ESTADO": estado.STATE,
+                        "MESA": pedido.MESA,
+                        "VALORTOTAL": pedidoTotal.VALORTOTAL.toFixed(2),
+                        "NOTE": pedidoTotal.NOTE
+                    }
+                    respuestas.push(respuesta);
+                    if(index==(pedidos.length-1)){
+                        res.status(200).json(responseJson(200, "success", respuestas))
+                    }
+                }
+            })
+            //const arrayProductos = await getOneProducto(pedido.IDPEDIDOTOTAL);
+            
+        })
+    }
+    else
+    res.status(404).json(responseJson(404, "no existe"))
+}
+
 async function obtenerPedidosLocales(req = request,res = response){
     const pedidos = await getAllPedidosLocales();
     const respuestas =[];
@@ -54,6 +91,66 @@ async function obtenerPedidosLocales(req = request,res = response){
     else
     res.status(404).json(responseJson(404, "no existe"))
 }
+async function obtenerPedidosUsuarioDomicilio(req = request,res = response){
+//traer las relaciones direcciones 
+const relaciones = await getUsuarioDireccion(req.currentToken.IDUSUARIO);
+if(relaciones.length>0){
+    //for each reladireccion
+    const respuestas =[];
+    relaciones.forEach(async (relacion,index2) => {
+        const pedidos = await getPedidosPorRelacion(relacion.IDRELACIONUD);
+//aqui traer lo que me importa
+        const respuestas1 =[];
+        pedidos.forEach(async (pedido,index) =>{
+                const pedidoTotal = await getOnePedido(pedido.IDPEDIDOTOTAL);
+                const productos = await getPedidoProducto(pedido.IDPEDIDOTOTAL);
+                const arrayProductos = [];
+                productos.forEach(async (producto,index1) =>{
+                    const productovar = await getOneProducto(producto.IDPRODUCTO)
+                    arrayProductos.push(productovar.NAME)
+                    if(index1==(productos.length-1)){
+                        const estado = await getOneEstado(pedidoTotal.IDSTATE);
+                        const relacion = await getRelacion(pedido.IDRELACIONUD);
+                        const respuesta = {
+                            "IDPEDIDO": pedido.IDPEDIDO,
+                            "NUMPEDIDO": pedidoTotal.NUMPEDIDO,
+                            "PRODUCTOS": arrayProductos,
+                            "ESTADO": estado.STATE,
+                            "VALORTOTAL": pedidoTotal.VALORTOTAL.toFixed(2),
+                            "NOTE": pedidoTotal.NOTE
+                        }
+                        respuestas1.push(respuesta);
+                        if(index==(pedidos.length-1)){
+                            //aqui recien crear respuesta
+                            const direccion = await getOneDireccion(relacion.IDDIRECCION);
+                            const aux = {
+                                "DIRECCION": direccion.NAME,
+                                "PEDIDOS": respuestas1
+                            }
+                            respuestas.push(aux);
+                            if(index2==(relaciones.length-1)){
+                                
+                                res.status(200).json(responseJson(200, "success", respuestas))
+                            }
+                        }
+                    }
+                })
+            
+        })
+    
+
+
+       
+    });
+//getallpedidos
+}
+else{
+    res.status(404).json(responseJson(404, "no existe"))
+}
+
+
+ 
+}
 async function obtenerPedidosDomicilio(req = request,res = response){
     const pedidos = await getAllPedidosDomicilio();
     const respuestas =[];
@@ -76,7 +173,7 @@ async function obtenerPedidosDomicilio(req = request,res = response){
                         "ESTADO": estado.STATE,
                         "VALORTOTAL": pedidoTotal.VALORTOTAL.toFixed(2),
                         "NOTE": pedidoTotal.NOTE,
-                        "DIRECCION": direccion
+                        "DIRECCION": direccion.NAME
                     }
                     respuestas.push(respuesta);
                     if(index==(pedidos.length-1)){
@@ -230,8 +327,8 @@ async function crearPedidoDomicilio(req = request,res = response){
             "IDPEDIDOTOTAL": req.body.IDPEDIDOTOTAL,
             "NOTE": req.body.NOTE
         }
-        await updatePedido(requestNota);
-         res.status(200).json(responseJson(200, "success"))
+        const update = await updatePedido(requestNota);
+         res.status(200).json(responseJson(200, "success",update))
      }
     else
     {
@@ -277,4 +374,4 @@ async function borrarPedido(req = request,res = response){
 }
 
 
-module.exports= {obtenerPedidos,obtenerPedidosLocales,obtenerPedidosDomicilio,obtenerPedidosReserva,crearPedido,crearPedidoLocal,crearPedidoDomicilio,crearPedidoReserva,actualizarPedido,borrarPedido};
+module.exports= {obtenerPedidos,obtenerPedidosLocalUsuario,obtenerPedidosLocales,obtenerPedidosUsuarioDomicilio,obtenerPedidosDomicilio,obtenerPedidosReserva,crearPedido,crearPedidoLocal,crearPedidoDomicilio,crearPedidoReserva,actualizarPedido,borrarPedido};
