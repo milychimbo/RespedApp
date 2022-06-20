@@ -37,7 +37,7 @@ const Producto = connection.define('PRODUCTO', {
         type: DataTypes.TEXT
     },
     AVAILABILITY: {
-        type: DataTypes.TINYINT,
+        type: DataTypes.BOOLEAN,
         allowNull: false
     }
 }, {
