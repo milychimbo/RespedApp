@@ -71,6 +71,7 @@ async function obtenerPedidosLocales(req = request,res = response){
                     const estado = await getOneEstado(pedidoTotal.IDSTATE);
                     const respuesta = {
                         "IDPEDIDO": pedido.IDPEDIDO,
+                        "IDPEDIDOTOTAL": pedidoTotal.IDPEDIDOTOTAL,
                         "NUMPEDIDO": pedidoTotal.NUMPEDIDO,
                         "PRODUCTOS": arrayProductos,
                         "ESTADO": estado.STATE,
@@ -168,6 +169,7 @@ async function obtenerPedidosDomicilio(req = request,res = response){
                     const direccion = await getOneDireccion(relacion.IDDIRECCION);
                     const respuesta = {
                         "IDPEDIDO": pedido.IDPEDIDO,
+                        "IDPEDIDOTOTAL": pedidoTotal.IDPEDIDOTOTAL,
                         "NUMPEDIDO": pedidoTotal.NUMPEDIDO,
                         "PRODUCTOS": arrayProductos,
                         "ESTADO": estado.STATE,
@@ -291,6 +293,7 @@ async function obtenerPedidosReserva(req = request,res = response){
                     const reserva = await getOneReserva(pedido.IDRESERVA);
                     const respuesta = {
                         "IDPEDIDO": pedido.IDPEDIDO,
+                        "IDPEDIDOTOTAL": pedidoTotal.IDPEDIDOTOTAL,
                         "NUMPEDIDO": pedidoTotal.NUMPEDIDO,
                         "PRODUCTOS": arrayProductos,
                         "ESTADO": estado.STATE,
