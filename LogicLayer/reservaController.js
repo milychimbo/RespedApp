@@ -111,7 +111,6 @@ async function obtenerReservasPorEstado(req = request, res = response) {
                 }
             }
             //estadoreserva
-            const estado = await getOneEstado(reserva.IDSTATE);
             const reservaJson={
                 "IDRESERVA": reserva.IDRESERVA,
                 "NUMRESERVA": reserva.NUMRESERVA,
@@ -120,7 +119,7 @@ async function obtenerReservasPorEstado(req = request, res = response) {
                 "NOTE": reserva.NOTE,
                 "RESERVATIONDATE": reserva.RESERVATIONDATE,
                 "RESERVATIONTIME": reserva.RESERVATIONTIME,
-                "STATE": estado.STATE
+                "STATE": reserva.IDSTATE
             }
             arrayReservas.push(reservaJson);
             if(index==(reservas.length-1)){

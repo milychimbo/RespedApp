@@ -173,7 +173,7 @@ async function obtenerPedidosDomicilio(req = request,res = response){
                         "IDSTATE": pedidoTotal.IDSTATE,
                         "VALORTOTAL": pedidoTotal.VALORTOTAL.toFixed(2),
                         "NOTE": pedidoTotal.NOTE,
-                        "DIRECCION": direccion.NAME
+                        "DIRECCION": direccion
                     }
                     respuestas.push(respuesta);
                     if(index==(pedidos.length-1)){
