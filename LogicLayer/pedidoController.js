@@ -73,7 +73,7 @@ async function obtenerPedidosLocales(req = request,res = response){
                         "IDPEDIDOTOTAL": pedidoTotal.IDPEDIDOTOTAL,
                         "NUMPEDIDO": pedidoTotal.NUMPEDIDO,
                         "PRODUCTOS": arrayProductos,
-                        "ESTADO": pedidoTotal.IDSTATE,
+                        "IDSTATE": pedidoTotal.IDSTATE,
                         "MESA": pedido.MESA,
                         "VALORTOTAL": pedidoTotal.VALORTOTAL.toFixed(2),
                         "NOTE": pedidoTotal.NOTE
@@ -170,7 +170,7 @@ async function obtenerPedidosDomicilio(req = request,res = response){
                         "IDPEDIDOTOTAL": pedidoTotal.IDPEDIDOTOTAL,
                         "NUMPEDIDO": pedidoTotal.NUMPEDIDO,
                         "PRODUCTOS": arrayProductos,
-                        "ESTADO": pedidoTotal.IDSTATE,
+                        "IDSTATE": pedidoTotal.IDSTATE,
                         "VALORTOTAL": pedidoTotal.VALORTOTAL.toFixed(2),
                         "NOTE": pedidoTotal.NOTE,
                         "DIRECCION": direccion.NAME
@@ -293,7 +293,7 @@ async function obtenerPedidosReserva(req = request,res = response){
                         "IDPEDIDOTOTAL": pedidoTotal.IDPEDIDOTOTAL,
                         "NUMPEDIDO": pedidoTotal.NUMPEDIDO,
                         "PRODUCTOS": arrayProductos,
-                        "ESTADO": pedidoTotal.IDSTATE,
+                        "IDSTATE": pedidoTotal.IDSTATE,
                         "VALORTOTAL": pedidoTotal.VALORTOTAL.toFixed(2),
                         "NOTE": pedidoTotal.NOTE,
                         "RESERVA": reserva.NUMRESERVA
