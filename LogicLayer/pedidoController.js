@@ -68,13 +68,12 @@ async function obtenerPedidosLocales(req = request,res = response){
                 const productovar = await getOneProducto(producto.IDPRODUCTO)
                 arrayProductos.push(productovar.NAME)
                 if(index1==(productos.length-1)){
-                    const estado = await getOneEstado(pedidoTotal.IDSTATE);
                     const respuesta = {
                         "IDPEDIDO": pedido.IDPEDIDO,
                         "IDPEDIDOTOTAL": pedidoTotal.IDPEDIDOTOTAL,
                         "NUMPEDIDO": pedidoTotal.NUMPEDIDO,
                         "PRODUCTOS": arrayProductos,
-                        "ESTADO": estado.STATE,
+                        "ESTADO": estado.IDSTATE,
                         "MESA": pedido.MESA,
                         "VALORTOTAL": pedidoTotal.VALORTOTAL.toFixed(2),
                         "NOTE": pedidoTotal.NOTE
@@ -164,7 +163,6 @@ async function obtenerPedidosDomicilio(req = request,res = response){
                 const productovar = await getOneProducto(producto.IDPRODUCTO)
                 arrayProductos.push(productovar.NAME)
                 if(index1==(productos.length-1)){
-                    const estado = await getOneEstado(pedidoTotal.IDSTATE);
                     const relacion = await getRelacion(pedido.IDRELACIONUD);
                     const direccion = await getOneDireccion(relacion.IDDIRECCION);
                     const respuesta = {
@@ -172,7 +170,7 @@ async function obtenerPedidosDomicilio(req = request,res = response){
                         "IDPEDIDOTOTAL": pedidoTotal.IDPEDIDOTOTAL,
                         "NUMPEDIDO": pedidoTotal.NUMPEDIDO,
                         "PRODUCTOS": arrayProductos,
-                        "ESTADO": estado.STATE,
+                        "ESTADO": estado.IDSTATE,
                         "VALORTOTAL": pedidoTotal.VALORTOTAL.toFixed(2),
                         "NOTE": pedidoTotal.NOTE,
                         "DIRECCION": direccion.NAME
@@ -289,14 +287,13 @@ async function obtenerPedidosReserva(req = request,res = response){
                 const productovar = await getOneProducto(producto.IDPRODUCTO)
                 arrayProductos.push(productovar.NAME)
                 if(index1==(productos.length-1)){
-                    const estado = await getOneEstado(pedidoTotal.IDSTATE);
                     const reserva = await getOneReserva(pedido.IDRESERVA);
                     const respuesta = {
                         "IDPEDIDO": pedido.IDPEDIDO,
                         "IDPEDIDOTOTAL": pedidoTotal.IDPEDIDOTOTAL,
                         "NUMPEDIDO": pedidoTotal.NUMPEDIDO,
                         "PRODUCTOS": arrayProductos,
-                        "ESTADO": estado.STATE,
+                        "ESTADO": estado.IDSTATE,
                         "VALORTOTAL": pedidoTotal.VALORTOTAL.toFixed(2),
                         "NOTE": pedidoTotal.NOTE,
                         "RESERVA": reserva.NUMRESERVA
