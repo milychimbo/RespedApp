@@ -143,7 +143,7 @@ async function crearReserva(req = request, res = response) {
     }
     const reserva = await createReserva(reservaJson);
     if (Object.keys(reserva)[0] == "dataValues")
-        res.status(200).json(responseJson(200, "success"))
+        res.status(200).json(responseJson(200, "success",reserva.IDRESERVA))
     else
         res.status(400).json(responseJson(400, "no se pudo crear", reserva.parent.sqlMessage))
 }
