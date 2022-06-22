@@ -2,7 +2,7 @@ const { check } = require("express-validator");
 const { validateResult } = require('../../helpers/handleGenericFunction');
 
 const validationInsert = [
-    check('IDTIPOUSUARIO').not().isEmpty().isInt().withMessage('No es un valor valido'),
+    check('IDTIPOUSUARIO').optional().isInt().withMessage('No es un valor valido'),
     check('USERNAME').not().isEmpty().trim().isString().withMessage('No puede ser vacio'),
     check('EMAIL').not().isEmpty().isEmail().withMessage('Deber ser un email valido'),
     check('NAME').optional().isString().trim().withMessage('Debe ser de tipo texto'),
@@ -21,7 +21,6 @@ const validationInsert = [
 
 const validationUpdate = [
     check('IDUSUARIO').not().isEmpty().isInt().withMessage('No es un valor valido'),
-    check('IDTIPOUSUARIO').optional().isInt().withMessage('No es un valor valido'),
     check('USERNAME').optional().isString().trim().withMessage('Debe ser de tipo texto'),
     check('EMAIL').optional().exists().isEmail().withMessage('Deber ser un email valido'),
     check('NAME').optional().isString().trim().withMessage('Debe ser de tipo texto'),

@@ -98,7 +98,6 @@ async function createUser(user) {
 async function updateUser(user) {
   try {
     return await User.update({
-      IDTIPOUSUARIO: user.IDTIPOUSUARIO,
       USERNAME: user.USERNAME,
       EMAIL: user.EMAIL,
       NAME: user.NAME,
