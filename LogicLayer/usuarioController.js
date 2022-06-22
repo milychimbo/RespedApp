@@ -18,6 +18,9 @@ const {
 const {
     encrypt
 } = require('../helpers/handleBCrypt');
+const { verifyPassword } = require('../helpers/handleBCrypt');
+const jwt = require('jsonwebtoken')
+const secret = process.env.SECRET || 'CDjNU7uuZWazUSQsScR/P5RYwSeTsm2I0HLCUXKWnHY';
 
 async function obtenerUsuarios(req = request, res = response) {
     const users = await getAllUsers();
@@ -67,6 +70,74 @@ async function crearUsuario(req = request, res = response) {
     }
 }
 
+function crearCliente(req = request, res = response) {
+    encrypt(req.body.PASSWORD).then(password =>{
+        const userJson={
+            "IDTIPOUSUARIO": 3,
+            "USERNAME": req.body.USERNAME,
+            "EMAIL": req.body.EMAIL,
+            "NAME": req.body.NAME,
+            "LASTNAME": req.body.LASTNAME,
+            "PASSWORD": password,
+            "PHONE": req.body.PHONE
+    }
+    createUser(userJson).then(user => {
+        if (Object.keys(user)[0] == "dataValues"){
+            try{
+                
+                const USERNAME = req.body.USERNAME;
+                const PASSWORD = req.body.PASSWORD;
+                getAllUsers().then(users => {
+                    const usersL = users.length;
+                    var i = 0;
+                    users.forEach(user => {
+                        i = i + 1;
+                        if (user.USERNAME == USERNAME) {
+                            const match = verifyPassword(PASSWORD, user.PASSWORD);
+                            if (match) {
+                                i = usersL + 1;
+                                const userToken = {
+                                    IDUSUARIO: user.IDUSUARIO,
+                                    USERNAME: user.USERNAME,
+                                    TIPO: user.IDTIPOUSUARIO,
+                                }
+                                const token = jwt.sign(userToken, secret, { expiresIn: '1d' });
+                                const data = {
+                                    token,
+                                    id: user.IDUSUARIO,
+                                    username: user.USERNAME,
+                                    email: user.EMAIL,
+                                    rol: user.IDTIPOUSUARIO,
+                                }
+                                res.status(200).json(responseJson(200, "success", data))
+                
+                
+                            } else {
+                                i = usersL + 1;
+                                res.status(400).json(responseJson(400, "contraseña incorrecta"))
+                
+                            }
+                        }
+                        else {
+                            if (i == usersL) {
+                                res.status(404).json(responseJson(404, "no existe"))
+                            }
+                        }
+                    });
+                })
+            }catch{
+                res.status(400).json(responseJson(400, "no se pudo crear"))
+            }
+            
+        }
+        else {
+            res.status(400).json(responseJson(400, "no se pudo crear", user.parent.sqlMessage))
+        }
+    })
+    })
+    
+}
+
 
 async function actualizarUsuario(req = request, res = response) {
     if (req.body.PASSWORD) {
@@ -96,6 +167,7 @@ module.exports = {
     obtenerUsuarios,
     obtenerUsuariosPorTipo,
     crearUsuario,
+    crearCliente,
     actualizarUsuario,
     borrarUsuario
 };
