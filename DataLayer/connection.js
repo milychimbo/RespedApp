@@ -2,8 +2,8 @@ const {
   Sequelize
 } = require('sequelize');
 
-const path = 'mysql://angelojz7:fitmanager65656566@mysql-angelojz7.alwaysdata.net/angelojz7_respedapp';
-//const path = 'mysql://root:root@localhost:3306/respedappbdd';
+//const path = 'mysql://angelojz7:fitmanager65656566@mysql-angelojz7.alwaysdata.net/angelojz7_respedapp';
+const path = 'mysql://root:@localhost:3306/angelojz7_respedapp';
 
 const sequelize = new Sequelize(path, {
   operatorsAliases: false
