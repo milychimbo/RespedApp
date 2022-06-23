@@ -71,7 +71,6 @@ async function obtenerPedidosLocales(req = request,res = response){
     const respuestas =[];
     if(pedidos.length>0){
         pedidos.forEach(async (pedido,index) =>{
-            
                 const pedidoTotal = await getOnePedido(pedido.IDPEDIDOTOTAL);
             const productos = await getPedidoProducto(pedido.IDPEDIDOTOTAL);
             const arrayProductos = [];
@@ -89,7 +88,7 @@ async function obtenerPedidosLocales(req = request,res = response){
                         "VALORTOTAL": pedidoTotal.VALORTOTAL.toFixed(2),
                         "NOTE": pedidoTotal.NOTE
                     }
-                    if(pedido.IDSTATE!=5){
+                    if(pedidoTotal.IDSTATE!=5){
                     respuestas.push(respuesta);}
                     if(index==(pedidos.length-1)){
                         res.status(200).json(responseJson(200, "success", respuestas))
@@ -186,7 +185,7 @@ async function obtenerPedidosDomicilio(req = request,res = response){
                         "NOTE": pedidoTotal.NOTE,
                         "DIRECCION": direccion
                     }
-                    if(pedido.IDSTATE!=5){
+                    if(pedidoTotal.IDSTATE!=5){
                     respuestas.push(respuesta);}
                     if(index==(pedidos.length-1)){
                         res.status(200).json(responseJson(200, "success", respuestas))
@@ -308,7 +307,7 @@ async function obtenerPedidosReserva(req = request,res = response){
                         "NOTE": pedidoTotal.NOTE,
                         "RESERVA": reserva.NUMRESERVA
                     }
-                    if(pedido.IDSTATE!=5){
+                    if(pedidoTotal.IDSTATE!=5){
                     respuestas.push(respuesta);
                     }
                     if(index==(pedidos.length-1)){
