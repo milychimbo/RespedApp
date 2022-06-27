@@ -6,9 +6,10 @@ const jwt = require('jsonwebtoken')
 const secret = process.env.SECRET || 'CDjNU7uuZWazUSQsScR/P5RYwSeTsm2I0HLCUXKWnHY';
 
 
- function login(req = request, res = response) {
+function login(req = request, res = response) {
     const USERNAME = req.body.USERNAME;
     const PASSWORD = req.body.PASSWORD;
+
     getAllUsers().then(users => {
         const usersL = users.length;
         var i = 0;
@@ -17,11 +18,15 @@ const secret = process.env.SECRET || 'CDjNU7uuZWazUSQsScR/P5RYwSeTsm2I0HLCUXKWnH
             if (user.USERNAME == USERNAME) {
                 const match = verifyPassword(PASSWORD, user.PASSWORD);
                 if (match) {
+                    console.log(user);
                     i = usersL + 1;
                     const userToken = {
                         IDUSUARIO: user.IDUSUARIO,
                         USERNAME: user.USERNAME,
                         TIPO: user.IDTIPOUSUARIO,
+                        NAME: user.NAME,
+                        LASTNAME: user.LASTNAME,
+                        PHONE: user.PHONE,
                     }
                     const token = jwt.sign(userToken, secret, { expiresIn: '1d' });
                     const data = {
@@ -32,12 +37,12 @@ const secret = process.env.SECRET || 'CDjNU7uuZWazUSQsScR/P5RYwSeTsm2I0HLCUXKWnH
                         rol: user.IDTIPOUSUARIO,
                     }
                     res.status(200).json(responseJson(200, "success", data))
-    
-    
+
+
                 } else {
                     i = usersL + 1;
                     res.status(400).json(responseJson(400, "contraseña incorrecta"))
-    
+
                 }
             }
             else {
@@ -47,7 +52,7 @@ const secret = process.env.SECRET || 'CDjNU7uuZWazUSQsScR/P5RYwSeTsm2I0HLCUXKWnH
             }
         });
     })
-    
+
 }
 async function validate(req = request, res = response) {
     let { token } = req.body;
@@ -64,4 +69,4 @@ async function validate(req = request, res = response) {
     }
 }
 
-module.exports = { login,validate };
+module.exports = { login, validate };
