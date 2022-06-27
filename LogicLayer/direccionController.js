@@ -149,6 +149,7 @@ async function actualizarDireccion(req = request,res = response){
         "IDDIRECCION": req.body.IDDIRECCION,
         "STREET1": req.body.STREET1,
         "STREET2": req.body.STREET2,
+        "REFERENCE": req.body.REFERENCE,
         "NAME": req.body.NAME,
         "PHONEDIR": req.body.PHONEDIR
     }
