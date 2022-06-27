@@ -12,10 +12,20 @@ const { createPedidoProducto,getPedidoProducto} = require('../DataLayer/relacion
 const { getRelacion, getUsuarioDireccion } = require('../DataLayer/relacionusuariodireccion');
 const { getOneReserva, getUsuarioReserva } = require('../DataLayer/reserva');
 
-async function obtenerPedidos(req = request,res = response){
+async function obtenerPedidosFinalizados(req = request,res = response){
     const pedidos = await getAllPedidos();
-    if(pedidos.length>0)
-    res.status(200).json(responseJson(200, "success", pedidos))
+    const respuestas =[];
+    if(pedidos.length>0){
+        pedidos.forEach(async (pedido,index) =>{
+            if(pedido.IDSTATE==5){
+                respuestas.push(pedido);
+            }
+                if(index==(pedidos.length-1)){
+                    res.status(200).json(responseJson(200, "success", respuestas))
+                }
+            
+        });
+    }
     else
     res.status(404).json(responseJson(404, "no existe"))
 }
@@ -61,7 +71,7 @@ async function obtenerPedidosLocales(req = request,res = response){
     const respuestas =[];
     if(pedidos.length>0){
         pedidos.forEach(async (pedido,index) =>{
-            const pedidoTotal = await getOnePedido(pedido.IDPEDIDOTOTAL);
+                const pedidoTotal = await getOnePedido(pedido.IDPEDIDOTOTAL);
             const productos = await getPedidoProducto(pedido.IDPEDIDOTOTAL);
             const arrayProductos = [];
             productos.forEach(async (producto,index1) =>{
@@ -78,13 +88,13 @@ async function obtenerPedidosLocales(req = request,res = response){
                         "VALORTOTAL": pedidoTotal.VALORTOTAL.toFixed(2),
                         "NOTE": pedidoTotal.NOTE
                     }
-                    respuestas.push(respuesta);
+                    if(pedidoTotal.IDSTATE!=5){
+                    respuestas.push(respuesta);}
                     if(index==(pedidos.length-1)){
                         res.status(200).json(responseJson(200, "success", respuestas))
                     }
                 }
             })
-            //const arrayProductos = await getOneProducto(pedido.IDPEDIDOTOTAL);
             
         })
     }
@@ -175,14 +185,13 @@ async function obtenerPedidosDomicilio(req = request,res = response){
                         "NOTE": pedidoTotal.NOTE,
                         "DIRECCION": direccion
                     }
-                    respuestas.push(respuesta);
+                    if(pedidoTotal.IDSTATE!=5){
+                    respuestas.push(respuesta);}
                     if(index==(pedidos.length-1)){
                         res.status(200).json(responseJson(200, "success", respuestas))
                     }
                 }
-            })
-            //const arrayProductos = await getOneProducto(pedido.IDPEDIDOTOTAL);
-            
+            }) 
         })
     }
     else
@@ -298,14 +307,14 @@ async function obtenerPedidosReserva(req = request,res = response){
                         "NOTE": pedidoTotal.NOTE,
                         "RESERVA": reserva.NUMRESERVA
                     }
+                    if(pedidoTotal.IDSTATE!=5){
                     respuestas.push(respuesta);
+                    }
                     if(index==(pedidos.length-1)){
                         res.status(200).json(responseJson(200, "success", respuestas))
                     }
                 }
-            })
-            //const arrayProductos = await getOneProducto(pedido.IDPEDIDOTOTAL);
-            
+            }) 
         })
     }
     else
@@ -461,4 +470,4 @@ async function borrarPedido(req = request,res = response){
 }
 
 
-module.exports= {obtenerPedidos,obtenerPedidosLocalUsuario,obtenerPedidosLocales,obtenerPedidosUsuarioDomicilio,obtenerPedidosUsuarioReserva,obtenerPedidosDomicilio,obtenerPedidosReserva,crearPedido,crearPedidoLocal,crearPedidoDomicilio,crearPedidoReserva,actualizarPedido,borrarPedido};
+module.exports= {obtenerPedidosFinalizados,obtenerPedidosLocalUsuario,obtenerPedidosLocales,obtenerPedidosUsuarioDomicilio,obtenerPedidosUsuarioReserva,obtenerPedidosDomicilio,obtenerPedidosReserva,crearPedido,crearPedidoLocal,crearPedidoDomicilio,crearPedidoReserva,actualizarPedido,borrarPedido};

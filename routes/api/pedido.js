@@ -1,5 +1,5 @@
 const {Router} =require('express');
-const { obtenerPedidosLocales,obtenerPedidosDomicilio,obtenerPedidosUsuarioDomicilio,crearPedidoLocal,crearPedido, obtenerPedidos, crearPedidoDomicilio ,borrarPedido, crearPedidoReserva, obtenerPedidosReserva, actualizarPedido, obtenerPedidosLocalUsuario, obtenerPedidosUsuarioReserva} = require('../../LogicLayer/pedidoController');
+const { obtenerPedidosLocales,obtenerPedidosDomicilio,obtenerPedidosUsuarioDomicilio,crearPedidoLocal,crearPedido, obtenerPedidos, crearPedidoDomicilio ,borrarPedido, crearPedidoReserva, obtenerPedidosReserva, actualizarPedido, obtenerPedidosLocalUsuario, obtenerPedidosUsuarioReserva, obtenerPedidosFinalizados} = require('../../LogicLayer/pedidoController');
 const { validationUpdate } = require('../../LogicLayer/validator/pedidoValidator');
 const { validationInsertLocal } = require('../../LogicLayer/validator/pedidoLocalValidator');
 const { validationInsertDomicilio } = require('../../LogicLayer/validator/pedidoDomicilioValidator');
@@ -8,7 +8,7 @@ const { validationInsertReserva } = require('../../LogicLayer/validator/pedidoRe
 
 const router = Router();
 
- router.get('/', validateToken,obtenerPedidos);
+ router.get('/', validateToken,obtenerPedidosFinalizados);
  router.get('/local/', validateToken,obtenerPedidosLocales);
  router.get('/domicilio/', validateToken,obtenerPedidosDomicilio);
  router.get('/reserva/', validateToken,obtenerPedidosReserva);
