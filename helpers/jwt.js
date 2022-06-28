@@ -8,11 +8,11 @@ var jwt = require('jsonwebtoken');
 const verifyToken = async (token) => {
     const secretKey = process.env.TOKEN_JWT;
     try {
-        return await jwt.verify(token,secretKey);
+        return await jwt.verify(token, secretKey);
     } catch (error) {
-        console.log(__filename+' -> '+error);
+        console.log(__filename + ' -> ' + error);
         return null;
     }
 }
 
-module.exports = {tokenSign, verifyToken}
+module.exports = { tokenSign, verifyToken }

@@ -1,6 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors')
+require('dotenv').config()
 
 
 const app = express();
@@ -12,10 +13,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.get("/", (req, res) => {
-    res.json({ status: 200, message: "hola" })
+  res.json({ status: 200, message: "hola" })
 });
 app.get('/api', (req, res) => {
-    res.json({ status: 400, message: "bad request" });
+  res.json({ status: 400, message: "bad request" });
 });
 
 app.get('/kill',function(req, res){

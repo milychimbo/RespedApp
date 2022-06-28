@@ -3,7 +3,7 @@ const { getAllUsers } = require('../DataLayer/usuario');
 const { responseJson } = require('../helpers/handleGenericFunction');
 const { verifyPassword } = require('../helpers/handleBCrypt');
 const jwt = require('jsonwebtoken')
-const secret = process.env.SECRET || 'CDjNU7uuZWazUSQsScR/P5RYwSeTsm2I0HLCUXKWnHY';
+const secret = process.env.SECRET_TOKEN;
 
 
 function login(req = request, res = response) {
