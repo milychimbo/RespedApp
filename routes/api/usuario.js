@@ -9,7 +9,7 @@ const router = Router();
 
 router.get('/', validateToken, obtenerUsuarios);
 
-router.get('/tipo/:id', validateToken, obte1nerUsuariosPorTipo);
+router.get('/tipo/:id', validateToken, obtenerUsuariosPorTipo);
 
 router.post('/', validateToken, validationInsert, crearUsuario);
 
