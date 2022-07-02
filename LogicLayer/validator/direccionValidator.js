@@ -16,12 +16,13 @@ const validationInsert = [
 ];
 
 const validationUpdate = [
+    check('IDDIRECCION').not().isEmpty().isInt().withMessage('No es un valor valido'),
     check('STREET1').optional().isString().trim().withMessage('Debe ser de tipo texto'),
     check('STREET1').optional().isLength({max: 100 }).withMessage('Longitud máxima de 100'),
     check('STREET2').optional().isString().trim().withMessage('Debe ser de tipo texto'),
     check('STREET2').optional().isLength({max: 100 }).withMessage('Longitud máxima de 100'),
     check('REFERENCE').optional().isString().trim().withMessage('Debe ser de tipo texto'),
-    check('REFERENCE').optional().isLength({max: 200 }).withMessage('Longitud máxima de 200'),
+    check('REFERENCE').optional().isLength({max: 150 }).withMessage('Longitud máxima de 150'),
     check('NAME').optional().isString().trim().withMessage('Debe ser de tipo texto'),
     check('PHONEDIR').optional().isString().trim().withMessage('Debe ser de tipo texto'),
     (req, res, next) => {
