@@ -22,10 +22,11 @@ function login(req = request, res = response) {
                     i = usersL + 1;
                     const userToken = {
                         IDUSUARIO: user.IDUSUARIO,
-                        USERNAME: user.USERNAME,
-                        TIPO: user.IDTIPOUSUARIO,
+                        TIPO: tipo.TIPO,
+                        EMAIL: user.EMAIL,
                         NAME: user.NAME,
                         LASTNAME: user.LASTNAME,
+                        USERNAME: user.USERNAME,   
                         PHONE: user.PHONE,
                     }
                     const token = jwt.sign(userToken, secret, { expiresIn: '1d' });
@@ -56,7 +57,6 @@ function login(req = request, res = response) {
 }
 async function validate(req = request, res = response) {
     let { token } = req.body;
-    console.log(token);
     if (token != undefined) {
         try {
             const decodedToken = jwt.verify(token, secret);

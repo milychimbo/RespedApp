@@ -30,12 +30,12 @@ async function obtenerUsuariosPorTipo(req = request, res = response) {
             const tipo = await getOneTipoUsuario(req.params.id);
             const respuesta = {
                 IDUSUARIO: user.IDUSUARIO,
-                USERNAME: user.USERNAME,
+                TIPO: tipo.TIPO,
                 EMAIL: user.EMAIL,
                 NAME: user.NAME,
                 LASTNAME: user.LASTNAME,
+                USERNAME: user.USERNAME,   
                 PHONE: user.PHONE,
-                TIPO: tipo.TIPO,
             };
             arrayUsers.push(respuesta);
             if (index == users.length - 1) {
