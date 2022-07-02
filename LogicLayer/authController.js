@@ -22,7 +22,7 @@ function login(req = request, res = response) {
                     i = usersL + 1;
                     const userToken = {
                         IDUSUARIO: user.IDUSUARIO,
-                        TIPO: tipo.TIPO,
+                        TIPO: user.TIPO,
                         EMAIL: user.EMAIL,
                         NAME: user.NAME,
                         LASTNAME: user.LASTNAME,
