@@ -9,20 +9,19 @@ const secret = process.env.SECRET_TOKEN;
 function login(req = request, res = response) {
     const USERNAME = req.body.USERNAME;
     const PASSWORD = req.body.PASSWORD;
-
     getAllUsers().then(users => {
         const usersL = users.length;
         var i = 0;
         users.forEach(user => {
             i = i + 1;
             if (user.USERNAME == USERNAME) {
+                
                 const match = verifyPassword(PASSWORD, user.PASSWORD);
                 if (match) {
-                    console.log(user);
                     i = usersL + 1;
                     const userToken = {
                         IDUSUARIO: user.IDUSUARIO,
-                        TIPO: user.TIPO,
+                        TIPO: user.IDTIPOUSUARIO,
                         EMAIL: user.EMAIL,
                         NAME: user.NAME,
                         LASTNAME: user.LASTNAME,
