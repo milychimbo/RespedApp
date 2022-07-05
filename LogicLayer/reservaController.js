@@ -16,6 +16,9 @@ const {
 const { generateUUID } = require('../middlewares/generateUUID');
 const { getOneUser } = require('../DataLayer/usuario');
 const { getOneEstado } = require('../DataLayer/estado2');
+const { enviarEmail } = require('../helpers/enviarMail');
+const correo = require('../views/correo.js')
+
 
 
 async function obtenerReservas(req = request, res = response) {
@@ -132,6 +135,12 @@ async function obtenerReservasPorEstado(req = request, res = response) {
 }
 
 async function crearReserva(req = request, res = response) {
+    var mailOptions = {
+        from: 'noreplyfdcoz@gmail.com',
+        to: req.currentToken.EMAIL,
+        subject: 'Tu reserva ha sido recibida',
+        html: correo.reservaMail
+      };
    const reservaJson={
         "NUMRESERVA": generateUUID(),
         "IDUSUARIO": req.currentToken.IDUSUARIO,
@@ -142,8 +151,11 @@ async function crearReserva(req = request, res = response) {
         "IDSTATE": 1
     }
     const reserva = await createReserva(reservaJson);
-    if (Object.keys(reserva)[0] == "dataValues")
-        res.status(200).json(responseJson(200, "success",reserva.IDRESERVA))
+    if (Object.keys(reserva)[0] == "dataValues"){
+        res.status(200).json(responseJson(200, "success",reserva.IDRESERVA));
+        enviarEmail(mailOptions);
+    }
+       
     else
         res.status(400).json(responseJson(400, "no se pudo crear", reserva.parent.sqlMessage))
 }
@@ -180,14 +192,6 @@ async function actualizarReserva(req = request, res = response) {
             }
         }
         }
-    
-}
-
-async function enviarWpp(req = request, res = response) {
-    
-    // res.status(200).json(responseJson(200, "se mando")) //me devuelve 1 si actualizo o 0 si no
-    //  res.status(400).json(responseJson(400, "no se puede mandar")) //me devuelve 1 si actualizo o 0 si no
-          
     
 }
 async function borrarReserva(req = request, res = response) {
