@@ -8,7 +8,7 @@ const {
     responseJson
 } = require('../helpers/handleGenericFunction');
 
-const secret = process.env.SECRET || 'CDjNU7uuZWazUSQsScR/P5RYwSeTsm2I0HLCUXKWnHY';
+const secret = process.env.SECRET_TOKEN;
 
 function validateToken(req = request, res = response, next) {
     const authorization = req.headers.authorization;
@@ -18,7 +18,7 @@ function validateToken(req = request, res = response, next) {
             token = authorization.substring(7);
             try {
                 const decodedToken = jwt.verify(token, secret);
-                req.currentToken=decodedToken;
+                req.currentToken = decodedToken;
                 next();
             } catch {
                 res.status(401).json(responseJson(401, "no autorizado"))
@@ -28,4 +28,4 @@ function validateToken(req = request, res = response, next) {
         res.status(401).json(responseJson(401, "no autorizado"))
     }
 }
-module.exports = {validateToken}
+module.exports = { validateToken }

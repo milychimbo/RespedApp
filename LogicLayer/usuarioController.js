@@ -34,7 +34,7 @@ async function obtenerUsuariosPorTipo(req = request, res = response) {
                 EMAIL: user.EMAIL,
                 NAME: user.NAME,
                 LASTNAME: user.LASTNAME,
-                USERNAME: user.USERNAME,   
+                USERNAME: user.USERNAME,
                 PHONE: user.PHONE,
             };
             arrayUsers.push(respuesta);
@@ -129,11 +129,22 @@ function crearCliente(req = request, res = response) {
 }
 
 async function actualizarUsuario(req = request, res = response) {
+    const newPayloadToken = {
+        ...req.currentToken,
+        ...req.body
+    }
     if (req.body.PASSWORD) {
         req.body.PASSWORD = await encrypt(req.body.PASSWORD);
+        delete newPayloadToken.PASSWORD;
     }
+    delete newPayloadToken.iat;
+    delete newPayloadToken.exp;
+
     const user = await updateUser(req.body);
-    if (user == 1) res.status(201).json(responseJson(201, "success"));
+    if (user == 1) {
+        const token = jwt.sign(newPayloadToken, secret, { expiresIn: "1d" });
+        res.status(201).json(responseJson(201, "success", { token }));
+    }
     else {
         res.status(200).json(responseJson(200, "no hubo cambios", user));
     }
