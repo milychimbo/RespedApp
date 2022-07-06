@@ -11,6 +11,10 @@ const { generateUUID } = require('../middlewares/generateUUID');
 const { createPedidoProducto,getPedidoProducto} = require('../DataLayer/relacionpedidoproducto');
 const { getRelacion, getUsuarioDireccion } = require('../DataLayer/relacionusuariodireccion');
 const { getOneReserva, getUsuarioReserva } = require('../DataLayer/reserva');
+const { enviarEmail } = require('../helpers/enviarMail');
+const correo = require('../views/correo.js')
+
+
 
 async function obtenerPedidosFinalizados(req = request,res = response){
     const pedidos = await getAllPedidos();
@@ -395,15 +399,21 @@ async function crearPedidoLocal(req = request,res = response){
         "IDPEDIDOTOTAL": req.body.IDPEDIDOTOTAL,
         "MESA": req.body.MESA
     }
-
    const pedido = await createPedidoLocal(pedidoLocalJson);
     if(Object.keys(pedido)[0]=="dataValues"){
+        var mailOptions = {
+            from: 'noreplyfdcoz@gmail.com',
+            to: req.currentToken.EMAIL,
+            subject: 'Tu pedido ha sido recibido',
+            html: correo.pedidoMail
+          };
         const requestNota ={
             "IDPEDIDOTOTAL": req.body.IDPEDIDOTOTAL,
             "NOTE": req.body.NOTE
         }
         await updatePedido(requestNota);
          res.status(200).json(responseJson(200, "success"))
+         enviarEmail(mailOptions);
      }
     else
     {
@@ -419,12 +429,19 @@ async function crearPedidoDomicilio(req = request,res = response){
 
    const pedido = await createPedidoDomicilio(pedidoDomicilioJson);
     if(Object.keys(pedido)[0]=="dataValues"){
+        var mailOptions = {
+            from: 'noreplyfdcoz@gmail.com',
+            to: req.currentToken.EMAIL,
+            subject: 'Tu pedido ha sido recibido',
+            html: correo.pedidoMail
+          };
         const requestNota ={
             "IDPEDIDOTOTAL": req.body.IDPEDIDOTOTAL,
             "NOTE": req.body.NOTE
         }
         const update = await updatePedido(requestNota);
          res.status(200).json(responseJson(200, "success",update))
+         enviarEmail(mailOptions);
      }
     else
     {
@@ -439,12 +456,19 @@ async function crearPedidoReserva(req = request,res = response){
     }
    const pedido = await createPedidoReserva(pedidoReservaJson);
     if(Object.keys(pedido)[0]=="dataValues"){
+        var mailOptions = {
+            from: 'noreplyfdcoz@gmail.com',
+            to: req.currentToken.EMAIL,
+            subject: 'Tu pedido ha sido recibido',
+            html: correo.pedidoMail
+          };
         const requestNota ={
             "IDPEDIDOTOTAL": req.body.IDPEDIDOTOTAL,
             "NOTE": req.body.NOTE
         }
         await updatePedido(requestNota);
          res.status(200).json(responseJson(200, "success"))
+         enviarEmail(mailOptions);
      }
     else
     {
