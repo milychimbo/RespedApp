@@ -1,4 +1,4 @@
-  const express = require('express');
+const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors')
 require('dotenv').config()
@@ -44,11 +44,11 @@ app.use('/api/producto', require('./routes/api/producto'));
 
 
 app.use(function (req, res, next) {
-    res.status(300).redirect('/api');
+  res.status(300).redirect('/api');
 });
 
 
 
 app.listen(port, () => {
-    console.log(`Application is listening at port ${port}`);
+  console.log(`Application is listening at port ${port}`);
 });
