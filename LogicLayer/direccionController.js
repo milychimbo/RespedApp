@@ -118,7 +118,7 @@ async function crearDireccion(req = request, res = response) {
 
 }
 
-async function actualizarDireccion(req = request, res = response) {
+async function actualizarDireccion(req = request, res = response) { //CORREGIDO
     const direccionJson = {
         "IDDIRECCION": req.body.IDDIRECCION,
         "STREET1": req.body.STREET1,
@@ -129,9 +129,11 @@ async function actualizarDireccion(req = request, res = response) {
     }
     if (req.body.DEFAULTDIR) {
         const direcciones = await getUsuarioDireccion(req.currentToken.IDUSUARIO);
+        let aux=0;
         if (direcciones.length > 0) {
             for (const direccionx of direcciones) {
                 if (direccionx.IDDIRECCION == req.body.IDDIRECCION) {
+                        aux++;
                         for (const direcciony of direcciones) {
                             if (direcciony.IDDIRECCION != req.body.IDDIRECCION) {
                                 const update1 = {
@@ -151,9 +153,12 @@ async function actualizarDireccion(req = request, res = response) {
                             res.status(201).json(responseJson(201, "success"))
                         }
                         else {
-                            res.status(200).json(responseJson(200, "no hubo cambios"));
+                            res.status(200).json(responseJson(200, "no hubo cambios 1"));
                         }
                 }
+            }
+            if(aux<1){
+                res.status(400).json(responseJson(400, "no se encontro la direccion"));
             }
         }
         else {
@@ -166,16 +171,16 @@ async function actualizarDireccion(req = request, res = response) {
         if (direccion == 1)
             res.status(201).json(responseJson(201, "success"))
         else
-            res.status(200).json(responseJson(200, "no hubo cambios")) //me devuelve 1 si actualizo o 0 si no
+            res.status(200).json(responseJson(200, "no hubo cambios 2")) //me devuelve 1 si actualizo o 0 si no
     }
 
 }
 
-async function borrarDireccion(req = request, res = response) {
+async function borrarDireccion(req = request, res = response) { //corregido
     const direcciones = await getUsuarioDireccion(req.currentToken.IDUSUARIO);
+    let aux=0;
     if (direcciones.length > 0) {
-        let aux = 0;
-        direcciones.forEach(async (direccionx, index) => {
+        for (const direccionx of direcciones) {
             if (direccionx.IDDIRECCION == req.params.id) {
                 aux++;
                 if (direccionx.DEFAULTDIR == true) {
@@ -189,17 +194,13 @@ async function borrarDireccion(req = request, res = response) {
                         res.status(200).json(responseJson(200, "no hubo cambios"))
                 }
             }
-            else {
-                if (index == (direcciones.length - 1)) {
-                    if (aux < 1) {
-                        res.status(400).json(responseJson(400, "no se pudo encontrar la direccion"));
-                    }
-                }
-            }
-        });
+        }
+        if(aux<1){
+            res.status(400).json(responseJson(400, "no se encontro la direccion"));
+        }
     }
     else {
-        res.status(400).json(responseJson(400, "el usuario no tiene esa direccion"));
+        res.status(400).json(responseJson(400, "no tiene direcciones"));
     }
 
 }
