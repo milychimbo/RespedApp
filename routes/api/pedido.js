@@ -16,11 +16,6 @@ const router = Router();
  router.get('/usuario/domicilio/', validateToken,obtenerPedidosUsuarioDomicilio);
  router.get('/usuario/reserva/', validateToken,obtenerPedidosUsuarioReserva);
 
-
-// router.get('/:id',validateToken, obtenerPedidoLocalID);
-
- //router.post('/', validateToken, crearPedidoLocal);
-
  router.post('/', validateToken, crearPedido);
 
  router.post('/local/', validateToken, validationInsertLocal,crearPedidoLocal);

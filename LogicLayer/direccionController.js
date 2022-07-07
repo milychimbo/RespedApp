@@ -130,44 +130,34 @@ async function actualizarDireccion(req = request, res = response) {
     if (req.body.DEFAULTDIR) {
         const direcciones = await getUsuarioDireccion(req.currentToken.IDUSUARIO);
         if (direcciones.length > 0) {
-            let aux = 0;
-            direcciones.forEach(async (direccionx, index) => {
+            for (const direccionx of direcciones) {
                 if (direccionx.IDDIRECCION == req.body.IDDIRECCION) {
-                    aux++;
-                    if (req.body.DEFAULTDIR == true) {
-                        direcciones.forEach(async (direcciony) => {
-                            const update1 = {
-                                "IDRELACIONUD": direcciony.IDRELACIONUD,
-                                "DEFAULTDIR": false,
+                        for (const direcciony of direcciones) {
+                            if (direcciony.IDDIRECCION != req.body.IDDIRECCION) {
+                                const update1 = {
+                                    "IDRELACIONUD": direcciony.IDRELACIONUD,
+                                    "DEFAULTDIR": false,
+                                }
+                                await updateUsuarioDireccion(update1);
                             }
-                            await updateUsuarioDireccion(update1)
-
-                        });
-                    }
-                    const update = {
-                        "IDRELACIONUD": direccionx.IDRELACIONUD,
-                        "DEFAULTDIR": req.body.DEFAULTDIR,
-                    }
-                    const respuesta = await updateUsuarioDireccion(update)
-                    if (respuesta == 1) {
-                        await updateDireccion(direccionJson);
-                        res.status(201).json(responseJson(201, "success"))
-                    }
-                    else {
-                        res.status(400).json(responseJson(400, "no se pudo actualizar"));
-                    }
-                }
-                else {
-                    if (index == (direcciones.length - 1)) {
-                        if (aux < 1) {
-                            res.status(400).json(responseJson(400, "no se pudo encontrar la direccion"));
                         }
-                    }
+                        const update = {
+                            "IDRELACIONUD": direccionx.IDRELACIONUD,
+                            "DEFAULTDIR": true,
+                        }
+                        const respuesta = await updateUsuarioDireccion(update)
+                        if (respuesta == 1) {
+                            await updateDireccion(direccionJson);
+                            res.status(201).json(responseJson(201, "success"))
+                        }
+                        else {
+                            res.status(200).json(responseJson(200, "no hubo cambios"));
+                        }
                 }
-            });
+            }
         }
         else {
-            res.status(400).json(responseJson(400, "no se pudo modificar"));
+            res.status(400).json(responseJson(400, "no tiene direcciones"));
 
         }
     }

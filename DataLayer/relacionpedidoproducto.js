@@ -64,20 +64,7 @@ async function createPedidoProducto(relacion) {
     }
 }
 
-async function deletePedidoProducto(IDRELACIONPPX) {
-    try {
-        return await RelacionPedidoProducto.destroy({
-            where: {
-                IDRELACIONPP: IDRELACIONPPX
-            }
-        })
-    } catch(err){
-        return err;
-      }
-}
-
 module.exports = {
     getPedidoProducto,
-    createPedidoProducto,
-    deletePedidoProducto
+    createPedidoProducto
 }
