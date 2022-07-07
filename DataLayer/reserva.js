@@ -89,15 +89,6 @@ async function getOneReserva(IDRESERVA) {
     } catch(err){
         return err;}
 }
-
-async function getUsuarioReserva(IDUSUARIOX) {
-    try {
-        return await Reserva.findAll({
-            where: { IDUSUARIO: IDUSUARIOX }})
-    }  catch(err){
-        return err;
-    }
-}
 async function createReserva(reserva) {
     try {
         return await Reserva.create({
@@ -126,24 +117,12 @@ async function updateReserva(reserva) {
         return err;}
 }
 
-async function deleteReserva(IDRESERVA) {
-    try {
-        return await Reserva.destroy({
-            where: {
-                IDRESERVA: IDRESERVA
-            }
-        })
-    } catch(err){
-        return err;}
-}
 
 module.exports = {
     getAllReservas,
     getOneReserva,
     getReservasPorEstado,
     getReservasPorUsuario,
-    getUsuarioReserva,
     createReserva,
-    updateReserva,
-    deleteReserva
+    updateReserva
 }

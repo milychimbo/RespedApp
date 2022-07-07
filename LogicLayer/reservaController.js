@@ -10,7 +10,6 @@ const {
     getReservasPorUsuario,
     createReserva,
     updateReserva,
-    deleteReserva,
     getReservasPorEstado
 } = require('../DataLayer/reserva');
 const { generateUUID } = require('../middlewares/generateUUID');
@@ -20,11 +19,11 @@ const { enviarEmail } = require('../helpers/enviarMail');
 const correo = require('../views/correo.js')
 
 
-async function obtenerReservasUsuario(req = request, res = response) {
+async function obtenerReservasUsuario(req = request, res = response) {//ARREGLADO
     const reservas = await getReservasPorUsuario(req.currentToken.IDUSUARIO);
-    const arrayReservas = [];
+    let arrayReservas = [];
     if (reservas.length>0){
-        reservas.forEach(async (reserva,index) => {
+        for (const reserva of reservas) {
             //estadoreserva
             const estado = await getOneEstado(reserva.IDSTATE);
             const reservaJson={
@@ -36,22 +35,23 @@ async function obtenerReservasUsuario(req = request, res = response) {
                 "RESERVATIONTIME": reserva.RESERVATIONTIME,
                 "STATE": estado.STATE
             }
-            arrayReservas.push(reservaJson);
-            if(index==(reservas.length-1)){
-                res.status(200).json(responseJson(200, "success", arrayReservas))
-            }
-        });
+            arrayReservas = [
+                ...arrayReservas,
+                reservaJson
+            ]
+        }
+        res.status(200).json(responseJson(200, "success", arrayReservas))
     }
         
     else
         res.status(404).json(responseJson(404, "no existe"))
 }
 
-async function obtenerReservasPorEstado(req = request, res = response) {
+async function obtenerReservasPorEstado(req = request, res = response) { //ARREGLADO
     const reservas = await getReservasPorEstado(req.params.id);
-    const arrayReservas = [];
+    let arrayReservas = [];
     if (reservas.length>0){
-        reservas.forEach(async (reserva,index) => {
+        for (const reserva of reservas) {
             //nombreusuario
             const usuario = await getOneUser(reserva.IDUSUARIO);
             let nombre = usuario.NAME;
@@ -80,11 +80,13 @@ async function obtenerReservasPorEstado(req = request, res = response) {
                 "RESERVATIONTIME": reserva.RESERVATIONTIME,
                 "STATE": reserva.IDSTATE
             }
-            arrayReservas.push(reservaJson);
-            if(index==(reservas.length-1)){
-                res.status(200).json(responseJson(200, "success", arrayReservas))
-            }
-        });
+            arrayReservas = [
+                ...arrayReservas,
+                reservaJson
+            ]
+            
+        }
+        res.status(200).json(responseJson(200, "success", arrayReservas))
     }
     else
         res.status(404).json(responseJson(404, "no existe"))
@@ -105,22 +107,24 @@ async function obtenerReservasHoy(req = request, res = response) { //ARREGLADO
     if (reservas.length > 0){
     for (const reserva of reservas) {
         if(hoy==reserva.RESERVATIONDATE){
-        const usuarioResponse = await getOneUser(reserva.IDUSUARIO);
-        const nombre=usuarioResponse.NAME?usuarioResponse.NAME:"";
-        const apellido=usuarioResponse.LASTNAME?usuarioResponse.LASTNAME:"";
-        let persona=nombre+" "+apellido;
-        if(persona==" "){
-             persona = usuarioResponse.USERNAME;
-        }
-        const reservaJson ={
-            "NUMRESERVA": reserva.NUMRESERVA,
-            "HORA": reserva.RESERVATIONTIME,
-            "NOMBRE": persona
-        }
-            arrayReservas = [
-                ...arrayReservas,
-                reservaJson
-            ]
+            if(reserva.IDSTATE==2){
+                const usuarioResponse = await getOneUser(reserva.IDUSUARIO);
+                const nombre=usuarioResponse.NAME?usuarioResponse.NAME:"";
+                const apellido=usuarioResponse.LASTNAME?usuarioResponse.LASTNAME:"";
+                let persona=nombre+" "+apellido;
+                if(persona==" "){
+                    persona = usuarioResponse.USERNAME;
+                }
+                const reservaJson ={
+                    "NUMRESERVA": reserva.NUMRESERVA,
+                    "HORA": reserva.RESERVATIONTIME,
+                    "NOMBRE": persona
+                }
+                    arrayReservas = [
+                        ...arrayReservas,
+                        reservaJson
+                    ]
+            }
         }
     }
         res.status(200).json(responseJson(200, "success", arrayReservas))
@@ -154,7 +158,7 @@ async function crearReserva(req = request, res = response) {
         res.status(400).json(responseJson(400, "no se pudo crear", reserva.parent.sqlMessage))
 }
 
-async function actualizarReserva(req = request, res = response) {
+async function actualizarReserva(req = request, res = response) { //ARREGLADO
     if(req.body.IDSTATE==1){
             res.status(200).json(responseJson(200, "no hubo cambios"))
     }
@@ -162,19 +166,29 @@ async function actualizarReserva(req = request, res = response) {
         const reserva = await updateReserva(req.body);
         if (reserva == 1){
             if(req.body.IDSTATE==2){
-                //ENVIAR WHATSAPP
+                var mailOptions = {
+                    from: 'noreplyfdcoz@gmail.com',
+                    to: req.currentToken.EMAIL,
+                    subject: 'Tu reserva ha sido confirmada',
+                    html: correo.reservaConfirmadaMail
+                  };
                 res.status(201).json(responseJson(201, "success"))
+                enviarEmail(mailOptions);
             }
             if(req.body.IDSTATE==3){
-                //no hacer nadsa
                 res.status(201).json(responseJson(201, "success"))
             }
             if(req.body.IDSTATE==4){
-                //ENVIAR WHATSAPP
+                var mailOptions = {
+                    from: 'noreplyfdcoz@gmail.com',
+                    to: req.currentToken.EMAIL,
+                    subject: '¡Oh no! Tu reserva ha sido rechazada',
+                    html: correo.reservaRechazadaMail
+                  };
                 res.status(201).json(responseJson(201, "success"))
+                enviarEmail(mailOptions);
             }
         }
-        // res.status(201).json(responseJson(201, "success"))
         else
         {
             if(reserva[0]==0){
@@ -188,14 +202,6 @@ async function actualizarReserva(req = request, res = response) {
         }
     
 }
-async function borrarReserva(req = request, res = response) {
-
-    const reserva = await deleteReserva(req.params.id);
-    if (reserva == 1)
-        res.status(201).json(responseJson(201, "success"))
-    else
-        res.status(200).json(responseJson(200, "no hubo cambios"))
-}
 
 
 module.exports = {
@@ -203,6 +209,5 @@ module.exports = {
     obtenerReservasUsuario,
     obtenerReservasHoy,
     crearReserva,
-    actualizarReserva,
-    borrarReserva
+    actualizarReserva
 };

@@ -16,6 +16,4 @@ const router = Router();
 
  router.put('/',validateToken, validationUpdate, actualizarReserva);
 
- router.delete('/:id', validateToken,borrarReserva);
-
 module.exports=router;
