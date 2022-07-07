@@ -1,59 +1,37 @@
 const { request, response } = require('express');
-const { getAllUsers } = require('../DataLayer/usuario');
+const { getAllUsers, getOneUser, getOneUserByUsername } = require('../DataLayer/usuario');
 const { responseJson } = require('../helpers/handleGenericFunction');
 const { verifyPassword } = require('../helpers/handleBCrypt');
 const jwt = require('jsonwebtoken')
 const secret = process.env.SECRET_TOKEN;
 
 
-function login(req = request, res = response) {
-    const USERNAME = req.body.USERNAME;
-    const PASSWORD = req.body.PASSWORD;
-    getAllUsers().then(users => {
-        const usersL = users.length;
-        var i = 0;
-        users.forEach(user => {
-            i = i + 1;
-            if (user.USERNAME == USERNAME) {
-                
-                const match = verifyPassword(PASSWORD, user.PASSWORD);
-                if (match) {
-                    i = usersL + 1;
-                    const userToken = {
-                        IDUSUARIO: user.IDUSUARIO,
-                        TIPO: user.IDTIPOUSUARIO,
-                        EMAIL: user.EMAIL,
-                        NAME: user.NAME,
-                        LASTNAME: user.LASTNAME,
-                        USERNAME: user.USERNAME,   
-                        PHONE: user.PHONE,
-                    }
-                    const token = jwt.sign(userToken, secret, { expiresIn: '1d' });
-                    const data = {
-                        token,
-                        id: user.IDUSUARIO,
-                        username: user.USERNAME,
-                        email: user.EMAIL,
-                        rol: user.IDTIPOUSUARIO,
-                    }
-                    res.status(200).json(responseJson(200, "success", data))
+async function login(req = request, res = response) {
+    const {USERNAME, PASSWORD} = req.body;
 
-
-                } else {
-                    i = usersL + 1;
-                    res.status(400).json(responseJson(400, "contraseña incorrecta"))
-
-                }
+    const requestUser = await getOneUserByUsername(USERNAME);
+    if (requestUser?.dataValues) {
+        const { dataValues: user } = requestUser;
+        if (USERNAME === user.USERNAME && verifyPassword(PASSWORD, user.PASSWORD)) {
+            const payloadToken = {
+                IDUSUARIO: user.IDUSUARIO,
+                TIPO: user.IDTIPOUSUARIO,
+                EMAIL: user.EMAIL,
+                NAME: user.NAME,
+                LASTNAME: user.LASTNAME,
+                USERNAME: user.USERNAME,
+                PHONE: user.PHONE,
             }
-            else {
-                if (i == usersL) {
-                    res.status(404).json(responseJson(404, "no existe"))
-                }
-            }
-        });
-    })
-
+            const token = jwt.sign(payloadToken, secret, { expiresIn: '1d' });
+            return res.status(200).json(responseJson(200, "success", { token }))
+        } else {
+            return res.status(404).json(responseJson(404, "El usuario o la contraseña son incorrectas"));
+        }
+    } else {
+        return res.status(404).json(responseJson(404, "El usuario o la contraseña son incorrectas"));
+    }
 }
+
 async function validate(req = request, res = response) {
     let { token } = req.body;
     if (token != undefined) {

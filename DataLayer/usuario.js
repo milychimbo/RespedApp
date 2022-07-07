@@ -17,11 +17,11 @@ const User = connection.define('USUARIO', {
   IDTIPOUSUARIO: {
     type: DataTypes.INTEGER,
     allowNull: false,
-        references: {
-            model: 'TIPOUSUARIO',
-            key: 'IDTIPOUSUARIO'
-        }
-},
+    references: {
+      model: 'TIPOUSUARIO',
+      key: 'IDTIPOUSUARIO'
+    }
+  },
   USERNAME: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -56,8 +56,8 @@ async function getAllUsers() {
   try {
     return await User.findAll({
       raw: true
-     });
-  } catch(err){
+    });
+  } catch (err) {
     return err;
   }
 }
@@ -65,16 +65,25 @@ async function getAllUsers() {
 async function getAllUsersByType(tipo) {
   try {
     return await User.findAll({
-      where: { IDTIPOUSUARIO: tipo }})
-}  catch(err){
-  return err;
-}
+      where: { IDTIPOUSUARIO: tipo }
+    })
+  } catch (err) {
+    return err;
+  }
 }
 
 async function getOneUser(IDUSUARIO) {
   try {
     return await User.findByPk(IDUSUARIO)
-  } catch(err){
+  } catch (err) {
+    return err;
+  }
+}
+
+async function getOneUserByUsername(USERNAME_) {
+  try {
+    return await User.findOne({ where: { USERNAME: USERNAME_ } })
+  } catch (err) {
     return err;
   }
 }
@@ -90,7 +99,7 @@ async function createUser(user) {
       PASSWORD: user.PASSWORD,
       PHONE: user.PHONE
     });
-  } catch(err){
+  } catch (err) {
     return err;
   }
 }
@@ -109,7 +118,7 @@ async function updateUser(user) {
         IDUSUARIO: user.IDUSUARIO
       }
     })
-  } catch(err){
+  } catch (err) {
     return err;
   }
 }
@@ -121,7 +130,7 @@ async function deleteUser(IDUSUARIO) {
         IDUSUARIO: IDUSUARIO
       }
     })
-  } catch(err){
+  } catch (err) {
     return err;
   }
 }
@@ -130,8 +139,9 @@ module.exports = {
   getAllUsers,
   getAllUsersByType,
   getOneUser,
+  getOneUserByUsername,
   createUser,
   updateUser,
-  deleteUser
+  deleteUser,
 }
 
