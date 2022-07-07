@@ -57,6 +57,15 @@ async function getAllProductos() {
         return err;
     }
 }
+async function getOneProducto(IDPRODUCTO) {
+    try {
+        return await Producto.findByPk(IDPRODUCTO)
+    }  catch(err){
+        return err;
+    }
+}
+
+
 async function createProducto(producto) {
     try {
         return await Producto.create({
@@ -105,6 +114,7 @@ async function deleteProducto(IDPRODUCTO) {
 
 module.exports = {
     getAllProductos,
+    getOneProducto,
     createProducto,
     updateProducto,
     deleteProducto
