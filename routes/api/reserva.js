@@ -1,15 +1,16 @@
 const {Router} =require('express');
-const { crearReserva, obtenerReservasUsuario,obtenerReservas, actualizarReserva, borrarReserva, obtenerReservasPorEstado } = require('../../LogicLayer/reservaController');
+const { crearReserva,obtenerReservasHoy, obtenerReservasUsuario, actualizarReserva, borrarReserva, obtenerReservasPorEstado } = require('../../LogicLayer/reservaController');
 const { validationInsert, validationUpdate } = require('../../LogicLayer/validator/reservaValidator');
 const { validateToken } = require('../../middlewares/verifyToken');
 
 const router = Router();
 
- router.get('/',validateToken, obtenerReservas);
 
  router.get('/estado/:id', validateToken,obtenerReservasPorEstado);
 
  router.get('/usuario/', validateToken,obtenerReservasUsuario);
+ 
+ router.get('/hoy/', validateToken,obtenerReservasHoy);
 
  router.post('/',validateToken,validationInsert, crearReserva);
 
