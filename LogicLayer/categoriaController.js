@@ -1,5 +1,5 @@
 const {request,response} = require('express');
-const {getAllCategorias, getOneCategoria, updateCategoria, deleteCategoria, createCategoria} = require('../DataLayer/categoria');
+const {getAllCategorias, updateCategoria, deleteCategoria, createCategoria} = require('../DataLayer/categoria');
 const { responseJson } = require('../helpers/handleGenericFunction');
 
 
@@ -7,14 +7,6 @@ async function obtenerCategorias(req = request,res = response){
     const categorias = await getAllCategorias();
     if(categorias.length>0)
     res.status(200).json(responseJson(200, "success", categorias))
-    else
-    res.status(404).json(responseJson(404, "no existe"))
-}
-
-async function obtenerCategoriaId(req = request,res = response){
-    const categoria = await getOneCategoria(req.params.id);
-    if(categoria!=null)
-    res.status(200).json(responseJson(200, "success", categoria))
     else
     res.status(404).json(responseJson(404, "no existe"))
 }
@@ -44,4 +36,4 @@ async function borrarCategoria(req = request,res = response){
 }
 
 
-module.exports= {obtenerCategorias,obtenerCategoriaId,crearCategoria,actualizarCategoria,borrarCategoria};
+module.exports= {obtenerCategorias,crearCategoria,actualizarCategoria,borrarCategoria};

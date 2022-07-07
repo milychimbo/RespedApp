@@ -2,7 +2,9 @@ const {
     Sequelize,
     DataTypes
 } = require('sequelize');
-const { path } = require('./connection');
+const {
+    path
+} = require('./connection');
 
 
 //const path = 'mysql://root:root@localhost:3306/bdd_respedapp';
@@ -39,14 +41,12 @@ const Direccion = connection.define('DIRECCION', {
     timestamps: false
 })
 
-//User.sync().then(() => {})
-
 async function getAllDirecciones() {
     try {
         return await Direccion.findAll({
             raw: true
-           });
-    }  catch(err){
+        });
+    } catch (err) {
         return err;
     }
 }
@@ -54,7 +54,7 @@ async function getAllDirecciones() {
 async function getOneDireccion(IDDIRECCION) {
     try {
         return await Direccion.findByPk(IDDIRECCION)
-    }  catch(err){
+    } catch (err) {
         return err;
     }
 }
@@ -68,7 +68,7 @@ async function createDireccion(direccion) {
             NAME: direccion.NAME,
             PHONEDIR: direccion.PHONEDIR
         });
-    }  catch(err){
+    } catch (err) {
         return err;
     }
 }
@@ -86,7 +86,7 @@ async function updateDireccion(direccion) {
                 IDDIRECCION: direccion.IDDIRECCION
             }
         })
-    }  catch(err){
+    } catch (err) {
         return err;
     }
 }
@@ -98,7 +98,7 @@ async function deleteDireccion(IDDIRECCION) {
                 IDDIRECCION: IDDIRECCION
             }
         })
-    }  catch(err){
+    } catch (err) {
         return err;
     }
 }

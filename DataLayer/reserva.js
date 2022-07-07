@@ -3,7 +3,9 @@ const {
     DataTypes
 } = require('sequelize');
 
-const { path } = require('./connection');
+const {
+    path
+} = require('./connection');
 
 const connection = new Sequelize(path);
 
@@ -54,40 +56,43 @@ const Reserva = connection.define('RESERVA', {
     timestamps: false
 })
 
-//User.sync().then(() => {})
-
 async function getAllReservas() {
     try {
         return await Reserva.findAll({
             raw: true
-           });
-    } catch(err){
+        });
+    } catch (err) {
         return err;
     }
 }
 async function getReservasPorUsuario(usuario) {
     try {
         return await Reserva.findAll({
-            where: {IDUSUARIO : usuario}
-           });
-    } catch(err){
+            where: {
+                IDUSUARIO: usuario
+            }
+        });
+    } catch (err) {
         return err;
     }
 }
 async function getReservasPorEstado(estado) {
     try {
         return await Reserva.findAll({
-            where: {IDSTATE : estado}
-           });
-    } catch(err){
+            where: {
+                IDSTATE: estado
+            }
+        });
+    } catch (err) {
         return err;
     }
 }
 async function getOneReserva(IDRESERVA) {
     try {
         return await Reserva.findByPk(IDRESERVA)
-    } catch(err){
-        return err;}
+    } catch (err) {
+        return err;
+    }
 }
 async function createReserva(reserva) {
     try {
@@ -100,8 +105,9 @@ async function createReserva(reserva) {
             RESERVATIONTIME: reserva.RESERVATIONTIME,
             IDSTATE: reserva.IDSTATE
         });
-    } catch(err){
-        return err;}
+    } catch (err) {
+        return err;
+    }
 }
 
 async function updateReserva(reserva) {
@@ -113,8 +119,9 @@ async function updateReserva(reserva) {
                 IDRESERVA: reserva.IDRESERVA
             }
         })
-    } catch(err){
-        return err;}
+    } catch (err) {
+        return err;
+    }
 }
 
 

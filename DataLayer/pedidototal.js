@@ -3,7 +3,9 @@ const {
     DataTypes
 } = require('sequelize');
 
-const { path } = require('./connection');
+const {
+    path
+} = require('./connection');
 
 const connection = new Sequelize(path);
 
@@ -45,14 +47,13 @@ const PedidoTotal = connection.define('PEDIDOTOTAL', {
     timestamps: false
 })
 
-//User.sync().then(() => {})
 
 async function getAllPedidos() {
     try {
         return await PedidoTotal.findAll({
             raw: true
-           });
-    }  catch(err){
+        });
+    } catch (err) {
         return err;
     }
 }
@@ -60,7 +61,7 @@ async function getAllPedidos() {
 async function getOnePedido(IDPEDIDOTOTAL) {
     try {
         return await PedidoTotal.findByPk(IDPEDIDOTOTAL)
-    }  catch(err){
+    } catch (err) {
         return err;
     }
 }
@@ -75,7 +76,7 @@ async function createPedido(pedido) {
             PAGADO: pedido.PAGADO,
             TIPO: pedido.TIPO
         });
-    }  catch(err){
+    } catch (err) {
         return err;
     }
 }
@@ -92,7 +93,7 @@ async function updatePedido(pedido) {
                 IDPEDIDOTOTAL: pedido.IDPEDIDOTOTAL
             }
         })
-    }  catch(err){
+    } catch (err) {
         return err;
     }
 }
@@ -104,7 +105,7 @@ async function deletePedido(IDPEDIDOTOTAL) {
                 IDPEDIDOTOTAL: IDPEDIDOTOTAL
             }
         })
-    }  catch(err){
+    } catch (err) {
         return err;
     }
 }

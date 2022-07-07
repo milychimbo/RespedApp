@@ -3,7 +3,9 @@ const {
     DataTypes
 } = require('sequelize');
 
-const { path } = require('./connection');
+const {
+    path
+} = require('./connection');
 
 const connection = new Sequelize(path);
 
@@ -45,27 +47,16 @@ const Producto = connection.define('PRODUCTO', {
     timestamps: false
 })
 
-//User.sync().then(() => {})
 
 async function getAllProductos() {
     try {
         return await Producto.findAll({
             raw: true
-           });
-    }  catch(err){
+        });
+    } catch (err) {
         return err;
     }
 }
-
-async function getOneProducto(IDPRODUCTO) {
-    try {
-        return await Producto.findByPk(IDPRODUCTO)
-    }  catch(err){
-        return err;
-    }
-}
-
-
 async function createProducto(producto) {
     try {
         return await Producto.create({
@@ -76,7 +67,7 @@ async function createProducto(producto) {
             IMAGE: producto.IMAGE,
             AVAILABILITY: producto.AVAILABILITY
         });
-    }  catch(err){
+    } catch (err) {
         return err;
     }
 }
@@ -95,7 +86,7 @@ async function updateProducto(producto) {
                 IDPRODUCTO: producto.IDPRODUCTO
             }
         })
-    }  catch(err){
+    } catch (err) {
         return err;
     }
 }
@@ -107,14 +98,13 @@ async function deleteProducto(IDPRODUCTO) {
                 IDPRODUCTO: IDPRODUCTO
             }
         })
-    }  catch(err){
+    } catch (err) {
         return err;
     }
 }
 
 module.exports = {
     getAllProductos,
-    getOneProducto,
     createProducto,
     updateProducto,
     deleteProducto

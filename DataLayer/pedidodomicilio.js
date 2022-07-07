@@ -3,7 +3,9 @@ const {
     DataTypes
 } = require('sequelize');
 
-const { path } = require('./connection');
+const {
+    path
+} = require('./connection');
 
 const connection = new Sequelize(path);
 
@@ -41,8 +43,8 @@ async function getAllPedidosDomicilio() {
     try {
         return await PedidoDomicilio.findAll({
             raw: true
-           });
-    }  catch(err){
+        });
+    } catch (err) {
         return err;
     }
 }
@@ -50,17 +52,11 @@ async function getAllPedidosDomicilio() {
 async function getPedidosPorRelacion(relacion) {
     try {
         return await PedidoDomicilio.findAll({
-            where: {IDRELACIONUD : relacion}
-           });
-    } catch(err){
-        return err;
-    }
-}
-
-async function getOnePedidoDomicilio(IDPEDIDO) {
-    try {
-        return await PedidoDomicilio.findByPk(IDPEDIDO)
-    }  catch(err){
+            where: {
+                IDRELACIONUD: relacion
+            }
+        });
+    } catch (err) {
         return err;
     }
 }
@@ -71,7 +67,7 @@ async function createPedidoDomicilio(pedido) {
             IDRELACIONUD: pedido.IDRELACIONUD,
             IDPEDIDOTOTAL: pedido.IDPEDIDOTOTAL
         });
-    }  catch(err){
+    } catch (err) {
         return err;
     }
 }
@@ -79,6 +75,5 @@ async function createPedidoDomicilio(pedido) {
 module.exports = {
     getAllPedidosDomicilio,
     getPedidosPorRelacion,
-    getOnePedidoDomicilio,
     createPedidoDomicilio
 }

@@ -6,7 +6,6 @@ const {
     deleteUser,
     getAllUsersByType,
 } = require("../DataLayer/usuario");
-const { getOneTipoUsuario } = require("../DataLayer/tipousuario");
 const { responseJson } = require("../helpers/handleGenericFunction");
 const { encrypt } = require("../helpers/handleBCrypt");
 const { verifyPassword } = require("../helpers/handleBCrypt");
@@ -24,24 +23,8 @@ async function obtenerUsuarios(req = request, res = response) {
 
 async function obtenerUsuariosPorTipo(req = request, res = response) {
     const users = await getAllUsersByType(req.params.id);
-    const arrayUsers = [];
     if (users.length > 0) {
-        users.forEach(async (user, index) => {
-            const tipo = await getOneTipoUsuario(req.params.id);
-            const respuesta = {
-                IDUSUARIO: user.IDUSUARIO,
-                TIPO: tipo.TIPO,
-                EMAIL: user.EMAIL,
-                NAME: user.NAME,
-                LASTNAME: user.LASTNAME,
-                USERNAME: user.USERNAME,
-                PHONE: user.PHONE,
-            };
-            arrayUsers.push(respuesta);
-            if (index == users.length - 1) {
-                res.status(200).json(responseJson(200, "success", arrayUsers));
-            }
-        });
+         res.status(200).json(responseJson(200, "success", users));
     } else {
         res.status(404).json(responseJson(404, "no existe"));
     }

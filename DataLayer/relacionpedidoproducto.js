@@ -3,7 +3,9 @@ const {
     DataTypes
 } = require('sequelize');
 
-const { path } = require('./connection');
+const {
+    path
+} = require('./connection');
 
 const connection = new Sequelize(path);
 
@@ -40,14 +42,15 @@ const RelacionPedidoProducto = connection.define('RELACIONPEDIDOPRODUCTO', {
     timestamps: false
 })
 
-//User.sync().then(() => {})
-
 
 async function getPedidoProducto(IDPEDIDOTOTALX) {
     try {
         return await RelacionPedidoProducto.findAll({
-            where: { IDPEDIDOTOTAL: IDPEDIDOTOTALX }})
-    }  catch(err){
+            where: {
+                IDPEDIDOTOTAL: IDPEDIDOTOTALX
+            }
+        })
+    } catch (err) {
         return err;
     }
 }
@@ -59,7 +62,7 @@ async function createPedidoProducto(relacion) {
             IDPRODUCTO: relacion.IDPRODUCTO,
             PRICE: relacion.PRICE
         });
-    }  catch(err){
+    } catch (err) {
         return err;
     }
 }

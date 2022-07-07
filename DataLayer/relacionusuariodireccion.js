@@ -3,7 +3,9 @@ const {
     DataTypes
 } = require('sequelize');
 
-const { path } = require('./connection');
+const {
+    path
+} = require('./connection');
 
 const connection = new Sequelize(path);
 
@@ -44,8 +46,11 @@ const RelacionUsuarioDireccion = connection.define('RELACIONUSUARIODIRECCION', {
 async function getUsuarioDireccion(IDUSUARIOX) {
     try {
         return await RelacionUsuarioDireccion.findAll({
-            where: { IDUSUARIO: IDUSUARIOX }})
-    }  catch(err){
+            where: {
+                IDUSUARIO: IDUSUARIOX
+            }
+        })
+    } catch (err) {
         return err;
     }
 }
@@ -53,7 +58,7 @@ async function getUsuarioDireccion(IDUSUARIOX) {
 async function getRelacion(IDRELACIONUD) {
     try {
         return await RelacionUsuarioDireccion.findByPk(IDRELACIONUD)
-    }  catch(err){
+    } catch (err) {
         return err;
     }
 }
@@ -65,7 +70,7 @@ async function createUsuarioDireccion(relacion) {
             IDDIRECCION: relacion.IDDIRECCION,
             DEFAULTDIR: relacion.DEFAULTDIR
         });
-    }  catch(err){
+    } catch (err) {
         return err;
     }
 }
@@ -82,7 +87,7 @@ async function updateUsuarioDireccion(relacion) {
                 IDRELACIONUD: relacion.IDRELACIONUD
             }
         })
-    }  catch(err){
+    } catch (err) {
         return err;
     }
 }

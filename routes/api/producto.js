@@ -1,5 +1,5 @@
 const {Router} =require('express');
-const { obtenerMenu, obtenerProductos, obtenerProductoId, crearProducto, actualizarProducto, borrarProducto, obtenerProductoCategoria } = require('../../LogicLayer/productoController');
+const { obtenerProductos, crearProducto, actualizarProducto, borrarProducto, obtenerProductosTodo } = require('../../LogicLayer/productoController');
 const { validationInsert, validationUpdate } = require('../../LogicLayer/validator/productoValidator');
 const { validateToken } = require('../../middlewares/verifyToken');
 
@@ -7,9 +7,7 @@ const router = Router();
 
  router.get('/', obtenerProductos);
 
- router.get('/categoria/:id', obtenerProductoCategoria);
-
- router.get('/:id',validateToken, obtenerProductoId);
+ router.get('/todo', obtenerProductosTodo);
 
  router.post('/',validateToken, validationInsert, crearProducto);
 

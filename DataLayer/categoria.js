@@ -3,7 +3,9 @@ const {
     DataTypes
 } = require('sequelize');
 
-const { path } = require('./connection');
+const {
+    path
+} = require('./connection');
 
 const connection = new Sequelize(path);
 
@@ -29,18 +31,10 @@ async function getAllCategorias() {
     try {
         return await Categoria.findAll({
             raw: true
-           });
-    } catch(err){
+        });
+    } catch (err) {
         return err;
-      }
-}
-
-async function getOneCategoria(IDCATEGORIA) {
-    try {
-        return await Categoria.findByPk(IDCATEGORIA)
-    } catch(err){
-        return err;
-      }
+    }
 }
 
 async function createCategoria(categoria) {
@@ -48,9 +42,9 @@ async function createCategoria(categoria) {
         return await Categoria.create({
             NAME: categoria.NAME
         });
-    } catch(err){
+    } catch (err) {
         return err;
-      }
+    }
 }
 
 async function updateCategoria(categoria) {
@@ -62,9 +56,9 @@ async function updateCategoria(categoria) {
                 IDCATEGORIA: categoria.IDCATEGORIA
             }
         })
-    } catch(err){
+    } catch (err) {
         return err;
-      }
+    }
 }
 
 async function deleteCategoria(IDCATEGORIA) {
@@ -74,14 +68,13 @@ async function deleteCategoria(IDCATEGORIA) {
                 IDCATEGORIA: IDCATEGORIA
             }
         })
-    } catch(err){
+    } catch (err) {
         return err;
-      }
+    }
 }
 
 module.exports = {
     getAllCategorias,
-    getOneCategoria,
     createCategoria,
     updateCategoria,
     deleteCategoria

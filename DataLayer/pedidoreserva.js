@@ -3,7 +3,9 @@ const {
     DataTypes
 } = require('sequelize');
 
-const { path } = require('./connection');
+const {
+    path
+} = require('./connection');
 
 const connection = new Sequelize(path);
 
@@ -35,41 +37,34 @@ const PedidoReserva = connection.define('PEDIDORESERVA', {
     timestamps: false
 })
 
-//User.sync().then(() => {})
 
 async function getAllPedidosReserva() {
     try {
         return await PedidoReserva.findAll({
             raw: true
-           });
-    }  catch(err){
+        });
+    } catch (err) {
         return err;
     }
 }
 async function getPedidoPorIdReserva(idreserva) {
     try {
         return await PedidoReserva.findOne({
-            where: {IDRESERVA : idreserva}
-           });
-    } catch(err){
+            where: {
+                IDRESERVA: idreserva
+            }
+        });
+    } catch (err) {
         return err;
     }
 }
-async function getOnePedidoReserva(IDPEDIDO) {
-    try {
-        return await PedidoReserva.findByPk(IDPEDIDO)
-    }  catch(err){
-        return err;
-    }
-}
-
 async function createPedidoReserva(pedido) {
     try {
         return await PedidoReserva.create({
             IDRESERVA: pedido.IDRESERVA,
             IDPEDIDOTOTAL: pedido.IDPEDIDOTOTAL
         });
-    }  catch(err){
+    } catch (err) {
         return err;
     }
 }
@@ -78,6 +73,5 @@ async function createPedidoReserva(pedido) {
 module.exports = {
     getAllPedidosReserva,
     getPedidoPorIdReserva,
-    getOnePedidoReserva,
     createPedidoReserva
 }
