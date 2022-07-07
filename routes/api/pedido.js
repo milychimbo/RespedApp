@@ -8,10 +8,11 @@ const { validationInsertReserva } = require('../../LogicLayer/validator/pedidoRe
 
 const router = Router();
 
- router.get('/', validateToken,obtenerPedidosFinalizados);
+router.get('/', validateToken,obtenerPedidos);
  router.get('/local/', validateToken,obtenerPedidosLocales);
  router.get('/domicilio/', validateToken,obtenerPedidosDomicilio);
  router.get('/reserva/', validateToken,obtenerPedidosReserva);
+ router.get('/finalizado', validateToken,obtenerPedidosFinalizados);
  router.get('/usuario/local/', validateToken,obtenerPedidosLocalUsuario);
  router.get('/usuario/domicilio/', validateToken,obtenerPedidosUsuarioDomicilio);
  router.get('/usuario/reserva/', validateToken,obtenerPedidosUsuarioReserva);

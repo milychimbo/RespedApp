@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     6/4/2022 9:48:49 AM                          */
+/* Created on:     7/6/2022 9:49:18 PM                          */
 /*==============================================================*/
 
 
@@ -9,6 +9,8 @@ drop table if exists CATEGORIA;
 drop table if exists DIRECCION;
 
 drop table if exists ESTADO;
+
+drop table if exists ESTADO2;
 
 drop table if exists PEDIDODOMICILIO;
 
@@ -49,6 +51,8 @@ create table DIRECCION
    REFERENCE            varchar(150),
    STREET1              varchar(100) not null,
    STREET2              varchar(100) not null,
+   NAME                 varchar(20) not null,
+   PHONEDIR             varchar(15) not null,
    primary key (IDDIRECCION)
 );
 
@@ -63,6 +67,16 @@ create table ESTADO
 );
 
 /*==============================================================*/
+/* Table: ESTADO2                                               */
+/*==============================================================*/
+create table ESTADO2
+(
+   IDSTATE              int not null auto_increment,
+   STATE                varchar(20) not null,
+   primary key (IDSTATE)
+);
+
+/*==============================================================*/
 /* Table: PEDIDODOMICILIO                                       */
 /*==============================================================*/
 create table PEDIDODOMICILIO
@@ -70,7 +84,6 @@ create table PEDIDODOMICILIO
    IDPEDIDO             int not null auto_increment,
    IDRELACIONUD         int not null,
    IDPEDIDOTOTAL        int not null,
-   ENVIO                float not null,
    primary key (IDPEDIDO)
 );
 
@@ -103,9 +116,12 @@ create table PEDIDORESERVA
 create table PEDIDOTOTAL
 (
    IDPEDIDOTOTAL        int not null auto_increment,
+   NUMPEDIDO            varchar(30) not null,
    IDSTATE              int not null,
    VALORTOTAL           float not null,
    NOTE                 varchar(150),
+   PAGADO               bool not null,
+   TIPO                 int,
    primary key (IDPEDIDOTOTAL)
 );
 
@@ -144,6 +160,7 @@ create table RELACIONUSUARIODIRECCION
    IDRELACIONUD         int not null auto_increment,
    IDUSUARIO            int not null,
    IDDIRECCION          int not null,
+   DEFAULTDIR           bool not null,
    primary key (IDRELACIONUD)
 );
 
@@ -153,7 +170,9 @@ create table RELACIONUSUARIODIRECCION
 create table RESERVA
 (
    IDRESERVA            int not null auto_increment,
+   NUMRESERVA           varchar(30) not null,
    IDUSUARIO            int not null,
+   IDSTATE              int,
    PEOPLE               int not null,
    NOTE                 varchar(150),
    RESERVATIONDATE      date not null,
@@ -182,10 +201,12 @@ create table USUARIO
    EMAIL                varchar(100) not null,
    NAME                 varchar(100),
    LASTNAME             varchar(100),
-   PASSWORD             varchar(12) not null,
+   PASSWORD             varchar(100) not null,
    PHONE                varchar(15) not null,
    primary key (IDUSUARIO),
-   key AK_IDENTIFIER_2 (USERNAME)
+   unique key AK_IDENTIFIER_2 (USERNAME),
+   unique key AK_KEY_3 (EMAIL),
+   unique key AK_KEY_4 (PHONE)
 );
 
 alter table PEDIDODOMICILIO add constraint FK_RELATIONSHIP_10 foreign key (IDRELACIONUD)
@@ -223,6 +244,9 @@ alter table RELACIONUSUARIODIRECCION add constraint FK_RELATIONSHIP_19 foreign k
 
 alter table RELACIONUSUARIODIRECCION add constraint FK_RELATIONSHIP_20 foreign key (IDDIRECCION)
       references DIRECCION (IDDIRECCION) on delete cascade;
+
+alter table RESERVA add constraint FK_REFERENCE_15 foreign key (IDSTATE)
+      references ESTADO2 (IDSTATE) on delete cascade;
 
 alter table RESERVA add constraint FK_RELATIONSHIP_11 foreign key (IDUSUARIO)
       references USUARIO (IDUSUARIO) on delete cascade;

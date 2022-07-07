@@ -32,7 +32,14 @@ const PedidoTotal = connection.define('PEDIDOTOTAL', {
             model: 'ESTADO',
             key: 'IDSTATE'
         }
-    }
+    },
+    PAGADO: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false
+    },
+    TIPO: {
+        type: DataTypes.INTEGER
+    },
 }, {
     tableName: 'PEDIDOTOTAL',
     timestamps: false
@@ -64,7 +71,9 @@ async function createPedido(pedido) {
             NUMPEDIDO: pedido.NUMPEDIDO,
             VALORTOTAL: pedido.VALORTOTAL,
             NOTE: pedido.NOTE,
-            IDSTATE: pedido.IDSTATE
+            IDSTATE: pedido.IDSTATE,
+            PAGADO: pedido.PAGADO,
+            TIPO: pedido.TIPO
         });
     }  catch(err){
         return err;
@@ -75,7 +84,9 @@ async function updatePedido(pedido) {
     try {
         return await PedidoTotal.update({
             NOTE: pedido.NOTE,
-            IDSTATE: pedido.IDSTATE
+            IDSTATE: pedido.IDSTATE,
+            PAGADO: pedido.PAGADO,
+            TIPO: pedido.TIPO
         }, {
             where: {
                 IDPEDIDOTOTAL: pedido.IDPEDIDOTOTAL
