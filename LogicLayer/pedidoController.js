@@ -59,8 +59,36 @@ const correo = require('../views/correo.js')
 
 async function obtenerPedidos(req = request, res = response) {
     const pedidos = await getAllPedidos();
+    let respuestas = [];
     if (pedidos.length > 0) {
-        res.status(200).json(responseJson(200, "success", pedidos))
+        for (const pedido of pedidos) {
+            const productos = await getPedidoProducto(pedido.IDPEDIDOTOTAL);
+            let arrayProductos = [];
+            for (const producto of productos) {
+                const productovar = await getOneProducto(producto.IDPRODUCTO)
+                arrayProductos = [
+                    ...arrayProductos,
+                    productovar.NAME
+                ]
+            }
+            const respuesta = {
+                "IDPEDIDOTOTAL": pedido.IDPEDIDOTOTAL,
+                "NUMPEDIDO": pedido.NUMPEDIDO,
+                "PRODUCTOS": arrayProductos,
+                "IDSTATE": pedido.IDSTATE,
+                "VALORTOTAL": pedido.VALORTOTAL.toFixed(2),
+                "NOTE": pedido.NOTE,
+                "TIPO":pedido.TIPO,
+                "PAGADO": pedido.PAGADO
+            }
+            if (pedido.IDSTATE != 5) {
+                respuestas = [
+                    ...respuestas,
+                    respuesta
+                ]
+            }
+        }
+        res.status(200).json(responseJson(200, "success", respuestas))
     } else
         res.status(404).json(responseJson(404, "no existe"))
 }
