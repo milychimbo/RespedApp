@@ -41,7 +41,7 @@ async function obtenerReservasUsuario(req = request, res = response) { //ARREGLA
                 "NOTE": reserva.NOTE,
                 "RESERVATIONDATE": reserva.RESERVATIONDATE,
                 "RESERVATIONTIME": reserva.RESERVATIONTIME,
-                "STATE": estado.STATE
+                "IDSTATE": estado.STATE
             }
             arrayReservas = [
                 ...arrayReservas,
@@ -82,7 +82,7 @@ async function obtenerReservasPorEstado(req = request, res = response) { //ARREG
                 "NOTE": reserva.NOTE,
                 "RESERVATIONDATE": reserva.RESERVATIONDATE,
                 "RESERVATIONTIME": reserva.RESERVATIONTIME,
-                "STATE": reserva.IDSTATE
+                "IDSTATE": reserva.IDSTATE
             }
             arrayReservas = [
                 ...arrayReservas,
