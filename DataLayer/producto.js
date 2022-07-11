@@ -60,7 +60,7 @@ async function getAllProductos() {
 async function getAllAviavilityProductos() {
     try {
         return await Producto.findAll({
-            where: { AVAILABILITY: 1, IDCATEGORIA: category },
+            where: { AVAILABILITY: 1 },
             raw: true
         });
     } catch (err) {

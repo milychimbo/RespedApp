@@ -22,9 +22,11 @@ async function obtenerProductos(req = request, res = response) {
         for (const producto of productos) {
             producto.PRICE = producto.PRICE.toFixed(2);
         }
+        console.log(productos);
         res.status(200).json(responseJson(200, "success", productos))
-    } else
-        res.status(404).json(responseJson(404, "no existe"))
+    } else {
+        res.status(404).json(responseJson(404, "No existen productos"))
+    }
 }
 
 async function obtenerProductosPorCategoria(req = request, res = response) {
