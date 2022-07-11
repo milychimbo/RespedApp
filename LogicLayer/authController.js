@@ -7,7 +7,7 @@ const secret = process.env.SECRET_TOKEN;
 
 
 async function login(req = request, res = response) {
-    const {USERNAME, PASSWORD} = req.body;
+    const { USERNAME, PASSWORD } = req.body;
 
     const requestUser = await getOneUserByUsername(USERNAME);
     if (requestUser?.dataValues) {
@@ -23,7 +23,13 @@ async function login(req = request, res = response) {
                 PHONE: user.PHONE,
             }
             const token = jwt.sign(payloadToken, secret, { expiresIn: '1d' });
-            return res.status(200).json(responseJson(200, "success", { token }))
+            return res.status(200).json(responseJson(200, "success",
+            { 
+                token, 
+                rol: user.IDTIPOUSUARIO, 
+                username: user.USERNAME,
+                id: user.IDUSUARIO
+            }))
         } else {
             return res.status(404).json(responseJson(404, "El usuario o la contraseña son incorrectas"));
         }
