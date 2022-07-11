@@ -525,7 +525,21 @@ async function crearPedidoReserva(req = request, res = response) {
 }
 
 async function actualizarPedido(req = request, res = response) { //corregido
-    const pedido = await updatePedido(req.body);
+    let pedidoJson=[];
+    if(req.body.IDSTATE==5){
+         pedidoJson={
+            "IDPEDIDOTOTAL": req.body.IDPEDIDOTOTAL,
+            "IDSTATE": req.body.IDSTATE,
+            "PAGADO": true
+        }
+    }
+    else{
+        pedidoJson={
+            "IDPEDIDOTOTAL": req.body.IDPEDIDOTOTAL,
+            "IDSTATE": req.body.IDSTATE
+        }
+    }
+    const pedido = await updatePedido(pedidoJson);
     if (pedido == 1)
         res.status(201).json(responseJson(201, "success"))
     else
