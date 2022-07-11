@@ -1,18 +1,20 @@
-const {Router} =require('express');
-const { obtenerProductos, crearProducto, actualizarProducto, borrarProducto, obtenerProductosTodo } = require('../../LogicLayer/productoController');
+const { Router } = require('express');
+const { obtenerProductos, crearProducto, actualizarProducto, borrarProducto, obtenerProductosTodo, obtenerProductosPorCategoria } = require('../../LogicLayer/productoController');
 const { validationInsert, validationUpdate } = require('../../LogicLayer/validator/productoValidator');
 const { validateToken } = require('../../middlewares/verifyToken');
 
 const router = Router();
 
- router.get('/', obtenerProductos);
+router.get('/', obtenerProductos);
 
- router.get('/todo', obtenerProductosTodo);
+router.get('/categoria/:category', obtenerProductosPorCategoria);
 
- router.post('/',validateToken, validationInsert, crearProducto);
+router.get('/todo', obtenerProductosTodo);
 
- router.put('/', validateToken,validationUpdate, actualizarProducto);
+router.post('/', validateToken, validationInsert, crearProducto);
 
- router.delete('/:id', validateToken,borrarProducto);
+router.put('/', validateToken, validationUpdate, actualizarProducto);
 
-module.exports=router;
+router.delete('/:id', validateToken, borrarProducto);
+
+module.exports = router;
