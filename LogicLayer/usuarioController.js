@@ -24,7 +24,7 @@ async function obtenerUsuarios(req = request, res = response) {
 async function obtenerUsuariosPorTipo(req = request, res = response) {
     const users = await getAllUsersByType(req.params.id);
     if (users.length > 0) {
-         res.status(200).json(responseJson(200, "success", users));
+        res.status(200).json(responseJson(200, "success", users));
     } else {
         res.status(404).json(responseJson(404, "no existe"));
     }
@@ -80,10 +80,9 @@ function crearCliente(req = request, res = response) {
                                     });
                                     const data = {
                                         token,
-                                        id: user.IDUSUARIO,
-                                        username: user.USERNAME,
-                                        email: user.EMAIL,
                                         rol: user.IDTIPOUSUARIO,
+                                        username: user.USERNAME,
+                                        id: user.IDUSUARIO,
                                     };
                                     res.status(200).json(responseJson(200, "success", data));
                                 } else {

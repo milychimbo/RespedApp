@@ -57,10 +57,32 @@ async function getAllProductos() {
         return err;
     }
 }
+async function getAllAviavilityProductos() {
+    try {
+        return await Producto.findAll({
+            where: { AVAILABILITY: 1 },
+            raw: true
+        });
+    } catch (err) {
+        return err;
+    }
+}
+
+async function getAllAviavilityProductosByCategory(category) {
+    try {
+        return await Producto.findAll({
+            where: { AVAILABILITY: 1, IDCATEGORIA: category },
+            raw: true
+        });
+    } catch (err) {
+        return err;
+    }
+}
+
 async function getOneProducto(IDPRODUCTO) {
     try {
         return await Producto.findByPk(IDPRODUCTO)
-    }  catch(err){
+    } catch (err) {
         return err;
     }
 }
@@ -114,6 +136,8 @@ async function deleteProducto(IDPRODUCTO) {
 
 module.exports = {
     getAllProductos,
+    getAllAviavilityProductos,
+    getAllAviavilityProductosByCategory,
     getOneProducto,
     createProducto,
     updateProducto,
