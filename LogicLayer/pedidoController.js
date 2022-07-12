@@ -536,7 +536,8 @@ async function actualizarPedido(req = request, res = response) { //corregido
     else{
         pedidoJson={
             "IDPEDIDOTOTAL": req.body.IDPEDIDOTOTAL,
-            "IDSTATE": req.body.IDSTATE
+            "IDSTATE": req.body.IDSTATE,
+            "PAGADO": req.body.PAGADO
         }
     }
     const pedido = await updatePedido(pedidoJson);
